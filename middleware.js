@@ -6,7 +6,7 @@ let defaultLocale = "en";
 let locales = ["bn", "en", "ar"];
 
 // Protected routes that require authentication
-const protectedRoutes = ['/dashboard', '/profile', '/settings'];
+const protectedRoutes = ["/dashboard", "/company", "/branch"];
 // Public routes that should redirect to dashboard if authenticated
 const authRoutes = ['/login', '/register', '/forgot-password'];
 

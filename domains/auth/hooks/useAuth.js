@@ -1,6 +1,7 @@
 import { setCredentials, logout as logoutAction } from "../model/authSlice";
 import { useLoginMutation, useLogoutMutation } from "../services/authApi";
 import { useAppDispatch, useAppSelector } from "../../../hooks/use-redux";
+import Cookies from "js-cookie";
 
 const useAuth = () => {
   const dispatch = useAppDispatch();
@@ -18,17 +19,13 @@ const useAuth = () => {
   const login = async (email, password) => {
     try {
       const response = await loginMutation({ email, password }).unwrap();
-      
-      // Store token in localStorage
-      localStorage.setItem("token", response.temp_token);
-      
-      // Also set in cookies for middleware access
-      document.cookie = `auth-token=${response.temp_token}; path=/; max-age=${7 * 24 * 60 * 60}`; // 7 days
+
+      Cookies.set("auth-token", response.data.token, { expires: 7 }); // expires in 7 days
 
       dispatch(
         setCredentials({
           user: response.user,
-          token: response.temp_token,
+          token: response.token,
         })
       );
       return { success: true };
