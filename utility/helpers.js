@@ -20,24 +20,24 @@ export const handleServerValidationErrors = (error, setError) => {
     }
 };
 //Server site Validation with toast
-export const handleServerValidationErrorsToast = (error,toast) => {
-console.log(error);
-  // Direct Laravel-like: error.errors
-  if (error?.errors && typeof error.errors === "object") {
-    const firstKey = Object.keys(error.errors)[0];
-    const firstMsg = error.errors[firstKey]?.[0];
-    toast.error(firstMsg || "Validation error", { duration: 4000 });
-    return;
-  }
+export const handleServerValidationErrorsToast = (error, toast) => {
+    console.log(error);
+    // Direct Laravel-like: error.errors
+    if (error?.errors && typeof error.errors === "object") {
+        const firstKey = Object.keys(error.errors)[0];
+        const firstMsg = error.errors[firstKey]?.[0];
+        toast.error(firstMsg || "Validation error", { duration: 4000 });
+        return;
+    }
 
-  // Generic message
-  const message =
-    error?.data?.message ||
-    error?.message ||
-    error?.error ||
-    "Something went wrong.";
+    // Generic message
+    const message =
+        error?.data?.message ||
+        error?.message ||
+        error?.error ||
+        "Something went wrong.";
 
-  toast.error(message, { duration: 4000 });
+    toast.error(message, { duration: 4000 });
 };
 //  from reset
 export const formReset = (form) => {
@@ -73,3 +73,23 @@ export const normalizeSelectValues = (obj, keys = []) => {
     });
     return copy;
 };
+
+// Convert nested objects to FormData
+export function buildFormData(values, method = "POST") {
+    const formData = new FormData();
+
+    function appendFormData(data, parentKey = "") {
+        if (data && typeof data === "object" && !(data instanceof File)) {
+            Object.entries(data).forEach(([key, value]) => {
+                const newKey = parentKey ? `${parentKey}[${key}]` : key;
+                appendFormData(value, newKey);
+            });
+        } else if (data !== null && data !== undefined) {
+            formData.append(parentKey, data);
+        }
+        formData.append("_method", method);
+    }
+
+    appendFormData(values);
+    return formData;
+}

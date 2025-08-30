@@ -20,6 +20,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
 import { Input } from "@/components/ui/input";
 import {
     Table,
@@ -33,11 +34,14 @@ import {
 import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
 
+import Link from "next/link";
+
 export function BasicDataTable({
     columns = [],
     form,
     data = [],
     addButtonLabel,
+    to = false,
 }) {
     const [sorting, setSorting] = React.useState([]);
     const [columnFilters, setColumnFilters] = React.useState([]);
@@ -65,7 +69,7 @@ export function BasicDataTable({
 
     return (
         <>
-            <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-lg">
+            <div className="flex flex-wrap items-center justify-between gap-4 py-4 rounded-lg">
                 {/* Left side controls */}
                 <div className="flex items-center gap-4">
                     <DropdownMenu>
@@ -111,13 +115,22 @@ export function BasicDataTable({
                 {/* Right side actions — optional */}
                 <div className="flex items-center gap-2">
                     {/* You can put actions here like export, add new, etc. */}
-                    <Button
-                        onClick={() => {
-                            form.setValue("openModel", true);
-                        }}
-                    >
-                        {addButtonLabel}
-                    </Button>
+                    {to ? (
+                        <Link
+                            href={to}
+                            className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                        >
+                            {addButtonLabel}
+                        </Link>
+                    ) : (
+                        <Button
+                            onClick={() => {
+                                form.setValue("openModel", true);
+                            }}
+                        >
+                            {addButtonLabel}
+                        </Button>
+                    )}
                 </div>
             </div>
 

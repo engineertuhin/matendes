@@ -1,43 +1,37 @@
-import { useCompany } from "@/domains/company/hook/useCompany";
-import { useBranch } from "@/domains/branch/hook/useBranch";
-import { useDepartment } from "@/domains/department/hook/useDepartment";
-
 const fields = () => {
-    const { actions: companyActions } = useCompany();
-    const { actions: branchAction } = useBranch();
-    const { actions: departmentAction } = useDepartment();
-
     return [
         // =============== Relations ===============
         {
             name: "company_id",
             type: "async-select",
             label: "Select Company *",
-            loadOptions: (inputValue, callback) => {
-                companyActions.onSearch(inputValue, callback);
-            },
-            colSpan: "col-span-6",
+            loadOptions: ["companies", "companies", "companySearchTemplate"],
+            colSpan: "col-span-12 md:col-span-6",
             rules: { required: "Company is required" },
         },
         {
             name: "branch_id",
             type: "async-select",
             label: "Branch",
-            loadOptions: (inputValue, callback) => {
-                branchAction.onSearch(inputValue, callback);
-            },
+            loadOptions: [
+                "organization/branches",
+                "branches",
+                "branchSearchTemplate",
+            ],
             placeholder: "Optional",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
         },
         {
             name: "parent_department_id",
             type: "async-select",
             label: "Parent Department",
-            loadOptions: (inputValue, callback) => {
-                departmentAction.onSearch(inputValue, callback);
-            },
+            loadOptions: [
+                "organization/departments",
+                "departments",
+                "departmentSearchTemplate",
+            ],
             placeholder: "Optional",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
         },
 
         // =============== Core ===============
@@ -46,7 +40,7 @@ const fields = () => {
             type: "input",
             label: "Department Name *",
             placeholder: "Operations",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             rules: {
                 required: "Name is required",
                 maxLength: { value: 200, message: "Max 200 characters" },
@@ -58,7 +52,7 @@ const fields = () => {
             type: "input",
             label: "Department Code *",
             placeholder: "OPS-01",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             rules: {
                 required: "Code is required",
                 maxLength: { value: 20, message: "Max 20 characters" },
@@ -70,7 +64,7 @@ const fields = () => {
             type: "select",
             label: "Type *", // varchar(50), default 'department'
             placeholder: "Select type",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             options: [
                 { label: "Department", value: "department" },
                 { label: "Division", value: "division" },
@@ -92,28 +86,24 @@ const fields = () => {
             name: "head_of_department_id",
             type: "async-select",
             label: "Head of Department",
-            loadOptions: (inputValue, callback) => {
-                callback([]);
-            },
+
             placeholder: "Optional",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
         },
         {
             name: "deputy_head_id",
             type: "async-select",
             label: "Deputy Head",
-            loadOptions: (inputValue, callback) => {
-                callback([]);
-            },
+
             placeholder: "Optional",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
         },
         {
             name: "email",
             type: "email",
             label: "Department Email",
             placeholder: "ops@example.com",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             rules: { maxLength: { value: 100, message: "Max 100 characters" } },
             inputProps: { maxLength: 100 },
         },
@@ -122,7 +112,7 @@ const fields = () => {
             type: "input",
             label: "Phone",
             placeholder: "+1-555-123456",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             rules: { maxLength: { value: 50, message: "Max 50 characters" } },
             inputProps: { maxLength: 50 },
         },
@@ -131,7 +121,7 @@ const fields = () => {
             type: "input",
             label: "Ext.",
             placeholder: "1234",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             rules: { maxLength: { value: 20, message: "Max 20 characters" } },
             inputProps: { maxLength: 20 },
         },
@@ -141,20 +131,20 @@ const fields = () => {
             name: "is_billable",
             type: "checkbox",
             label: "Billable Department",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
         },
         {
             name: "is_cost_center",
             type: "checkbox",
             label: "Is Cost Center",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
         },
         {
             name: "cost_center_code",
             type: "input",
             label: "Cost Center Code",
             placeholder: "CC-100",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             inputProps: { maxLength: 20 },
             rules: { maxLength: { value: 20, message: "Max 20 characters" } },
         },
@@ -163,7 +153,7 @@ const fields = () => {
             type: "number",
             label: "Budget Allocated",
             placeholder: "500000.00",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             inputProps: { min: 0, step: "0.01" },
             rules: { min: { value: 0, message: "Must be ≥ 0" } },
         },
@@ -173,14 +163,14 @@ const fields = () => {
             name: "established_date",
             type: "date",
             label: "Established Date",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
         },
         {
             name: "employee_count",
             type: "number",
             label: "Employee Count *",
             placeholder: "0",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             inputProps: { min: 0, step: "1" },
             rules: {
                 required: "Employee count is required",
@@ -194,7 +184,7 @@ const fields = () => {
             type: "number",
             label: "Hierarchy Level *",
             placeholder: "1",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             inputProps: { min: 0, step: "1" },
             rules: {
                 required: "Level is required",
@@ -207,7 +197,7 @@ const fields = () => {
             type: "input",
             label: "Hierarchy Path",
             placeholder: "/1/3/7",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             inputProps: { maxLength: 500 },
             rules: { maxLength: { value: 500, message: "Max 500 characters" } },
         },
@@ -216,7 +206,7 @@ const fields = () => {
             type: "number",
             label: "Sort Order *",
             placeholder: "0",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             inputProps: { min: 0, step: "1" },
             rules: {
                 required: "Sort order is required",
@@ -230,7 +220,7 @@ const fields = () => {
             type: "select",
             label: "Status *",
             placeholder: "Select status",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
             options: [
                 { label: "Active", value: "active" },
                 { label: "Inactive", value: "inactive" },
@@ -243,7 +233,7 @@ const fields = () => {
             name: "is_enabled",
             type: "checkbox",
             label: "Enabled",
-            colSpan: "col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
         },
     ];
 };

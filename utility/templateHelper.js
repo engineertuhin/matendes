@@ -16,3 +16,17 @@ export const branchSearchTemplate = (res) => {
         value: branch.id,
     }));
 };
+
+export const departmentSearchTemplate = (res) => {
+    return res.map((data) => ({
+        label: data.name + " (" + data.code + ")",
+        value: data.id,
+    }));
+};
+
+export const jobPositionsTemplate = (res) => {
+    return res.map((data) => ({
+        label: data.title + " (" + data.code + ")",
+        value: data.id,
+    }));
+};

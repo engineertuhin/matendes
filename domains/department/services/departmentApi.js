@@ -1,36 +1,36 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
 export const departmentApi = createApi({
-    reducerPath: "department",
+    reducerPath: "Department",
     baseQuery: baseQuery,
-    tagTypes: ["department"],
+    tagTypes: ["Department"],
     endpoints: (builder) => ({
         departmentCreate: builder.mutation({
             query: (credentials) => ({
-                url: "organization/branches",
+                url: "organization/departments",
                 method: "POST",
                 body: credentials,
             }),
-            invalidatesTags: ["department"],
+            invalidatesTags: ["Department"],
         }),
         departmentUpdate: builder.mutation({
             query: ({ id, credentials }) => ({
-                url: `organization/branches/${id}`,
+                url: `organization/departments/${id}`,
                 method: "PUT",
                 body: credentials,
             }),
-            invalidatesTags: ["department"],
+            invalidatesTags: ["Department"],
         }),
         departmentDelete: builder.mutation({
             query: ({ id }) => ({
-                url: `organization/branches/${id}`,
+                url: `organization/departments/${id}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["department"],
+            invalidatesTags: ["Department"],
         }),
         departmentFetch: builder.query({
-            query: () => "organization/branches",
-            providesTags: ["department"],
+            query: () => "organization/departments",
+            providesTags: ["Department"],
         }),
         departmentSearch: builder.query({
             query: ({ search }) => ({
@@ -38,7 +38,7 @@ export const departmentApi = createApi({
                 method: "GET",
                 params: search ? { search } : undefined, // send as query parameter
             }),
-            providesTags: ["department"],
+            providesTags: ["Department"],
         }),
     }),
 });
@@ -47,6 +47,6 @@ export const {
     useDepartmentCreateMutation,
     useDepartmentUpdateMutation,
     useDepartmentDeleteMutation,
-    useDepartmentFetchQuery,
     useDepartmentSearchQuery,
+    useDepartmentFetchQuery,
 } = departmentApi;

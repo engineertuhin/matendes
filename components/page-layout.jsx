@@ -1,7 +1,8 @@
-
 import Link from "next/link";
 import { Breadcrumbs, BreadcrumbItem } from "@/components/ui/breadcrumbs";
 import { usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
+import { Card, CardContent } from "@/components/ui/card";
 
 // Small helper to prettify slug into readable text
 function formatLabel(str) {
@@ -14,6 +15,8 @@ function formatLabel(str) {
 
 export default function PageLayout({ children }) {
     const pathname = usePathname();
+    const params = useParams();
+    const id = params.id;
     const segments = pathname?.split("/").filter(Boolean) || [];
 
     // Build cumulative hrefs
@@ -26,7 +29,9 @@ export default function PageLayout({ children }) {
 
     // Title = last segment (or "Dashboard" if no path)
     const pageTitle =
-        crumbs.length > 0 ? crumbs[crumbs.length - 1].label : "Dashboard";
+        crumbs.length > 0
+            ? crumbs[crumbs.length - (id ? 2 : 1)].label
+            : "Dashboard";
 
     return (
         <>
@@ -57,8 +62,9 @@ export default function PageLayout({ children }) {
                     </Breadcrumbs>
                 </div>
             </div>
-
-            {children}
+            <Card>
+                <CardContent className="p-4">{children}</CardContent>
+            </Card>
         </>
     );
 }

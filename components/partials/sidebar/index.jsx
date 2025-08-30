@@ -9,6 +9,7 @@ import ClassicSidebar from "./classic";
 import MobileSidebar from "./mobile-sidebar";
 
 const Sidebar = ({ trans }) => {
+
   const { sidebarType, collapsed } = useSidebar();
   const { layout } = useThemeStore();
 

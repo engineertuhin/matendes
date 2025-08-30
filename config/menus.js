@@ -1,36 +1,67 @@
-import { DashBoard, Stacks, UserPlus, Graph } from "@/components/svg";
+import {
+    LayoutDashboard,
+    BarChart2,
+    Building2,
+    GitBranch,
+    Building,
+    Briefcase,
+    Users,
+    UserCircle,
+    ScanFace,
+} from "lucide-react";
 
 export const menusConfig = {
     mainNav: [
         {
             title: "Dashboard",
-            icon: DashBoard,
+            icon: LayoutDashboard,
             child: [
                 {
                     title: "Analytics",
                     href: "/dashboard",
-                    icon: Graph,
+                    icon: BarChart2,
                 },
             ],
         },
         {
             title: "Organization",
-            icon: Stacks,
+            icon: Building2,
             child: [
                 {
                     title: "Company list",
                     href: "/company",
-                    icon: UserPlus,
+                    icon: Building2,
                 },
                 {
                     title: "Branch list",
                     href: "/branch",
-                    icon: UserPlus,
+                    icon: GitBranch,
                 },
                 {
                     title: "Department list",
                     href: "/department",
-                    icon: UserPlus,
+                    icon: Building,
+                },
+                {
+                    title: "Job Position list",
+                    href: "/job-position",
+                    icon: Briefcase,
+                },
+            ],
+        },
+        {
+            title: "Employees",
+            icon: Users,
+            child: [
+                {
+                    title: "Employee list",
+                    href: "/employ",
+                    icon: UserCircle,
+                },
+                {
+                    title: "Face Attendance",
+                    href: "/attendance/face-attendance",
+                    icon: ScanFace,
                 },
             ],
         },
@@ -39,33 +70,54 @@ export const menusConfig = {
         modern: [
             {
                 title: "Dashboard",
-                icon: DashBoard,
+                icon: LayoutDashboard,
                 child: [
                     {
                         title: "Analytics",
                         href: "/dashboard",
-                        icon: Graph,
+                        icon: BarChart2,
                     },
                 ],
             },
             {
                 title: "Organization",
-                icon: Stacks,
+                icon: Building2,
                 child: [
                     {
                         title: "Company list",
                         href: "/company",
-                        icon: UserPlus,
+                        icon: Building2,
                     },
                     {
                         title: "Branch list",
                         href: "/branch",
-                        icon: UserPlus,
+                        icon: GitBranch,
                     },
                     {
                         title: "Department list",
                         href: "/department",
-                        icon: UserPlus,
+                        icon: Building,
+                    },
+                    {
+                        title: "Job Position list",
+                        href: "/job-position",
+                        icon: Briefcase,
+                    },
+                ],
+            },
+            {
+                title: "Employees",
+                icon: Users,
+                child: [
+                    {
+                        title: "Employee list",
+                        href: "/employ",
+                        icon: UserCircle,
+                    },
+                    {
+                        title: "Face Attendance",
+                        href: "/attendance/face-attendance",
+                        icon: ScanFace,
                     },
                 ],
             },
@@ -77,7 +129,7 @@ export const menusConfig = {
             },
             {
                 title: "Dashboard",
-                icon: DashBoard,
+                icon: LayoutDashboard,
                 href: "/dashboard",
                 isOpen: false,
                 isHide: false,
@@ -85,13 +137,13 @@ export const menusConfig = {
                     {
                         title: "Analytics",
                         href: "/dashboard",
-                        icon: Graph,
+                        icon: BarChart2,
                     },
                 ],
             },
             {
                 title: "Organization",
-                icon: Stacks,
+                icon: Building2,
                 href: "/dashboard",
                 isOpen: false,
                 isHide: false,
@@ -99,17 +151,40 @@ export const menusConfig = {
                     {
                         title: "Company list",
                         href: "/company",
-                        icon: UserPlus,
+                        icon: Building2,
                     },
                     {
                         title: "Branch list",
                         href: "/branch",
-                        icon: UserPlus,
+                        icon: GitBranch,
                     },
                     {
                         title: "Department list",
                         href: "/department",
-                        icon: UserPlus,
+                        icon: Building,
+                    },
+                    {
+                        title: "Job Position list",
+                        href: "/job-position",
+                        icon: Briefcase,
+                    },
+                ],
+            },
+            {
+                title: "Employees",
+                icon: Users,
+                isOpen: false,
+                isHide: false,
+                child: [
+                    {
+                        title: "Employee list",
+                        href: "/employ",
+                        icon: UserCircle,
+                    },
+                    {
+                        title: "Face Attendance",
+                        href: "/attendance/face-attendance",
+                        icon: ScanFace,
                     },
                 ],
             },

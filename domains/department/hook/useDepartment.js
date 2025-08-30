@@ -3,8 +3,8 @@ import {
     useDepartmentCreateMutation,
     useDepartmentUpdateMutation,
     useDepartmentDeleteMutation,
-    useDepartmentFetchQuery,
     useDepartmentSearchQuery,
+    useDepartmentFetchQuery,
 } from "../services/departmentApi";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -17,10 +17,10 @@ import {
 } from "@/utility/templateHelper";
 
 export const useDepartment = () => {
-    const [branchCreate] = useDepartmentCreateMutation();
-    const [branchUpdate] = useDepartmentUpdateMutation();
-    const [branchDelete] = useDepartmentDeleteMutation();
-    const { data: branch, refetch } = useDepartmentFetchQuery();
+    const [departmentCreate] = useDepartmentCreateMutation();
+    const [departmentUpdate] = useDepartmentUpdateMutation();
+    const [departmentDelete] = useDepartmentDeleteMutation();
+    const { data: department, refetch } = useDepartmentFetchQuery();
 
     const form = useForm({
         mode: "onBlur",
@@ -35,7 +35,7 @@ export const useDepartment = () => {
         );
 
     const departmentState = {
-        data: branch?.data?.branches || [],
+        data: department?.data?.departments || [],
         form,
     };
 
@@ -45,12 +45,13 @@ export const useDepartment = () => {
                 let { openModel, ...other } = data;
                 let preparedData = normalizeSelectValues(other, [
                     "company_id",
-                    "parent_branch_id",
+                    "branch_id",
+                    "parent_department_id",
                 ]);
 
-                const response = await branchCreate(preparedData).unwrap();
+                const response = await departmentCreate(preparedData).unwrap();
                 if (response) {
-                    toast.success("Branch Create Successfully");
+                    toast.success("Department Create Successfully");
                     refetch();
                     formReset(form);
 
@@ -67,56 +68,67 @@ export const useDepartment = () => {
                 id: data.id || "",
                 company_id:
                     companySearchTemplate([data.company])?.at(0) ?? null,
-                parent_branch_id:
-                    branchSearchTemplate(
-                        data?.parent_branch ? [data.parent_branch] : []
+                branch_id:
+                    branchSearchTemplate(data?.branch ? [data.branch] : [])?.at(
+                        0
+                    ) ?? null,
+                parent_department_id:
+                    commonSearchTemplate(
+                        data?.parent_department ? [data.parent_department] : []
                     )?.at(0) ?? null,
 
                 // Core
                 name: data.name || "",
                 code: data.code || "",
                 description: data.description || "",
-                type: data.type || "",
-
-                // Manager
-                manager_name: data.manager_name || "",
-                manager_email: data.manager_email || "",
-                manager_phone: data.manager_phone || "",
+                type: data?.operational_info?.department_type || "department",
 
                 // Hierarchy
-                level: data?.hierarchy_info?.hierarchy_level ?? "",
-                hierarchy_path: data.hierarchy_path || "",
-                is_headquarters: Boolean(data.is_headquarters),
+
+                is_main_department: Boolean(
+                    data?.hierarchy_info?.is_main_department
+                ),
                 sort_order: data.sort_order ?? 0,
 
                 // Contact
-                email: data.email || "",
-                phone: data.phone || "",
-                fax: data.fax || "",
+                email: data?.contact_info?.email || "",
+                phone: data?.contact_info?.phone || "",
+                extension: data.extension || "",
 
-                // Address
-                address_line_1: data.address_line_1 || "",
-                address_line_2: data.address_line_2 || "",
-                city: data.city || "",
-                state: data.state || "",
-                postal_code: data.postal_code || "",
-                country: data.country || "",
+                is_billable: Boolean(data.is_billable),
+                is_cost_center: Boolean(data.is_cost_center),
+                employee_count: data.employee_count,
 
-                // Location
-                latitude: data.latitude ?? "",
-                longitude: data.longitude ?? "",
-                timezone: data.timezone || "",
+                // Manager / Heads
+                head_of_department_id: data.head_of_department_id || "",
+                deputy_head_id: data.deputy_head_id || "",
 
-                // Operational
-                operating_hours_start: data.operating_hours_start || "", // e.g. "09:00"
-                operating_hours_end: data.operating_hours_end || "", // e.g. "18:00"
-                operating_days: data.operating_days || "",
-                employee_capacity: data.employee_capacity ?? "", // keep as "" for number input
+                // Finance / Cost center
+                is_billable: Boolean(data.is_billable),
+                is_cost_center: Boolean(data.is_cost_center),
+                cost_center_code:
+                    data?.cost_center_info?.cost_center_code || "",
+                budget_allocated:
+                    data?.cost_center_info?.budget_allocated ?? "",
+                budget_utilized: data?.cost_center_info?.budget_utilized ?? "",
+                budget_remaining:
+                    data?.cost_center_info?.budget_remaining ?? "",
+                utilization_percentage:
+                    data?.cost_center_info?.utilization_percentage ?? "",
+
+                // Operational extras
+                objectives: data?.operational_info?.objectives || "",
+                functions: data?.operational_info?.functions || "",
+
+                // Dates & numbers
+                established_date: data?.system_info?.established_date || "",
+                employee_count: data.employee_count ?? "",
+                level: data?.hierarchy_info?.hierarchy_level ?? "",
+                hierarchy_path: data.hierarchy_info.hierarchy_path,
 
                 // System
-                status: data.status || "inactive",
-                is_enabled: Boolean(data.is_enabled),
-                established_date: data.established_date || "", // "YYYY-MM-DD"
+                status: data?.system_info?.status || "inactive",
+                is_enabled: Boolean(data?.system_info?.is_enabled),
             });
 
             form.setValue("openModel", true);
@@ -130,16 +142,18 @@ export const useDepartment = () => {
                 //prepare data
                 let preparedData = normalizeSelectValues(other, [
                     "company_id",
-                    "parent_branch_id",
+                    "branch_id",
+                    "parent_department_id",
                 ]);
+
                 //set to api
-                const response = await branchUpdate({
+                const response = await departmentUpdate({
                     id,
                     credentials: preparedData,
                 }).unwrap();
 
                 if (response) {
-                    toast.success("Branch Update Successfully");
+                    toast.success("Department Update Successfully");
                     refetch();
                     formReset(form);
 
@@ -153,11 +167,11 @@ export const useDepartment = () => {
         onDelete: async (id) => {
             try {
                 if (confirm("Are you sure you want to delete this branch?")) {
-                    const response = await branchDelete({ id });
+                    const response = await departmentDelete({ id });
 
                     if (response?.data) {
                         // check if response contains data
-                        toast.success("Branch deleted successfully");
+                        toast.success("Department deleted successfully");
                         refetch();
                     } else {
                         toast.error("Failed to delete branch");
@@ -168,7 +182,7 @@ export const useDepartment = () => {
 
         onSearch: debounce(async (inputValue, callback) => {
             form.setValue("search", inputValue);
-            let res = departmentSearchResult?.data?.department || [];
+            let res = departmentSearchResult?.data?.departments || [];
             callback(commonSearchTemplate(res));
         }, 500),
     };
