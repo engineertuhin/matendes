@@ -335,6 +335,9 @@ importers:
       react-qr-code:
         specifier: ^2.0.18
         version: 2.0.18(react@18.2.0)
+      react-qr-reader:
+        specifier: 3.0.0-beta-1
+        version: 3.0.0-beta-1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-quilljs:
         specifier: ^1.3.3
         version: 1.3.4(quill@1.3.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -353,6 +356,9 @@ importers:
       react-syntax-highlighter:
         specifier: ^15.5.0
         version: 15.6.1(react@18.2.0)
+      react-to-print:
+        specifier: ^3.1.1
+        version: 3.1.1(react@18.2.0)
       react-webcam:
         specifier: ^7.2.0
         version: 7.2.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -4293,6 +4299,18 @@ packages:
   '@yr/monotone-cubic-spline@1.0.3':
     resolution: {integrity: sha512-FQXkOta0XBSUPHndIKON2Y9JeQz5ZeMqLYZVVK93FliNBFm7LNMIZmY6FrMEB9XPcDbE2bekMbZD6kzDkxwYjA==}
 
+  '@zxing/browser@0.0.7':
+    resolution: {integrity: sha512-AepzMgDnD6EjxewqmXpHJsi4S3Gw9ilZJLIbTf6fWuWySEcHBodnGu3p7FWlgq1Sd5QyfPhTum5z3CBkkhMVng==}
+    peerDependencies:
+      '@zxing/library': ^0.18.3
+
+  '@zxing/library@0.18.6':
+    resolution: {integrity: sha512-bulZ9JHoLFd9W36pi+7e7DnEYNJhljYjZ1UTsKPOoLMU3qtC+REHITeCRNx40zTRJZx18W5TBRXt5pq2Uopjsw==}
+    engines: {node: '>= 10.4.0'}
+
+  '@zxing/text-encoding@0.9.0':
+    resolution: {integrity: sha512-U/4aVJ2mxI0aDNI8Uq0wEhMgY+u4CNtEb0om3+y3+niDAsoTCOB33UF0sxpzqzdqXLqmvc+vZyAt4O8pPdfkwA==}
+
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -7310,6 +7328,12 @@ packages:
     peerDependencies:
       react: '*'
 
+  react-qr-reader@3.0.0-beta-1:
+    resolution: {integrity: sha512-5HeFH9x/BlziRYQYGK2AeWS9WiKYZtGGMs9DXy3bcySTX3C9UJL9EwcPnWw8vlf7JP4FcrAlr1SnZ5nsWLQGyw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0
+      react-dom: ^16.8.0 || ^17.0.0
+
   react-quilljs@1.3.4:
     resolution: {integrity: sha512-gkJQrJPR23F55wyEl111NPTIfBu0Wr3SUK747cB8yK8n0YLVquHF6tdV7RsVCYRiNh/sxY6/+IpiNpDOwaZnSQ==}
     peerDependencies:
@@ -7418,6 +7442,11 @@ packages:
     resolution: {integrity: sha512-OqJ2/vL7lEeV5zTJyG7kmARppUjiB9h9udl4qHQjjgEos66z00Ia0OckwYfRxCSFrW8RJIBnsBwQsHZbVPspqg==}
     peerDependencies:
       react: '>= 0.14.0'
+
+  react-to-print@3.1.1:
+    resolution: {integrity: sha512-N0MUMhpl8nkGri13BjP7zusj3B/j+1eMOTt8N8PYuhBYGzA4PqTXqcihJ9cZw996dvhV6mBdwafIQCg3Ap5bKg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ~19
 
   react-transition-group@4.4.5:
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
@@ -7617,6 +7646,11 @@ packages:
 
   robust-predicates@3.0.2:
     resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
+
+  rollup@2.79.2:
+    resolution: {integrity: sha512-fS6iqSPZDs3dr/y7Od6y5nha8dW1YnbgtsyotCVvoFGKbERG++CVRFv1meyGDE1SNItQA8BrnCw7ScdAhRJ3XQ==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
 
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
@@ -8080,6 +8114,10 @@ packages:
     engines: {node: '>=16'}
     peerDependencies:
       typescript: '>=4.2.0'
+
+  ts-custom-error@3.3.1:
+    resolution: {integrity: sha512-5OX1tzOjxWEgsr/YEUWSuPrQ00deKLh6D7OTWcvNHm12/7QPyRh8SYpyWvA4IZv8H/+GQWQEh/kwo95Q9OVW1A==}
+    engines: {node: '>=14.0.0'}
 
   ts-dedent@2.2.0:
     resolution: {integrity: sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ==}
@@ -12953,6 +12991,21 @@ snapshots:
 
   '@yr/monotone-cubic-spline@1.0.3': {}
 
+  '@zxing/browser@0.0.7(@zxing/library@0.18.6)':
+    dependencies:
+      '@zxing/library': 0.18.6
+    optionalDependencies:
+      '@zxing/text-encoding': 0.9.0
+
+  '@zxing/library@0.18.6':
+    dependencies:
+      ts-custom-error: 3.3.1
+    optionalDependencies:
+      '@zxing/text-encoding': 0.9.0
+
+  '@zxing/text-encoding@0.9.0':
+    optional: true
+
   abbrev@2.0.0: {}
 
   accepts@1.3.8:
@@ -16929,6 +16982,14 @@ snapshots:
       qr.js: 0.0.0
       react: 18.2.0
 
+  react-qr-reader@3.0.0-beta-1(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      '@zxing/browser': 0.0.7(@zxing/library@0.18.6)
+      '@zxing/library': 0.18.6
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      rollup: 2.79.2
+
   react-quilljs@1.3.4(quill@1.3.7)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       quill: 1.3.7
@@ -17066,6 +17127,10 @@ snapshots:
       prismjs: 1.30.0
       react: 18.2.0
       refractor: 3.6.0
+
+  react-to-print@3.1.1(react@18.2.0):
+    dependencies:
+      react: 18.2.0
 
   react-transition-group@4.4.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
@@ -17364,6 +17429,10 @@ snapshots:
       glob: 7.2.3
 
   robust-predicates@3.0.2: {}
+
+  rollup@2.79.2:
+    optionalDependencies:
+      fsevents: 2.3.3
 
   run-parallel@1.2.0:
     dependencies:
@@ -17916,6 +17985,8 @@ snapshots:
   ts-api-utils@1.4.3(typescript@5.1.6):
     dependencies:
       typescript: 5.1.6
+
+  ts-custom-error@3.3.1: {}
 
   ts-dedent@2.2.0: {}
 
