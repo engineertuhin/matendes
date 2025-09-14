@@ -118,16 +118,12 @@ let columns = (actions) => [
 
   // Address (compact)
   {
-    id: "address",
-    header: "Address",
+    id: "opening_date",
+    header: "Opening Day",
     cell: ({ row }) => {
       const d = row.original;
-      const line = d?.address_line_1 || d?.address?.line_1;
-      const city = d?.city || d?.address?.city;
-      const state = d?.state || d?.address?.state;
-      const country = d?.country || d?.address?.country;
-      const pieces = [line, city, state, country].filter(Boolean);
-      return pieces.length ? pieces.join(", ") : "—";
+
+      return d.operating_days ?? "—";
     },
   },
 

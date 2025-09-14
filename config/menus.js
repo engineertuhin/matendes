@@ -8,6 +8,8 @@ import {
     Users,
     UserCircle,
     ScanFace,
+    QrCode,
+    ScanLine,
 } from "lucide-react";
 
 export const menusConfig = {
@@ -59,9 +61,14 @@ export const menusConfig = {
                     icon: UserCircle,
                 },
                 {
-                    title: "Face Attendance",
-                    href: "/attendance/face-attendance",
-                    icon: ScanFace,
+                    title: "Generate QR Code",
+                    href: "/generate-qr",
+                    icon: QrCode,
+                },
+                {
+                    title: "QR Attendance",
+                    href: "/attendance/qr-attendance",
+                    icon: ScanLine,
                 },
             ],
         },
@@ -115,9 +122,14 @@ export const menusConfig = {
                         icon: UserCircle,
                     },
                     {
-                        title: "Face Attendance",
-                        href: "/attendance/face-attendance",
-                        icon: ScanFace,
+                        title: "Generate QR Code",
+                        href: "/generate-qr",
+                        icon: QrCode,
+                    },
+                    {
+                        title: "QR Attendance",
+                        href: "/attendance/qr-attendance",
+                        icon: ScanLine,
                     },
                 ],
             },
@@ -182,9 +194,15 @@ export const menusConfig = {
                         icon: UserCircle,
                     },
                     {
-                        title: "Face Attendance",
-                        href: "/attendance/face-attendance",
-                        icon: ScanFace,
+                        title: "Generate QR Code",
+                        href: "/generate-qr",
+                        icon: QrCode,
+                    },
+
+                    {
+                        title: "QR Attendance",
+                        href: "/attendance/qr-attendance",
+                        icon: ScanLine,
                     },
                 ],
             },
