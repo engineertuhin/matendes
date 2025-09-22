@@ -7,14 +7,17 @@ export const dynamicSelectApi = createApi({
     tagTypes: ["dynamic-select"],
     endpoints: (builder) => ({
         dynamicSelectSearch: builder.query({
-            query: ({ data }) => ({
-                url: data.url,
+            query: ({ data }) => {
+              const { search, url, ...rest } = data; // rest will include company_id etc
+              return {
+                url,
                 method: "GET",
-                params: data.search ? { search: data.search } : undefined, // send as query parameter
-            }),
+                params: search || Object.keys(rest).length ? { search, ...rest } : undefined,
+              };
+            },
             providesTags: ["dynamic-select"],
-        }),
+          }),           
     }),
 });
 
-export const { useDynamicSelectSearchQuery } = dynamicSelectApi;
+export const { useDynamicSelectSearchQuery, useLazyDynamicSelectSearchQuery } = dynamicSelectApi;

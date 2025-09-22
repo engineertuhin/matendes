@@ -5,25 +5,28 @@ const fields = [
         type: "async-select",
         label: "Company *",
         loadOptions: [
-            "organization/companies",
-            "companies",
-            "companySearchTemplate",
+          "organization/companies", 
+          "companies", 
+          "companySearchTemplate", 
+          null, // no dependency
+          ["parent_branch_id"] // childField
         ],
         colSpan: "col-span-12 md:col-span-6",
         rules: { required: "Company is required" },
-    },
-    {
+      },
+      {
         name: "parent_branch_id",
         type: "async-select",
         label: "Parent Branch",
         loadOptions: [
-            "organization/branches",
-            "branches",
-            "branchSearchTemplate",
+          "organization/branches",
+          "branches",
+          "branchSearchTemplate",
+          "company_id" // dependencyKey = parent
         ],
         placeholder: "Optional",
         colSpan: "col-span-12 md:col-span-6",
-    },
+      },
 
     // =============== Core Info ===============
     {

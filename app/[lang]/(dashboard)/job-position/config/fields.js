@@ -15,19 +15,30 @@ const fields = () => {
         {
             name: "company_id",
             type: "async-select",
-            label: "Select Company *",
-            loadOptions: ["organization/companies", "companies", "companySearchTemplate"],
+            label: "Company *",
+            loadOptions: [
+              "organization/companies", 
+              "companies", 
+              "companySearchTemplate", 
+              null, // no dependency
+              ["branch_id"] // childField
+            ],
             colSpan: "col-span-12 md:col-span-4",
             rules: { required: "Company is required" },
-        },
+          },  
         {
             name: "branch_id",
             type: "async-select",
             label: "Branch",
-            loadOptions: ["organization/branches", "branches", "branchSearchTemplate"],
+            loadOptions: [
+                "organization/branches",
+                "branches",
+                "branchSearchTemplate",
+                "company_id", // dependencyKey = parent 
+            ],
             placeholder: "Optional",
             colSpan: "col-span-12 md:col-span-4",
-        },
+        },  
         {
             name: "department_id",
             type: "async-select",

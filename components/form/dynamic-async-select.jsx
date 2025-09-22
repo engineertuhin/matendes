@@ -8,12 +8,16 @@ export default function DynamicAsyncSelect({ loadOptions = [], field,form, handl
     } = useDynamicSelect(
         "commonSearchTemplate", 
        500,
-loadOptions,
+    loadOptions,
+    form,
         
     );
+    
+    const child = loadOptions[4]?loadOptions[4]:null;
+    
     return (
         <AsyncSelect
-            cacheOptions
+          
             loadOptions={(i, c) => {
                 return onSearch(i, c);
             }}
@@ -22,7 +26,15 @@ loadOptions,
                onLoadData();
             }}
             defaultOptions={transformed}
-            onChange={(val) =>{handleChange ? handleChange(val,form,field) :field.onChange(val)}}
+            onChange={(val) =>{
+                if (Array.isArray(child)) {
+                    child.forEach((item) => {
+                        form.setValue(item, null); // reset each child
+                    });
+                }
+                handleChange ? handleChange(val,form,field) :field.onChange(val)
+            
+            }}
             isLoading={isLoading}
         />
     );
