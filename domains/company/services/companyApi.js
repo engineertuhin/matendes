@@ -7,7 +7,7 @@ export const companyApi = createApi({
     endpoints: (builder) => ({
         companyCreate: builder.mutation({
             query: (credentials) => ({
-                url: "companies",
+                url: "organization/companies",
                 method: "POST",
                 body: credentials,
             }),
@@ -15,7 +15,7 @@ export const companyApi = createApi({
         }),
         companyUpdate: builder.mutation({
             query: ({ id, credentials }) => ({
-                url: `companies/${id}`,
+                url: `organization/companies/${id}`,
                 method: "PUT",
                 body: credentials,
             }),
@@ -23,18 +23,18 @@ export const companyApi = createApi({
         }),
         companyDelete: builder.mutation({
             query: ({ id }) => ({
-                url: `companies/${id}`,
+                url: `organization/companies/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["Company"],
         }),
         companyFetch: builder.query({
-            query: () => "companies",
+            query: () => "organization/companies",
             providesTags: ["Company"],
         }),
         companySearch: builder.query({
             query: ({ search }) => ({
-                url: "companies",
+                url: "organization/companies",
                 method: "GET",
                 params: search ? { search } : undefined, // send as query parameter
             }),

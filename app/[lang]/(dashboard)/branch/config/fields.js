@@ -76,12 +76,17 @@ const fields = [
         inputProps: { maxLength: 500 },
         rules: { maxLength: { value: 500, message: "Max 500 characters" } },
     },
+
     {
         name: "type",
-        type: "input",
+        type: "select",
         label: "Type *",
-        placeholder: "branch",
         colSpan: "col-span-12 md:col-span-6",
+        options: [
+            { label: "Branch", value: "branch" },
+            { label: "Division", value: "division" },
+            { label: "Subsidiary", value: "subsidiary" },
+        ],
         rules: { required: "Type is required" },
     },
 

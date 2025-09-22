@@ -28,9 +28,9 @@ const NotificationMessage = () => {
            hover:text-primary text-default-500 dark:text-default-800  rounded-full  "
         >
           <Bell className="h-5 w-5 " />
-          <Badge className=" w-4 h-4 p-0 text-xs  font-medium  items-center justify-center absolute left-[calc(100%-18px)] bottom-[calc(100%-16px)] ring-2 ring-primary-foreground">
+          {/* <Badge className=" w-4 h-4 p-0 text-xs  font-medium  items-center justify-center absolute left-[calc(100%-18px)] bottom-[calc(100%-16px)] ring-2 ring-primary-foreground">
             5
-          </Badge>
+          </Badge> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

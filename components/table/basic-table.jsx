@@ -42,6 +42,8 @@ export function BasicDataTable({
     data = [],
     addButtonLabel,
     to = false,
+    filter=true,
+    pagination=true,
 }) {
     const [sorting, setSorting] = React.useState([]);
     const [columnFilters, setColumnFilters] = React.useState([]);
@@ -69,9 +71,9 @@ export function BasicDataTable({
 
     return (
         <>
-            <div className="flex flex-wrap items-center justify-between gap-4 py-4 rounded-lg">
+            {(filter || addButtonLabel) && <div className="flex flex-wrap items-center justify-between gap-4 py-4 rounded-lg">
                 {/* Left side controls */}
-                <div className="flex items-center gap-4">
+                {filter && <div className="flex items-center gap-4">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
@@ -102,7 +104,7 @@ export function BasicDataTable({
 
                     <Input
                         placeholder="Filter by email..."
-                        value={table.getColumn("email")?.getFilterValue() || ""}
+                        // value={table.getColumn("email")?.getFilterValue() || ""}
                         onChange={(e) =>
                             table
                                 .getColumn("email")
@@ -111,9 +113,11 @@ export function BasicDataTable({
                         className="w-[200px] sm:w-[250px] h-10"
                     />
                 </div>
+                }
+                
 
                 {/* Right side actions — optional */}
-                <div className="flex items-center gap-2">
+                {addButtonLabel && <div className="flex items-center gap-2">
                     {/* You can put actions here like export, add new, etc. */}
                     {to ? (
                         <Link
@@ -132,7 +136,9 @@ export function BasicDataTable({
                         </Button>
                     )}
                 </div>
-            </div>
+                } 
+            </div>}
+            
 
             <div>
                 <div className="rounded-lg h-full">
@@ -187,7 +193,7 @@ export function BasicDataTable({
                     </Table>
                 </div>
             </div>
-
+            {pagination &&
             <div className="flex items-center flex-wrap gap-4 px-4 py-4">
                 <div className="flex-1 text-sm text-muted-foreground whitespace-nowrap">
                     {table.getFilteredSelectedRowModel().rows.length} of{" "}
@@ -238,6 +244,8 @@ export function BasicDataTable({
                     </Button>
                 </div>
             </div>
+            }
+            
         </>
     );
 }

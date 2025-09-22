@@ -14,6 +14,7 @@ const initialState = {
   user: null,
   token: token || null,
   isAuthenticated: !!token,
+  permissions: [],
 };
 
 const authSlice = createSlice({
@@ -36,7 +37,11 @@ const authSlice = createSlice({
       if (typeof window !== "undefined") {
         localStorage.removeItem("token");
       }
+
     },
+    setPermissions: (state, action) => {
+      state.permissions = action.payload;
+    }
   },
 });
 

@@ -62,12 +62,13 @@ export const useDepartment = () => {
                 handleServerValidationErrors(apiErrors, form.setError);
             }
         },
-        onEdit: (data) => {
+        onEdit: (data) => { 
+            
             form.reset({
                 // IDs
                 id: data.id || "",
                 company_id:
-                    companySearchTemplate([data.company])?.at(0) ?? null,
+                    companySearchTemplate(data?.company ? [data.company] : [])?.at(0) ?? null,
                 branch_id:
                     branchSearchTemplate(data?.branch ? [data.branch] : [])?.at(
                         0
@@ -81,7 +82,8 @@ export const useDepartment = () => {
                 name: data.name || "",
                 code: data.code || "",
                 description: data.description || "",
-                type: data?.operational_info?.department_type || "department",
+                department_type: data?.operational_info?.department_type || "technical",
+                type: data?.type || "department",
 
                 // Hierarchy
 
@@ -91,13 +93,12 @@ export const useDepartment = () => {
                 sort_order: data.sort_order ?? 0,
 
                 // Contact
-                email: data?.contact_info?.email || "",
-                phone: data?.contact_info?.phone || "",
+                email: data?.email || "",
+                phone: data?.phone || "",
                 extension: data.extension || "",
 
                 is_billable: Boolean(data.is_billable),
-                is_cost_center: Boolean(data.is_cost_center),
-                employee_count: data.employee_count,
+                is_cost_center: Boolean(data.is_cost_center), 
 
                 // Manager / Heads
                 head_of_department_id: data.head_of_department_id || "",
@@ -107,7 +108,7 @@ export const useDepartment = () => {
                 is_billable: Boolean(data.is_billable),
                 is_cost_center: Boolean(data.is_cost_center),
                 cost_center_code:
-                    data?.cost_center_info?.cost_center_code || "",
+                    data?.cost_center_code || "",
                 budget_allocated:
                     data?.cost_center_info?.budget_allocated ?? "",
                 budget_utilized: data?.cost_center_info?.budget_utilized ?? "",
@@ -121,14 +122,12 @@ export const useDepartment = () => {
                 functions: data?.operational_info?.functions || "",
 
                 // Dates & numbers
-                established_date: data?.system_info?.established_date || "",
-                employee_count: data.employee_count ?? "",
-                level: data?.hierarchy_info?.hierarchy_level ?? "",
+                established_date: data?.system_info?.established_date || "", 
+                hierarchy_level: data?.hierarchy_info?.hierarchy_level ?? "",
                 hierarchy_path: data.hierarchy_info.hierarchy_path,
 
                 // System
-                status: data?.system_info?.status || "inactive",
-                is_enabled: Boolean(data?.system_info?.is_enabled),
+                status: data?.system_info?.status || "inactive", 
             });
 
             form.setValue("openModel", true);
@@ -169,15 +168,26 @@ export const useDepartment = () => {
                 if (confirm("Are you sure you want to delete this branch?")) {
                     const response = await departmentDelete({ id });
 
-                    if (response?.data) {
-                        // check if response contains data
-                        toast.success("Department deleted successfully");
+                    if (response?.data?.success) {
+                        toast.success("Branch deleted successfully");
                         refetch();
+                    } else if (response?.error?.data?.errors?.message) {
+                       toast.error(response?.error?.data?.errors?.message);
                     } else {
-                        toast.error("Failed to delete branch");
+                        toast.error(
+                            "Failed to delete branch. Please try again."
+                        );
                     }
                 }
-            } catch (error) {}
+            } catch (error) {
+                console.error("Delete branch error:", error);
+
+                if (error?.response?.data?.message) {
+                    toast.error(error.response.data.message);
+                } else {
+                    toast.error("Something went wrong while deleting branch.");
+                }
+            }
         },
 
         onSearch: debounce(async (inputValue, callback) => {

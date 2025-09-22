@@ -153,6 +153,11 @@ const DynamicTabForm = ({
                                     // if (onSubmit) onSubmit();
                                     if (activeStep != steps.length) {
                                         handleNext();
+                                         if(!form.watch("id")){
+                                             handleReset();
+                                         }
+                                     
+
                                     }
                                 }}
                             >

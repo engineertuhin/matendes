@@ -63,9 +63,9 @@ const columns = (actions) => {
             cell: ({ row }) => row.original?.contact_info?.work_email || "—",
         },
         {
-            accessorKey: "contact_info.phone_primary",
+            accessorKey: "contact_info.primary_phone",
             header: "Phone",
-            cell: ({ row }) => row.original?.contact_info?.phone_primary || "—",
+            cell: ({ row }) => row.original?.contact_info?.primary_phone || "—",
         },
 
         // Employment
@@ -111,13 +111,8 @@ const columns = (actions) => {
             cell: ({ row }) => row.original?.manager?.name || "—",
         },
 
-        // System info
-        {
-            id: "system_status",
-            header: "Enabled",
-            cell: ({ row }) =>
-                row.original?.system_info?.is_enabled ? "Active" : "Disabled",
-        },
+     
+
 
         // Actions
         {

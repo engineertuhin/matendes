@@ -3,7 +3,7 @@ const fields = [
     {
         name: "name",
         type: "input",
-        label: "Company Name",
+        label: "Company Name *",
         placeholder: "Acme Inc.",
         colSpan: "col-span-12 md:col-span-6",
         rules: { required: "Name is required" },
@@ -32,7 +32,7 @@ const fields = [
     {
         name: "code",
         type: "input",
-        label: "Company Code",
+        label: "Company Code *",
         placeholder: "ACM001",
         colSpan: "col-span-12 md:col-span-6",
         rules: { required: "Company code is required" },
@@ -49,6 +49,29 @@ const fields = [
         type: "input",
         label: "Tax ID",
         placeholder: "TAX-98765",
+        colSpan: "col-span-12 md:col-span-6",
+    },
+
+    {
+        name: "vat_number",
+        type: "input",
+        label: "VAT Number",
+        placeholder: "VAT-12345",
+        colSpan: "col-span-12 md:col-span-6",
+    },
+
+    {
+        name: "incorporation_date",
+        type: "date",
+        label: "Incorporation Date",
+        colSpan: "col-span-12 md:col-span-6",
+    },
+
+    {
+        name: "incorporation_country_id",
+        type: "input",
+        label: "Incorporation Country ID",
+        placeholder: "UUID of country",
         colSpan: "col-span-12 md:col-span-6",
     },
     {
@@ -71,6 +94,14 @@ const fields = [
         placeholder: "+1-555-123456",
         colSpan: "col-span-12 md:col-span-6",
     },
+
+    {
+        name: "fax",
+        type: "input",
+        label: "Fax",
+        placeholder: "+1-555-654321",
+        colSpan: "col-span-12 md:col-span-6",
+    },
     {
         name: "website",
         type: "input",
@@ -82,52 +113,68 @@ const fields = [
     // Logo
     {
         name: "logo_url",
-        type: "text", // store File in form; upload to get a URL server-side
+        type: "text",
         label: "Logo URL",
         colSpan: "col-span-12 md:col-span-6",
     },
 
-    // Address
+    // Business Information
     {
-        name: "address_line_1",
+        name: "industry",
+        type: "input",
+        label: "Industry",
+        placeholder: "Software",
+        colSpan: "col-span-12 md:col-span-6",
+    },
+    {
+        name: "business_type",
+        type: "select",
+        label: "Business Type",
+        placeholder: "Select business type",
+        colSpan: "col-span-12 md:col-span-6",
+        options: [
+            { label: "Sole Proprietorship", value: "sole_proprietorship" },
+            { label: "Partnership", value: "partnership" },
+            { label: "LLC", value: "llc" },
+            { label: "Corporation", value: "corporation" },
+            { label: "Non-profit", value: "nonprofit" },
+        ],
+    },
+    {
+        name: "description",
         type: "textarea",
-        label: "Address Line 1",
-        placeholder: "123 Business St",
+        label: "Description",
+        placeholder: "Company description",
         colSpan: "col-span-12",
     },
     {
-        name: "address_line_2",
-        type: "textarea",
-        label: "Address Line 2",
-        placeholder: "Suite 456",
-        colSpan: "col-span-12",
+        name: "employee_size",
+        type: "select",
+        label: "Employee Size",
+        placeholder: "Select employee size",
+        colSpan: "col-span-12 md:col-span-6",
+        options: [
+            { label: "1-10", value: "1-10" },
+            { label: "11-50", value: "11-50" },
+            { label: "51-200", value: "51-200" },
+            { label: "201-500", value: "201-500" },
+            { label: "501-1000", value: "501-1000" },
+            { label: "1001-5000", value: "1001-5000" },
+            { label: "5000+", value: "5000+" },
+        ],
     },
     {
-        name: "city",
-        type: "input",
-        label: "City",
-        placeholder: "New York",
+        name: "annual_revenue",
+        type: "number",
+        label: "Annual Revenue",
+        placeholder: "0.00",
         colSpan: "col-span-12 md:col-span-6",
     },
     {
-        name: "state",
+        name: "fiscal_year_start",
         type: "input",
-        label: "State/Province",
-        placeholder: "NY",
-        colSpan: "col-span-12 md:col-span-6",
-    },
-    {
-        name: "postal_code",
-        type: "input",
-        label: "Postal Code",
-        placeholder: "10001",
-        colSpan: "col-span-12 md:col-span-6",
-    },
-    {
-        name: "country",
-        type: "input",
-        label: "Country",
-        placeholder: "USA",
+        label: "Fiscal Year Start",
+        placeholder: "MM-DD (e.g., 01-01)",
         colSpan: "col-span-12 md:col-span-6",
     },
 
@@ -158,7 +205,7 @@ const fields = [
     {
         name: "status",
         type: "select",
-        label: "Status",
+        label: "Status *",
         placeholder: "Select status",
         colSpan: "col-span-12 md:col-span-6",
         options: [

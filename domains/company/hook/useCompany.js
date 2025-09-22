@@ -55,6 +55,8 @@ export const useCompany = () => {
             }
         },
         onEdit: (data) => {
+
+            console.log(data);
             form.reset({
                 id: data.id || "",
                 code: data.code || "",
@@ -64,12 +66,13 @@ export const useCompany = () => {
                 // contact_info
                 email: data.contact_info?.email || "",
                 phone: data.contact_info?.phone || "",
+                fax: data.contact_info?.fax || "",
 
                 website: data.contact_info?.website || "",
-                address_line_1: data.address.line_1,
-                address_line_2: data.address.line_2,
                 locale: data.locale,
-
+                incorporation_date: data.registration_info?.incorporation_date,
+                incorporation_country_id:
+                    data.registration_info?.incorporation_country_id,
                 is_active: data.is_active,
                 is_main_company: data.is_main_company,
                 subscription_status: data.subscription_status,
@@ -79,16 +82,24 @@ export const useCompany = () => {
                 suspended_at: data.suspended_at,
                 slug: data.slug,
                 subdomain: data.subdomain,
+                responsibilities: data.requirements.responsibilities,
+                requirements: data.requirements.requirements,
+                education_required: data.requirements.education_required,
+                experience_required:
+                    data.classification_info.experience_required,
 
-                // address
-                line_1: data.address?.line_1 || "",
-                line_2: data.address?.line_2 || "",
-                city: data.address?.city || "",
-                state: data.address?.state || "",
-                postal_code: data.address?.postal_code || "",
-                country: data.address?.country || "",
+                educational_requirements:
+                    data.requirements.educational_requirements,
+                preferred_experience: data.requirements.preferred_experience,
+                recruitment_status: data.position_info.recruitment_status,
 
                 // business_info
+                industry: data.business_info?.industry || "",
+                business_type: data.business_info?.business_type || "",
+                description: data.business_info?.description || "",
+                employee_size: data.business_info?.employee_size || "",
+                annual_revenue: data.business_info?.annual_revenue || "",
+                fiscal_year_start: data.business_info?.fiscal_year_start || "",
                 currency: data.business_info?.currency || "",
 
                 timezone: data.business_info?.timezone || "",
@@ -97,6 +108,7 @@ export const useCompany = () => {
                 registration_number:
                     data.registration_info?.registration_number || "",
                 tax_id: data.registration_info?.tax_id || "",
+                vat_number: data.registration_info?.vat_number || "",
 
                 // system_info
                 logo_url: data.system_info?.logo_url || "",

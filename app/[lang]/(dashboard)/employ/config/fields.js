@@ -15,7 +15,7 @@ const fields = () => {
                     label: "Company *",
                     colSpan: "col-span-12 md:col-span-4",
                     loadOptions: [
-                        "companies",
+                        "organization/companies",
                         "companies",
                         "companySearchTemplate",
                     ],
@@ -195,21 +195,22 @@ const fields = () => {
                 {
                     name: "work_email",
                     type: "email",
-                    label: "Work Email",
+                    label: "Work Email *",
                     colSpan: "col-span-12 md:col-span-4",
                     rules: {
                         validate: (v) =>
                             !v || RE_EMAIL.test(v) || "Invalid email",
                     },
+                    rules: { required: "Work email is required" },
                 },
                 {
-                    name: "phone_primary",
+                    name: "primary_phone",
                     type: "input",
                     label: "Primary Phone",
                     colSpan: "col-span-12 md:col-span-4",
                 },
                 {
-                    name: "phone_secondary",
+                    name: "secondary_phone",
                     type: "input",
                     label: "Secondary Phone",
                     colSpan: "col-span-12 md:col-span-4",
@@ -242,92 +243,92 @@ const fields = () => {
         },
 
         // 4. Addresses
-        {
-            key: "addresses",
-            tab: "Addresses",
-            label: "Addresses",
-            description: "Current and permanent addresses",
-            fields: [
-                {
-                    name: "current_address_line_1",
-                    type: "textarea",
-                    label: "Current Address Line 1",
-                    colSpan: "col-span-12",
-                },
-                {
-                    name: "current_address_line_2",
-                    type: "textarea",
-                    label: "Current Address Line 2",
-                    colSpan: "col-span-12",
-                },
-                {
-                    name: "current_city",
-                    type: "input",
-                    label: "City",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "current_state",
-                    type: "input",
-                    label: "State",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "current_postal_code",
-                    type: "input",
-                    label: "Postal Code",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "current_country",
-                    type: "input",
-                    label: "Country",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "same_as_current_address",
-                    type: "checkbox",
-                    label: "Same as current",
-                    colSpan: "col-span-12",
-                },
-                {
-                    name: "permanent_address_line_1",
-                    type: "textarea",
-                    label: "Permanent Address Line 1",
-                    colSpan: "col-span-12",
-                },
-                {
-                    name: "permanent_address_line_2",
-                    type: "textarea",
-                    label: "Permanent Address Line 2",
-                    colSpan: "col-span-12",
-                },
-                {
-                    name: "permanent_city",
-                    type: "input",
-                    label: "City",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "permanent_state",
-                    type: "input",
-                    label: "State",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "permanent_postal_code",
-                    type: "input",
-                    label: "Postal Code",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "permanent_country",
-                    type: "input",
-                    label: "Country",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-            ],
-        },
+        // {
+        //     key: "addresses",
+        //     tab: "Addresses",
+        //     label: "Addresses",
+        //     description: "Current and permanent addresses",
+        //     fields: [
+        //         {
+        //             name: "current_address_line_1",
+        //             type: "textarea",
+        //             label: "Current Address Line 1",
+        //             colSpan: "col-span-12",
+        //         },
+        //         {
+        //             name: "current_address_line_2",
+        //             type: "textarea",
+        //             label: "Current Address Line 2",
+        //             colSpan: "col-span-12",
+        //         },
+        //         {
+        //             name: "current_city",
+        //             type: "input",
+        //             label: "City",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "current_state",
+        //             type: "input",
+        //             label: "State",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "current_postal_code",
+        //             type: "input",
+        //             label: "Postal Code",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "current_country",
+        //             type: "input",
+        //             label: "Country",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "same_as_current_address",
+        //             type: "checkbox",
+        //             label: "Same as current",
+        //             colSpan: "col-span-12",
+        //         },
+        //         {
+        //             name: "permanent_address_line_1",
+        //             type: "textarea",
+        //             label: "Permanent Address Line 1",
+        //             colSpan: "col-span-12",
+        //         },
+        //         {
+        //             name: "permanent_address_line_2",
+        //             type: "textarea",
+        //             label: "Permanent Address Line 2",
+        //             colSpan: "col-span-12",
+        //         },
+        //         {
+        //             name: "permanent_city",
+        //             type: "input",
+        //             label: "City",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "permanent_state",
+        //             type: "input",
+        //             label: "State",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "permanent_postal_code",
+        //             type: "input",
+        //             label: "Postal Code",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "permanent_country",
+        //             type: "input",
+        //             label: "Country",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //     ],
+        // },
 
         // 5. Employment
         {
@@ -372,6 +373,18 @@ const fields = () => {
                     type: "input",
                     label: "Termination Reason",
                     colSpan: "col-span-12 md:col-span-4",
+                },
+                {
+                    name: "role_id",
+                    type: "async-select",
+                    label: "Role *",
+                    colSpan: "col-span-12 md:col-span-4",
+                    loadOptions: [
+                        "admin/roles-permissions/roles",
+                        "roles",
+                        "roleTemplate",
+                    ],
+                    rules: { required: "Role is required" },
                 },
                 {
                     name: "employment_status",
@@ -429,17 +442,12 @@ const fields = () => {
             description: "Career and academic background",
             fields: [
                 {
-                    name: "previous_company",
+                    name: "work_history",
                     type: "input",
-                    label: "Previous Company",
+                    label: "Work History",
                     colSpan: "col-span-12 md:col-span-4",
                 },
-                {
-                    name: "previous_position",
-                    type: "input",
-                    label: "Previous Position",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
+
                 {
                     name: "years_of_experience",
                     type: "number",
@@ -483,6 +491,7 @@ const fields = () => {
                     label: "Certifications",
                     colSpan: "col-span-12",
                 },
+
                 {
                     name: "languages",
                     type: "textarea",
@@ -493,123 +502,123 @@ const fields = () => {
         },
 
         // 7. Compensation
-        {
-            key: "compensation",
-            tab: "Compensation",
-            label: "Compensation",
-            description: "Salary and benefits",
-            fields: [
-                {
-                    name: "basic_salary",
-                    type: "number",
-                    label: "Basic Salary",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "gross_salary",
-                    type: "number",
-                    label: "Gross Salary",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "salary_currency",
-                    type: "input",
-                    label: "Currency *",
-                    colSpan: "col-span-12 md:col-span-4",
-                    rules: { required: "Currency required" },
-                },
-                {
-                    name: "salary_period",
-                    type: "select",
-                    label: "Period *",
-                    colSpan: "col-span-12 md:col-span-4",
-                    options: [
-                        { label: "Hourly", value: "hourly" },
-                        { label: "Daily", value: "daily" },
-                        { label: "Weekly", value: "weekly" },
-                        { label: "Monthly", value: "monthly" },
-                        { label: "Yearly", value: "yearly" },
-                    ],
-                    rules: { required: "Period required" },
-                },
-                {
-                    name: "last_salary_review",
-                    type: "date",
-                    label: "Last Review",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "next_salary_review",
-                    type: "date",
-                    label: "Next Review",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "allowances",
-                    type: "textarea",
-                    label: "Allowances",
-                    colSpan: "col-span-12",
-                },
-                {
-                    name: "deductions",
-                    type: "textarea",
-                    label: "Deductions",
-                    colSpan: "col-span-12",
-                },
-            ],
-        },
+        // {
+        //     key: "compensation",
+        //     tab: "Compensation",
+        //     label: "Compensation",
+        //     description: "Salary and benefits",
+        //     fields: [
+        //         {
+        //             name: "basic_salary",
+        //             type: "number",
+        //             label: "Basic Salary",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "gross_salary",
+        //             type: "number",
+        //             label: "Gross Salary",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "salary_currency",
+        //             type: "input",
+        //             label: "Currency *",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //             rules: { required: "Currency required" },
+        //         },
+        //         {
+        //             name: "salary_period",
+        //             type: "select",
+        //             label: "Period *",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //             options: [
+        //                 { label: "Hourly", value: "hourly" },
+        //                 { label: "Daily", value: "daily" },
+        //                 { label: "Weekly", value: "weekly" },
+        //                 { label: "Monthly", value: "monthly" },
+        //                 { label: "Yearly", value: "yearly" },
+        //             ],
+        //             rules: { required: "Period required" },
+        //         },
+        //         {
+        //             name: "last_salary_review",
+        //             type: "date",
+        //             label: "Last Review",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "next_salary_review",
+        //             type: "date",
+        //             label: "Next Review",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "allowances",
+        //             type: "textarea",
+        //             label: "Allowances",
+        //             colSpan: "col-span-12",
+        //         },
+        //         {
+        //             name: "deductions",
+        //             type: "textarea",
+        //             label: "Deductions",
+        //             colSpan: "col-span-12",
+        //         },
+        //     ],
+        // },
 
         // 8. Banking & Tax
-        {
-            key: "banking",
-            tab: "Banking",
-            label: "Banking & Tax",
-            description: "Bank, tax, and insurance",
-            fields: [
-                {
-                    name: "bank_name",
-                    type: "input",
-                    label: "Bank Name",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "bank_account_number",
-                    type: "input",
-                    label: "Account Number",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "bank_routing_number",
-                    type: "input",
-                    label: "Routing Number",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "tax_id",
-                    type: "input",
-                    label: "Tax ID",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "social_security_number",
-                    type: "input",
-                    label: "SSN",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "pension_number",
-                    type: "input",
-                    label: "Pension Number",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-                {
-                    name: "health_insurance_number",
-                    type: "input",
-                    label: "Health Insurance Number",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
-            ],
-        },
+        // {
+        //     key: "banking",
+        //     tab: "Banking",
+        //     label: "Banking & Tax",
+        //     description: "Bank, tax, and insurance",
+        //     fields: [
+        //         {
+        //             name: "bank_name",
+        //             type: "input",
+        //             label: "Bank Name",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "bank_account_number",
+        //             type: "input",
+        //             label: "Account Number",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "bank_routing_number",
+        //             type: "input",
+        //             label: "Routing Number",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "tax_id",
+        //             type: "input",
+        //             label: "Tax ID",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "social_security_number",
+        //             type: "input",
+        //             label: "SSN",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "pension_number",
+        //             type: "input",
+        //             label: "Pension Number",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //         {
+        //             name: "health_insurance_number",
+        //             type: "input",
+        //             label: "Health Insurance Number",
+        //             colSpan: "col-span-12 md:col-span-4",
+        //         },
+        //     ],
+        // },
 
         // 9. Profile & System
         {
@@ -618,53 +627,15 @@ const fields = () => {
             label: "Profile & System",
             description: "Profile, preferences, and system flags",
             fields: [
-                {
-                    name: "type",
-                    type: "select",
-                    label: "Type *",
-                    colSpan: "col-span-12 md:col-span-6",
-                    options: [
-                        { label: "Resume", value: "resume" },
-                        { label: "Cover Letter", value: "cover_letter" },
-                        { label: "ID Card", value: "id_card" },
-                        { label: "Passport", value: "passport" },
-                        { label: "Visa", value: "visa" },
-                        { label: "Work Permit", value: "work_permit" },
-                        { label: "Contract", value: "contract" },
-                        { label: "Offer Letter", value: "offer_letter" },
-                        { label: "Bank Statement", value: "bank_statement" },
-                        { label: "Tax Document", value: "tax_document" },
-                        { label: "Certificate", value: "certificate" },
-                        { label: "License", value: "license" },
-                        { label: "Diploma", value: "diploma" },
-                        { label: "Transcript", value: "transcript" },
-                        {
-                            label: "Medical Certificate",
-                            value: "medical_certificate",
-                        },
-                        {
-                            label: "Background Check",
-                            value: "background_check",
-                        },
-                        {
-                            label: "Reference Letter",
-                            value: "reference_letter",
-                        },
-                        { label: "Photo", value: "photo" },
-                        { label: "Signature", value: "signature" },
-                        { label: "Other", value: "other" },
-                    ],
-                    rules: { required: "Type is required" },
-                },
-
+                // Removed  Select Options
                 // File upload & metadata
-                {
-                    name: "file_upload",
-                    type: "file",
-                    label: "Upload File *",
-                    colSpan: "col-span-12 md:col-span-6",
-                    rules: { required: "File is required" },
-                },
+                //   {
+                //      name: "file_upload",
+                //      type: "file",
+                //     label: "Upload File *",
+                //     colSpan: "col-span-12 md:col-span-6",
+                //     rules: { required: "File is required" },
+                //   },
 
                 {
                     name: "bio",
@@ -678,28 +649,7 @@ const fields = () => {
                     label: "Preferences",
                     colSpan: "col-span-12",
                 },
-                {
-                    name: "timezone",
-                    type: "input",
-                    label: "Timezone *",
-                    placeholder: "UTC",
-                    colSpan: "col-span-12 md:col-span-4",
-                    rules: { required: "Timezone required" },
-                },
-                {
-                    name: "locale",
-                    type: "input",
-                    label: "Locale *",
-                    placeholder: "en",
-                    colSpan: "col-span-12 md:col-span-4",
-                    rules: { required: "Locale required" },
-                },
-                {
-                    name: "is_enabled",
-                    type: "checkbox",
-                    label: "Enabled",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
+
                 {
                     name: "is_system_user",
                     type: "checkbox",

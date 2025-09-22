@@ -10,7 +10,7 @@ const UserStats = ({ height = 250 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
-  const series = [1200, 1400];
+  const series = [500, 800, 400, 600];
 
   const options = {
     chart: {
@@ -18,13 +18,15 @@ const UserStats = ({ height = 250 }) => {
         show: false,
       },
     },
-    labels: ["Old User", "New User"],
+    labels: ["HR", "Finance", "IT", "Operations"],
     dataLabels: {
       enabled: false,
     },
     colors: [
       `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
       `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
+      "hsl(30, 70%, 85%)",         // soft orange/pastel
+      "hsl(150, 60%, 80%)"         // soft green/pastel
     ],
     tooltip: {
       theme: mode === "dark" ? "dark" : "light",

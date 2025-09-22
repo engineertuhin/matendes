@@ -122,11 +122,7 @@ let columns = (actions) => [
   },
 
   // Address (compact)
-  {
-    id: "address",
-    header: "Address",
-    cell: ({ row }) => fmtAddr(row.original?.address),
-  },
+ 
 
   // Locale / Currency / Timezone
   {
@@ -179,21 +175,6 @@ let columns = (actions) => [
     },
   },
 
-  // Identifiers / Routing
-  {
-    id: "routing",
-    header: "Routing",
-    cell: ({ row }) => {
-      const slug = row.original?.slug;
-      const sub = row.original?.subdomain;
-      return (
-        <div className="flex flex-col">
-          <span className="text-xs">Slug: {slug || "—"}</span>
-          <span className="text-xs">Subdomain: {sub || "—"}</span>
-        </div>
-      );
-    },
-  },
 
   // Registration / Tax
   {

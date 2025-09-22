@@ -50,11 +50,11 @@ export const useBranch = () => {
                 ]);
 
                 const response = await branchCreate(preparedData).unwrap();
-                if (response) {
+             
+                if (response.success) {
                     toast.success("Branch Create Successfully");
                     refetch();
                     formReset(form);
-
                     form.setValue("openModel", false);
                 }
             } catch (apiErrors) {
@@ -159,16 +159,27 @@ export const useBranch = () => {
             try {
                 if (confirm("Are you sure you want to delete this branch?")) {
                     const response = await branchDelete({ id });
-
-                    if (response?.data) {
-                        // check if response contains data
+               
+                    if (response?.data?.success) {
                         toast.success("Branch deleted successfully");
                         refetch();
+                    } else if (response?.error?.data?.errors?.message) {
+                       toast.error(response?.error?.data?.errors?.message);
                     } else {
-                        toast.error("Failed to delete branch");
+                        toast.error(
+                            "Failed to delete branch. Please try again."
+                        );
                     }
                 }
-            } catch (error) {}
+            } catch (error) {
+                console.error("Delete branch error:", error);
+
+                if (error?.response?.data?.message) {
+                    toast.error(error.response.data.message);
+                } else {
+                    toast.error("Something went wrong while deleting branch.");
+                }
+            }
         },
         onSearch: debounce(async (inputValue, callback) => {
             form.setValue("search", inputValue);

@@ -12,14 +12,38 @@ import { useSidebar, useThemeStore } from "@/store";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePathname } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/hooks/use-redux";
+
+
+ 
 
 
 const PopoverSidebar = ({ trans }) => {
   const { collapsed, sidebarBg } = useSidebar();
   const { layout, isRtl } = useThemeStore();
-  const menus = menusConfig?.sidebarNav?.classic || [];
+       const { user } = useAppSelector((state) => state.auth);
+   let menus = menusConfig?.sidebarNav?.classic || [];
+
+  menus = menus
+      .map(menu => {
+        // Filter child items based on user permissions
+        const allowedChildren = (menu.child || []).filter(child =>
+          user?.permissions?.some(p => p.name === child.permission)
+        );
+    
+        // If there are allowed children, include this menu
+        if (allowedChildren.length > 0) {
+          return { ...menu, child: allowedChildren };
+        }
+    
+        // Otherwise, skip this menu
+        return null;
+      })
+      .filter(Boolean); // remove nulls
+
   const [activeSubmenu, setActiveSubmenu] = useState(null);
   const [activeMultiMenu, setMultiMenu] = useState(null);
+
 
   const toggleSubmenu = (i) => {
     if (activeSubmenu === i) {

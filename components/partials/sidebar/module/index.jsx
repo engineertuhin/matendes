@@ -16,9 +16,8 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import MenuOverlayPortal from "./MenuOverlayPortal";
 import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import { useAppDispatch, useAppSelector } from "@/hooks/use-redux";
 const ModuleSidebar = ({ trans }) => {
-  const menus = menusConfig?.sidebarNav?.modern || [];
   const { subMenu, setSubmenu, collapsed, setCollapsed, sidebarBg } =
     useSidebar();
   const { isRtl } = useThemeStore();
@@ -30,11 +29,35 @@ const ModuleSidebar = ({ trans }) => {
   const [menuOverlay, setMenuOverlay] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 1280px)");
   const isMobile = useMediaQuery("(min-width: 768px)");
-
+   const { user } = useAppSelector((state) => state.auth);
   // location
 
   const pathname = usePathname();
   const locationName = getDynamicPath(pathname);
+// Filter menus based on user permissions
+let menus = menusConfig?.sidebarNav?.modern || [];
+
+// Filter menus based on user permissions
+menus = menus
+  .map(menu => {
+    // Filter child items based on user permissions
+    const allowedChildren = (menu.child || []).filter(child =>
+      user?.permissions?.some(p => p.name === child.permission)
+    );
+
+    // If there are allowed children, include this menu
+    if (allowedChildren.length > 0) {
+      return { ...menu, child: allowedChildren };
+    }
+
+    // Otherwise, skip this menu
+    return null;
+  })
+  .filter(Boolean); // remove nulls
+
+
+
+
 
   const toggleSubMenu = (index) => {
     setActiveIndex(index);
@@ -220,6 +243,7 @@ const ModuleSidebar = ({ trans }) => {
               <ul>
                 {currentSubMenu?.map((childItem, j) => (
                   <li key={j} className="mb-1.5 last:mb-0">
+                  
                     <MenuItem
                       trans={trans}
                       childItem={childItem}

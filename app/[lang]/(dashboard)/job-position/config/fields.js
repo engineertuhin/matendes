@@ -1,19 +1,32 @@
 import { useCompany } from "@/domains/company/hook/useCompany";
 import { useDepartment } from "@/domains/department/hook/useDepartment";
 
+
 const fields = () => {
-    const { actions: companyActions } = useCompany();
-    const { actions: departmentActions } = useDepartment();
+    // Hooks to get search actions for async selects
+    // const { actions: companyActions } = useCompany();
+    // const { actions: departmentActions } = useDepartment();
+    // const { actions: jobPositionActions } = useJobPosition();
+    // const { actions: branchActions } = useBranch();
+    // const { actions: userActions } = useUser();
 
     return [
-        // =============== Relations ===============
+        // ============= Relations =============
         {
             name: "company_id",
             type: "async-select",
             label: "Select Company *",
-            loadOptions: ["companies", "companies", "companySearchTemplate"],
+            loadOptions: ["organization/companies", "companies", "companySearchTemplate"],
             colSpan: "col-span-12 md:col-span-4",
             rules: { required: "Company is required" },
+        },
+        {
+            name: "branch_id",
+            type: "async-select",
+            label: "Branch",
+            loadOptions: ["organization/branches", "branches", "branchSearchTemplate"],
+            placeholder: "Optional",
+            colSpan: "col-span-12 md:col-span-4",
         },
         {
             name: "department_id",
@@ -27,8 +40,46 @@ const fields = () => {
             placeholder: "Optional",
             colSpan: "col-span-12 md:col-span-4",
         },
+        // {
+        //     name: "reports_to_position_id",
+        //     type: "async-select",
+        //     label: "Reports To (Position)",
+        //     loadOptions: [
+        //         "organization/job-positions",
+        //         "job_positions",
+        //         "jobPositionSearchTemplate",
+        //     ],
+        //     placeholder: "Optional",
+        //     colSpan: "col-span-12 md:col-span-4",
+        // },
+        {
+            name: "manager_id",
+            type: "async-select",
+            label: "Manager",
+            loadOptions: ["auth/users", "users", "userSearchTemplate"],
+            placeholder: "Optional",
+            colSpan: "col-span-12 md:col-span-4",
+        },
+        {
+            name: "hierarchy_level",
+            type: "number",
+            label: "Hierarchy Level",
+            placeholder: "1",
+            colSpan: "col-span-12 md:col-span-4",
+            inputProps: { min: 1, step: "1" },
+            rules: { min: { value: 1, message: "Must be ≥ 1" } },
+        },
+        {
+            name: "hierarchy_path",
+            type: "input",
+            label: "Hierarchy Path",
+            placeholder: "e.g., CEO/VP/Manager",
+            colSpan: "col-span-12 md:col-span-4",
+            inputProps: { maxLength: 500 },
+            rules: { maxLength: { value: 500, message: "Max 500 characters" } },
+        },
 
-        // =============== Core Info ===============
+        // ============= Core Info =============
         {
             name: "title",
             type: "input",
@@ -58,53 +109,24 @@ const fields = () => {
             type: "textarea",
             label: "Description",
             placeholder: "Overview of the position...",
-            colSpan: "col-span-12 ",
+            colSpan: "col-span-12",
         },
         {
             name: "responsibilities",
             type: "textarea",
             label: "Responsibilities",
             placeholder: "Key duties and responsibilities...",
-            colSpan: "col-span-12 md:col-span-8 lg:col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
         },
         {
             name: "requirements",
             type: "textarea",
             label: "Requirements",
             placeholder: "Required qualifications, skills, experience...",
-            colSpan: "col-span-12 md:col-span-8 lg:col-span-6",
+            colSpan: "col-span-12 md:col-span-6",
         },
-
-        // =============== Classification ===============
-        {
-            name: "type",
-            type: "select",
-            label: "Type *",
-            colSpan: "col-span-12 md:col-span-4",
-            options: [
-                { label: "Permanent", value: "permanent" },
-                { label: "Temporary", value: "temporary" },
-                { label: "Contract", value: "contract" },
-                { label: "Internship", value: "internship" },
-                { label: "Freelance", value: "freelance" },
-            ],
-            rules: { required: "Type is required" },
-        },
-        {
-            name: "category",
-            type: "select",
-            label: "Category *",
-            colSpan: "col-span-12 md:col-span-4",
-            options: [
-                { label: "Executive", value: "executive" },
-                { label: "Management", value: "management" },
-                { label: "Senior", value: "senior" },
-                { label: "Mid Level", value: "mid_level" },
-                { label: "Junior", value: "junior" },
-                { label: "Entry Level", value: "entry_level" },
-            ],
-            rules: { required: "Category is required" },
-        },
+        
+        // ============= Classification =============
         {
             name: "employment_type",
             type: "select",
@@ -115,52 +137,94 @@ const fields = () => {
                 { label: "Part Time", value: "part_time" },
                 { label: "Casual", value: "casual" },
                 { label: "Seasonal", value: "seasonal" },
+                { label: "Internship", value: "internship" },
             ],
             rules: { required: "Employment type is required" },
         },
         {
-            name: "grade",
-            type: "input",
-            label: "Grade",
-            placeholder: "A1, B2, etc.",
+            name: "job_category",
+            type: "select",
+            label: "Job Category *",
             colSpan: "col-span-12 md:col-span-4",
-            inputProps: { maxLength: 20 },
-            rules: { maxLength: { value: 20, message: "Max 20 characters" } },
-        },
-
-        // =============== Level & Salary ===============
-        {
-            name: "level",
-            type: "number",
-            label: "Level *",
-            placeholder: "1",
-            colSpan: "col-span-12 md:col-span-4",
-            rules: {
-                required: "Level is required",
-                min: { value: 1, message: "Must be ≥ 1" },
-            },
-            inputProps: { min: 1, step: "1" },
+            options: [
+                { label: "Executive", value: "executive" },
+                { label: "Management", value: "management" },
+                { label: "Senior", value: "senior" },
+                { label: "Mid Level", value: "mid_level" },
+                { label: "Junior", value: "junior" },
+                { label: "Entry Level", value: "entry_level" },
+                { label: "Engineering", value: "engineering" },
+                { label: "Sales", value: "sales" },
+                { label: "Marketing", value: "marketing" },
+                { label: "HR", value: "hr" },
+                { label: "Finance", value: "finance" },
+                { label: "Operations", value: "operations" },
+            ],
+            rules: { required: "Category is required" },
         },
         {
-            name: "min_salary",
-            type: "number",
-            label: "Minimum Salary",
-            placeholder: "50000.00",
+            name: "job_level",
+            type: "select",
+            label: "Job Level *",
             colSpan: "col-span-12 md:col-span-4",
-            inputProps: { min: 0, step: "0.01" },
-            rules: { min: { value: 0, message: "Must be ≥ 0" } },
+            options: [
+                { label: "Intern", value: "intern" },
+                { label: "Junior", value: "junior" },
+                { label: "Mid", value: "mid" },
+                { label: "Senior", value: "senior" },
+                { label: "Lead", value: "lead" },
+                { label: "Manager", value: "manager" },
+                { label: "Director", value: "director" },
+                { label: "VP", value: "vp" },
+                { label: "Executive", value: "executive" },
+            ],
+            rules: { required: "Job Level type is required" },
         },
+        // {
+        //     name: "experience_required",
+        //     type: "input",
+        //     label: "Experience Required",
+        //     placeholder: "e.g., 2-5 years",
+        //     colSpan: "col-span-12 md:col-span-4",
+        //     inputProps: { maxLength: 50 },
+        //     rules: { maxLength: { value: 50, message: "Max 50 characters" } },
+        // },
+        // {
+        //     name: "education_required",
+        //     type: "textarea",
+        //     label: "Required Education",
+        //     placeholder: "e.g., Bachelor's degree in Computer Science",
+        //     colSpan: "col-span-12 md:col-span-6",
+        // },
+        // {
+        //     name: "education_preferred",
+        //     type: "textarea",
+        //     label: "Preferred Education",
+        //     placeholder: "e.g., Master's degree in Business Administration",
+        //     colSpan: "col-span-12 md:col-span-6",
+        // },
+        
+        // ============= Salary & Compensation =============
+        // {
+        //     name: "min_salary",
+        //     type: "number",
+        //     label: "Minimum Salary",
+        //     placeholder: "50000.00",
+        //     colSpan: "col-span-12 md:col-span-4",
+        //     inputProps: { min: 0, step: "0.01" },
+        //     rules: { min: { value: 0, message: "Must be ≥ 0" } },
+        // },
         {
             name: "max_salary",
             type: "number",
-            label: "Maximum Salary",
+            label: "Basic Salary",
             placeholder: "90000.00",
             colSpan: "col-span-12 md:col-span-4",
             inputProps: { min: 0, step: "0.01" },
             rules: { min: { value: 0, message: "Must be ≥ 0" } },
         },
         {
-            name: "salary_currency",
+            name: "currency",
             type: "input",
             label: "Salary Currency *",
             placeholder: "USD",
@@ -172,9 +236,9 @@ const fields = () => {
             inputProps: { maxLength: 3 },
         },
         {
-            name: "salary_period",
+            name: "salary_type",
             type: "select",
-            label: "Salary Period *",
+            label: "Salary Type *",
             colSpan: "col-span-12 md:col-span-4",
             options: [
                 { label: "Hourly", value: "hourly" },
@@ -182,66 +246,38 @@ const fields = () => {
                 { label: "Weekly", value: "weekly" },
                 { label: "Monthly", value: "monthly" },
                 { label: "Yearly", value: "yearly" },
+                { label: "Annual", value: "annual" },
             ],
-            rules: { required: "Salary period is required" },
+            rules: { required: "Salary type is required" },
         },
-        {
-            name: "benefits",
-            type: "textarea",
-            label: "Benefits",
-            placeholder: "List of benefits...",
-            colSpan: "col-span-12",
-        },
-
-        // =============== Reporting ===============
-        {
-            name: "reports_to_position_id",
-            type: "async-select",
-            label: "Reports To (Position)",
-
-            placeholder: "Optional",
-            colSpan: "col-span-12 md:col-span-4",
-        },
-        {
-            name: "is_management_position",
-            type: "checkbox",
-            label: "Management Position",
-            colSpan: "col-span-12 md:col-span-4",
-        },
-        {
-            name: "is_executive_position",
-            type: "checkbox",
-            label: "Executive Position",
-            colSpan: "col-span-12 md:col-span-4",
-        },
-        {
-            name: "direct_reports_count",
-            type: "number",
-            label: "Direct Reports Count *",
-            placeholder: "0",
-            colSpan: "col-span-12 md:col-span-4",
-            rules: {
-                required: "Direct reports count is required",
-                min: { value: 0, message: "Must be ≥ 0" },
-            },
-            inputProps: { min: 0, step: "1" },
-        },
-
-        // =============== Requirements & Skills ===============
-        {
-            name: "required_skills",
-            type: "textarea",
-            label: "Required Skills",
-            placeholder: "Must-have skills…",
-            colSpan: "col-span-12 ",
-        },
-        {
-            name: "preferred_skills",
-            type: "textarea",
-            label: "Preferred Skills",
-            placeholder: "Nice-to-have skills…",
-            colSpan: "col-span-12",
-        },
+        // {
+        //     name: "bonus_eligible",
+        //     type: "checkbox",
+        //     label: "Bonus Eligible",
+        //     colSpan: "col-span-12 md:col-span-4",
+        // },
+        // {
+        //     name: "commission_eligible",
+        //     type: "checkbox",
+        //     label: "Commission Eligible",
+        //     colSpan: "col-span-12 md:col-span-4",
+        // },
+        
+        // ============= Skills & Experience =============
+        // {
+        //     name: "required_skills",
+        //     type: "textarea",
+        //     label: "Required Skills",
+        //     placeholder: "Must-have skills…",
+        //     colSpan: "col-span-12 md:col-span-6",
+        // },
+        // {
+        //     name: "preferred_skills",
+        //     type: "textarea",
+        //     label: "Preferred Skills",
+        //     placeholder: "Nice-to-have skills…",
+        //     colSpan: "col-span-12 md:col-span-6",
+        // },
         {
             name: "education_level",
             type: "input",
@@ -272,8 +308,29 @@ const fields = () => {
             rules: { min: { value: 0, message: "Must be ≥ 0" } },
             inputProps: { min: 0, step: "1" },
         },
-
-        // =============== Recruitment & Vacancy ===============
+        
+        // ============= Work Style & Recruitment =============
+        {
+            name: "travel_requirement",
+            type: "input",
+            label: "Travel Requirement",
+            placeholder: "e.g., 25%",
+            colSpan: "col-span-12 md:col-span-4",
+            inputProps: { maxLength: 10 },
+            rules: { maxLength: { value: 10, message: "Max 10 characters" } },
+        },
+        // {
+        //     name: "remote_work_allowed",
+        //     type: "checkbox",
+        //     label: "Remote Work Allowed",
+        //     colSpan: "col-span-12 md:col-span-4",
+        // },
+        // {
+        //     name: "overtime_eligible",
+        //     type: "checkbox",
+        //     label: "Overtime Eligible",
+        //     colSpan: "col-span-12 md:col-span-4",
+        // },
         {
             name: "total_positions",
             type: "number",
@@ -310,26 +367,46 @@ const fields = () => {
             },
             inputProps: { min: 0, step: "1" },
         },
+        // {
+        //     name: "is_recruiting",
+        //     type: "checkbox",
+        //     label: "Currently Recruiting",
+        //     colSpan: "col-span-12 md:col-span-4",
+        // },
+        // {
+        //     name: "recruitment_status",
+        //     type: "select",
+        //     label: "Recruitment Status *",
+        //     colSpan: "col-span-12 md:col-span-4",
+        //     options: [
+        //         { label: "Not Recruiting", value: "not_recruiting" },
+        //         { label: "Actively Recruiting", value: "actively_recruiting" },
+        //         { label: "On Hold", value: "on_hold" },
+        //         { label: "Filled", value: "filled" },
+        //     ],
+        //     rules: { required: "Recruitment status is required" },
+        // },
+        // {
+        //     name: "posting_date",
+        //     type: "date",
+        //     label: "Posting Date",
+        //     colSpan: "col-span-12 md:col-span-4",
+        // },
+        // {
+        //     name: "application_deadline",
+        //     type: "date",
+        //     label: "Application Deadline",
+        //     colSpan: "col-span-12 md:col-span-4",
+        // },
         {
-            name: "is_recruiting",
-            type: "checkbox",
-            label: "Currently Recruiting",
-            colSpan: "col-span-12 md:col-span-4",
+            name: "benefits",
+            type: "textarea",
+            label: "Benefits",
+            placeholder: "List of benefits...",
+            colSpan: "col-span-12",
         },
-        {
-            name: "recruitment_start_date",
-            type: "date",
-            label: "Recruitment Start Date",
-            colSpan: "col-span-12 md:col-span-4",
-        },
-        {
-            name: "recruitment_end_date",
-            type: "date",
-            label: "Recruitment End Date",
-            colSpan: "col-span-12 md:col-span-4",
-        },
-
-        // =============== Status & Work Style ===============
+        
+        // ============= Operational & Metadata =============
         {
             name: "status",
             type: "select",
@@ -349,31 +426,7 @@ const fields = () => {
             label: "Enabled",
             colSpan: "col-span-12 md:col-span-4",
         },
-        {
-            name: "is_remote_eligible",
-            type: "checkbox",
-            label: "Remote Eligible",
-            colSpan: "col-span-12 md:col-span-4",
-        },
-        {
-            name: "is_travel_required",
-            type: "checkbox",
-            label: "Travel Required",
-            colSpan: "col-span-12 md:col-span-4",
-        },
-        {
-            name: "travel_percentage",
-            type: "number",
-            label: "Travel Percentage *",
-            placeholder: "0",
-            colSpan: "col-span-12 md:col-span-4",
-            rules: {
-                required: "Travel percentage is required",
-                min: { value: 0, message: "Must be ≥ 0" },
-                max: { value: 100, message: "Max 100%" },
-            },
-            inputProps: { min: 0, max: 100, step: "1" },
-        },
+        
     ];
 };
 

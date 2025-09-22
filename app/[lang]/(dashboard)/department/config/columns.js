@@ -16,12 +16,40 @@ let columns = (actions) => [
   { accessorKey: "name", header: "Name" },
   { accessorKey: "code", header: "Code" },
 
-  // Basic meta
+  // Company
   {
-    id: "type",
-    header: "Type",
-    cell: ({ row }) => safe(row.original?.type),
+    id: "company",
+    header: "Company",
+    cell: ({ row }) => {  
+      return row.original?.company?.name ?? "-";
+    },
   },
+  // Branch
+  {
+    id: "branch",
+    header: "Branch",
+    cell: ({ row }) => {  
+      return row.original?.branch?.name ?? "-";
+    },
+  },
+  // Manager
+  {
+    id: "manager",
+    header: "Manager",
+    cell: ({ row }) => {  
+      return row.original?.manager?.name ?? "-";
+    },
+  },
+  // parent_department
+  {
+    id: "parent_department",
+    header: "Parent department",
+    cell: ({ row }) => {
+      const parent = row.original?.parent_department;
+      return parent ? `${parent.name} (${parent.code})` : "-";
+    },
+  },
+  
   {
     id: "status",
     header: "Status",
@@ -29,63 +57,10 @@ let columns = (actions) => [
       safe(row.original?.status ?? row.original?.system_info?.status),
   },
 
-  // Contact
-  {
-    id: "email",
-    header: "Email",
-    cell: ({ row }) => (
-      <span className="lowercase">
-        {safe(row.original?.email ?? row.original?.contact_info?.email)}
-      </span>
-    ),
-  },
-  {
-    id: "phone",
-    header: "Phone",
-    cell: ({ row }) =>
-      safe(row.original?.phone ?? row.original?.contact_info?.phone),
-  },
-
-  // Address (compact)
-  {
-    id: "location",
-    header: "Location",
-    cell: ({ row }) => {
-      const d = row.original;
-      const city = d?.city ?? d?.address?.city;
-      const state = d?.state ?? d?.address?.state;
-      const country = d?.country ?? d?.address?.country;
-      const parts = [city, state, country].filter(Boolean);
-      return parts.length ? parts.join(", ") : "—";
-    },
-  },
-
-  // Hierarchy / flags
-  {
-    id: "level",
-    header: "Level",
-    cell: ({ row }) =>
-      safe(
-        row.original?.hierarchy_info?.hierarchy_level ?? row.original?.level
-      ),
-  },
-  {
-    id: "hq",
-    header: "HQ",
-    cell: ({ row }) => (row.original?.is_headquarters ? "Yes" : "No"),
-  },
-
-  // Timezone / dates
-  {
-    id: "timezone",
-    header: "Timezone",
-    cell: ({ row }) =>
-      safe(row.original?.timezone ?? row.original?.business_info?.timezone),
-  },
   {
     id: "established",
     header: "Established",
-    cell: ({ row }) => safe(row.original?.established_date),
+    cell: ({ row }) => safe(row.original?.system_info?.established_date),
   },
 
   // Actions

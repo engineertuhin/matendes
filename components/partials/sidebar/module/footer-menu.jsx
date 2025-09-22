@@ -1,8 +1,7 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Settings } from "@/components/svg";
-// import { useSession, signIn, signOut } from "next-auth/react";
+import { Settings } from "@/components/svg"; 
 import Image from "next/image";
 const FooterMenu = () => {
  const session = [];

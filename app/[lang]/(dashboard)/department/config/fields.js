@@ -4,8 +4,12 @@ const fields = () => {
         {
             name: "company_id",
             type: "async-select",
-            label: "Select Company *",
-            loadOptions: ["companies", "companies", "companySearchTemplate"],
+            label: "Company *",
+            loadOptions: [
+                "organization/companies",
+                "companies",
+                "companySearchTemplate",
+            ],
             colSpan: "col-span-12 md:col-span-6",
             rules: { required: "Company is required" },
         },
@@ -48,6 +52,19 @@ const fields = () => {
             inputProps: { maxLength: 200 },
         },
         {
+            name: "department_type",
+            type: "select",
+            label: "Department type", // varchar(50), default 'department'
+            placeholder: "Select type",
+            colSpan: "col-span-12 md:col-span-6",
+            options: [
+                { label: "Technical", value: "technical" },
+                { label: "Business", value: "business" },
+                { label: "Support", value: "support" },
+                { label: "Administ", value: "administ" },
+            ], 
+        },
+        {
             name: "code",
             type: "input",
             label: "Department Code *",
@@ -58,6 +75,13 @@ const fields = () => {
                 maxLength: { value: 20, message: "Max 20 characters" },
             },
             inputProps: { maxLength: 20 },
+        },
+        {
+            name: "manager_id",
+            type: "async-select",
+            label: "Select Manager",
+            loadOptions: ["managers", "managers", "commonSearchTemplate"],
+            colSpan: "col-span-12 md:col-span-6", 
         },
         {
             name: "type",
@@ -148,15 +172,7 @@ const fields = () => {
             inputProps: { maxLength: 20 },
             rules: { maxLength: { value: 20, message: "Max 20 characters" } },
         },
-        {
-            name: "budget_allocated",
-            type: "number",
-            label: "Budget Allocated",
-            placeholder: "500000.00",
-            colSpan: "col-span-12 md:col-span-6",
-            inputProps: { min: 0, step: "0.01" },
-            rules: { min: { value: 0, message: "Must be ≥ 0" } },
-        },
+      
 
         // =============== Dates & Numbers ===============
         {
@@ -164,30 +180,18 @@ const fields = () => {
             type: "date",
             label: "Established Date",
             colSpan: "col-span-12 md:col-span-6",
-        },
-        {
-            name: "employee_count",
-            type: "number",
-            label: "Employee Count *",
-            placeholder: "0",
-            colSpan: "col-span-12 md:col-span-6",
-            inputProps: { min: 0, step: "1" },
-            rules: {
-                required: "Employee count is required",
-                min: { value: 0, message: "Must be unsigned (≥ 0)" },
-            },
-        },
+        }, 
 
         // =============== Hierarchy ===============
         {
-            name: "level",
+            name: "hierarchy_level",
             type: "number",
             label: "Hierarchy Level *",
             placeholder: "1",
             colSpan: "col-span-12 md:col-span-6",
             inputProps: { min: 0, step: "1" },
             rules: {
-                required: "Level is required",
+                required: "Hierarchy level is required",
                 min: { value: 0, message: "Must be unsigned (≥ 0)" },
                 max: { value: 255, message: "Too large for TINYINT UNSIGNED" },
             },
@@ -228,13 +232,7 @@ const fields = () => {
                 { label: "Dissolved", value: "dissolved" },
             ],
             rules: { required: "Status is required" },
-        },
-        {
-            name: "is_enabled",
-            type: "checkbox",
-            label: "Enabled",
-            colSpan: "col-span-12 md:col-span-6",
-        },
+        }, 
     ];
 };
 

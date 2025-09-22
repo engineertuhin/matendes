@@ -20,6 +20,20 @@ const DashboardPageView = ({ trans }) => {
         </div>
         <DatePickerWithRange />
       </div>
+      {/* Coming soon placeholder */}
+      {/* <div className="flex flex-col items-center justify-center py-20 border border-dashed border-default-300 rounded-2xl bg-default-50">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/2027/2027710.png"
+          alt="Coming Soon"
+          className="w-16 h-16 mb-3"
+        />
+        <h2 className="text-xl font-semibold text-default-800">Coming Soon</h2>
+        <p className="text-default-600 mt-2 text-center max-w-md">
+          We’re working on bringing you advanced HRM insights and employee reports. 
+          Stay tuned for upcoming updates.
+        </p>
+      </div> */}
+
       {/* reports area */}
       <div className="grid grid-cols-12  gap-6 ">
         <div className="col-span-12 lg:col-span-8">
@@ -36,7 +50,7 @@ const DashboardPageView = ({ trans }) => {
         <Card>
           <CardHeader className="border-none p-6 pt-5 mb-0">
             <CardTitle className="text-lg font-semibold text-default-900 p-0">
-              New vs Returning Visitors
+              Employees by Department
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -46,7 +60,7 @@ const DashboardPageView = ({ trans }) => {
         <Card>
           <CardHeader className="border-none p-6 pt-5 mb-0">
             <CardTitle className="text-lg font-semibold text-default-900 p-0">
-              Device Breakdown
+              Employee by Job Position
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -56,7 +70,7 @@ const DashboardPageView = ({ trans }) => {
           </CardContent>
         </Card>
       </div>
-      <div className="col-span-2">
+      {/* <div className="col-span-2">
         <Card>
           <CardHeader className="border-none pb-0">
             <div className="flex flex-wrap items-center gap-2">
@@ -87,7 +101,7 @@ const DashboardPageView = ({ trans }) => {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -4,6 +4,8 @@ import PageLayout from "@/components/page-layout";
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
+import useAttendance from "@/hooks/useAttendance";
+
 
 // load QR reader only on client
 const QrReader = dynamic(
@@ -12,11 +14,14 @@ const QrReader = dynamic(
         ssr: false,
     }
 );
-
 export default function QRAttendance() {
-    // steps: "closed" | "scanner" | "result"
+    // Use attendance hook for API calls
+    const { qrCheckIn, qrCheckOut, isCheckingIn, isCheckingOut } = useAttendance();
+    
+    // steps: "closed" | "scanner" | "result" | "processing"
     const [step, setStep] = useState("closed");
     const [scannedText, setScannedText] = useState(null);
+    const [attendanceResult, setAttendanceResult] = useState(null);
 
     // camera permission
     const [hasPermission, setHasPermission] = useState(null); // null | true | false
@@ -29,8 +34,12 @@ export default function QRAttendance() {
     const [isRequestingLocation, setIsRequestingLocation] = useState(false);
     const [coords, setCoords] = useState(null);
 
+    // attendance processing
+    const [isProcessingAttendance, setIsProcessingAttendance] = useState(false);
+
     // for legacy image scan
     const legacyRef = useRef(null);
+
 
     const videoConstraints = {
         facingMode: { ideal: "environment" }, // back camera by default
@@ -108,28 +117,104 @@ export default function QRAttendance() {
     };
 
     // --- Handle scanning results ---
-    const handleScanResult = useCallback((result, error) => {
+    const handleScanResult = useCallback(async (result, error) => {
         if (!!result) {
             const text = result?.getText?.() ?? result?.text ?? String(result);
+           
             if (text) {
                 setScannedText(text);
-                setStep("result");
-                toast.success("QR scanned!");
+                setStep("processing");
+                
+                // Stop camera immediately after scan
+                setMountScanner(false);
+                
+                toast.success("QR scanned! Processing attendance...");
                 try {
                     navigator.vibrate?.(60);
                 } catch {}
+
+               
+                // Process attendance with location
+                await processAttendance(text);
             }
         }
         if (!!error) {
             // keep it quiet; QR readers emit frequent decode errors while searching
         }
-    }, []);
+    }, [coords]);
+
+    // Process attendance after QR scan
+    const processAttendance = async (qrData) => {
+
+   
+        if (!coords) {
+            setErrorMsg("Location is required for attendance. Please allow location access.");
+            setStep("result");
+            return;
+        }
+
+        setIsProcessingAttendance(true);
+
+        try {
+            console.log('Processing QR attendance with data:', qrData);
+            console.log('Location coordinates:', { lat: coords.lat, lng: coords.lng });
+            console.log('QR CheckIn function:', qrCheckIn);
+            
+            // For now, we'll assume check-in by default
+            // You could enhance this to detect check-in/check-out based on QR content or current status
+            const result = await qrCheckIn(qrData, coords.lat, coords.lng);
+            
+            console.log('QR CheckIn result:', result);
+        
+            
+            if (result.success) {
+                setAttendanceResult({
+                    success: true,
+                    message: result.message,
+                    data: result.data
+                });
+                toast.success(result.message);
+            } else {
+                setAttendanceResult({
+                    success: false,
+                    message: result.error
+                });
+                toast.error(result.error);
+            }
+        } catch (error) {
+            console.error('QR Attendance processing error:', error);
+            const errorMessage = error?.message || "Failed to process attendance. Please try again.";
+            setAttendanceResult({
+                success: false,
+                message: errorMessage
+            });
+            toast.error(errorMessage);
+        } finally {
+            setIsProcessingAttendance(false);
+            setStep("result");
+        }
+    };
 
     const rescan = () => {
         setScannedText(null);
+        setAttendanceResult(null);
+        setErrorMsg("");
         setStep("scanner");
         setMountScanner(false);
         setTimeout(() => setMountScanner(true), 0);
+    };
+
+    const retryAttendance = async () => {
+        if (!scannedText) return;
+        setStep("processing");
+        await processAttendance(scannedText);
+    };
+
+    const closeResult = () => {
+        setScannedText(null);
+        setAttendanceResult(null);
+        setErrorMsg("");
+        setStep("closed");
     };
 
     const copyText = async () => {
@@ -142,17 +227,8 @@ export default function QRAttendance() {
         }
     };
 
-    const openInNewTabIfURL = () => {
-        if (!scannedText) return;
-        try {
-            const maybeUrl = new URL(scannedText);
-            window.open(maybeUrl.href, "_blank", "noopener,noreferrer");
-        } catch {
-            toast("Not a valid URL");
-        }
-    };
-
-    // Buttons (kept similar layout/logic)
+  
+    // Buttons (updated to handle new states)
     const buttonConfig = {
         closed: {
             label: isRequesting ? "Opening…" : "📷 Start Scanning",
@@ -165,10 +241,15 @@ export default function QRAttendance() {
             disabled: false,
             title: hasPermission === true ? "" : "Allow camera access first",
         },
+        processing: {
+            label: "⏳ Processing Attendance...",
+            action: () => {},
+            disabled: true,
+        },
         result: {
-            label: "🔄 Rescan",
-            action: rescan,
-            disabled: false,
+            label: attendanceResult?.success ? "✅ Done" : "🔄 Retry",
+            action: attendanceResult?.success ? closeResult : (attendanceResult ? retryAttendance : rescan),
+            disabled: isProcessingAttendance,
         },
     };
 
@@ -179,28 +260,73 @@ export default function QRAttendance() {
             {/* Scanner / Preview area in a rounded frame */}
             <div className="mt-5 flex justify-center">
                 <div className="relative w-72 h-72 rounded-2xl border border-slate-200 bg-gradient-to-b from-slate-50 to-slate-100 shadow-sm overflow-hidden">
-                    {step === "result" && scannedText ? (
+                    {step === "result" && (scannedText || attendanceResult) ? (
                         <div className="w-full h-full p-4 text-sm grid place-items-center text-center">
                             <div className="space-y-3">
+                                {attendanceResult ? (
+                                    <>
+                                        <div className={`text-xs ${attendanceResult.success ? 'text-green-600' : 'text-red-600'}`}>
+                                            {attendanceResult.success ? 'Attendance Success' : 'Attendance Failed'}
+                                        </div>
+                                        <div className={`text-lg ${attendanceResult.success ? 'text-green-700' : 'text-red-700'}`}>
+                                            {attendanceResult.success ? '✅' : '❌'}
+                                        </div>
+                                        <div className="max-h-36 overflow-auto rounded-lg bg-white p-3 text-slate-800 text-left break-words">
+                                            {attendanceResult.message}
+                                        </div>
+                                        {attendanceResult.success && attendanceResult.data && (
+                                            <div className="text-xs text-slate-600">
+                                                <div>Status: {attendanceResult.data.status}</div>
+                                                {attendanceResult.data.check_in_time && (
+                                                    <div>Time: {new Date(attendanceResult.data.check_in_time).toLocaleTimeString()}</div>
+                                                )}
+                                            </div>
+                                        )}
+                                        <div className="flex items-center justify-center gap-2">
+                                            <button
+                                                onClick={copyText}
+                                                className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium hover:bg-slate-50"
+                                            >
+                                                📋 Copy QR
+                                            </button>
+                                            {!attendanceResult.success && (
+                                                <button
+                                                    onClick={retryAttendance}
+                                                    disabled={isProcessingAttendance}
+                                                    className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium hover:bg-slate-50 disabled:opacity-50"
+                                                >
+                                                    🔄 Retry
+                                                </button>
+                                            )}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-xs text-slate-500">
+                                            Scanned QR
+                                        </div>
+                                        <div className="max-h-36 overflow-auto rounded-lg bg-white p-3 text-slate-800 text-left break-words">
+                                            {scannedText}
+                                        </div>
+                                        <div className="flex items-center justify-center gap-2">
+                                            <button
+                                                onClick={copyText}
+                                                className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium hover:bg-slate-50"
+                                            >
+                                                📋 Copy
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    ) : step === "processing" ? (
+                        <div className="w-full h-full grid place-items-center text-center p-4 text-slate-600">
+                            <div className="space-y-3">
+                                <div className="text-4xl animate-spin">⏳</div>
+                                <div className="text-sm font-medium">Processing Attendance...</div>
                                 <div className="text-xs text-slate-500">
-                                    Scanned QR
-                                </div>
-                                <div className="max-h-36 overflow-auto rounded-lg bg-white p-3 text-slate-800 text-left break-words">
-                                    {scannedText}
-                                </div>
-                                <div className="flex items-center justify-center gap-2">
-                                    <button
-                                        onClick={copyText}
-                                        className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium hover:bg-slate-50"
-                                    >
-                                        📋 Copy
-                                    </button>
-                                    <button
-                                        onClick={openInNewTabIfURL}
-                                        className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium hover:bg-slate-50"
-                                    >
-                                        🌐 Open (if URL)
-                                    </button>
+                                    Submitting QR data with location
                                 </div>
                             </div>
                         </div>
@@ -241,13 +367,17 @@ export default function QRAttendance() {
             {/* Status + error */}
             <div className="mt-4 text-center">
                 <p className="text-sm text-slate-700">
-                    {step === "result"
+                    {step === "result" && attendanceResult
+                        ? attendanceResult.success ? "Attendance recorded successfully" : "Attendance failed"
+                        : step === "result"
                         ? "QR captured"
+                        : step === "processing"
+                        ? "Processing your attendance..."
                         : step === "scanner" && hasPermission
-                        ? "Scanner ready"
+                        ? "Scanner ready - point camera at QR code"
                         : "No scan yet"}
                 </p>
-                {step !== "result" && (
+                {step !== "result" && step !== "processing" && (
                     <p className="text-[11px] text-slate-500">
                         Hold the QR inside the frame; good lighting helps.
                     </p>
@@ -277,12 +407,27 @@ export default function QRAttendance() {
                     onClick={action}
                     disabled={disabled}
                     title={title}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-slate-900 text-white px-4 py-2.5 text-sm font-medium shadow-sm hover:bg-slate-800 active:scale-[.99] disabled:opacity-60 disabled:cursor-not-allowed"
+                    className={`w-full inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium shadow-sm active:scale-[.99] disabled:opacity-60 disabled:cursor-not-allowed ${
+                        step === "result" && attendanceResult?.success 
+                            ? "bg-green-600 text-white hover:bg-green-700" 
+                            : step === "result" && attendanceResult && !attendanceResult.success
+                            ? "bg-red-600 text-white hover:bg-red-700"
+                            : "bg-slate-900 text-white hover:bg-slate-800"
+                    }`}
                 >
                     {label}
                 </button>
 
-         
+                {/* Secondary action for result state */}
+                {step === "result" && (
+                    <button
+                        onClick={rescan}
+                        disabled={isProcessingAttendance}
+                        className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white text-slate-700 px-4 py-2 text-sm font-medium shadow-sm hover:bg-slate-50 disabled:opacity-60"
+                    >
+                        📷 Scan Another QR
+                    </button>
+                )}
             </div>
 
             {/* Privacy + location note */}
@@ -315,6 +460,12 @@ export default function QRAttendance() {
                     />
                 </div>
             )}
+
+
+
+            <button onClick={()=>{
+                handleScanResult('text','error');
+            }}>hello worl</button>
         </PageLayout>
     );
 }

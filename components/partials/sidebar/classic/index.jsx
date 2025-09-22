@@ -11,15 +11,38 @@ import { usePathname } from "next/navigation";
 import SingleMenuItem from "./single-menu-item";
 import SubMenuHandler from "./sub-menu-handler";
 import NestedSubMenu from "../common/nested-menus";
+import { useAppDispatch, useAppSelector } from "@/hooks/use-redux";
 
 const ClassicSidebar = ({ trans }) => {
   const { sidebarBg } = useSidebar();
   const [activeSubmenu, setActiveSubmenu] = useState(null);
   const [activeMultiMenu, setMultiMenu] = useState(null);
-  const menus = menusConfig?.sidebarNav?.classic || [];
+  let menus = menusConfig?.sidebarNav?.classic || [];
   const { collapsed, setCollapsed } = useSidebar();
   const { isRtl } = useThemeStore();
   const [hovered, setHovered] = useState(false);
+     const { user } = useAppSelector((state) => state.auth);
+
+
+  
+  // Filter menus based on user permissions
+  menus = menus
+    .map(menu => {
+      // Filter child items based on user permissions
+      const allowedChildren = (menu.child || []).filter(child =>
+        user?.permissions?.some(p => p.name === child.permission)
+      );
+  
+      // If there are allowed children, include this menu
+      if (allowedChildren.length > 0) {
+        return { ...menu, child: allowedChildren };
+      }
+  
+      // Otherwise, skip this menu
+      return null;
+    })
+    .filter(Boolean); // remove nulls
+  
 
   const toggleSubmenu = (i) => {
     if (activeSubmenu === i) {

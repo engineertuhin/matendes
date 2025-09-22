@@ -9,24 +9,24 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import DashboardSelect from "@/components/dasboard-select";
 import { cn } from "@/lib/utils";
 
-const allUsersSeries = [
+const allEmployeesSeries = [
   {
     data: [90, 70, 85, 60, 80, 70, 90, 75, 60, 80],
   },
 ];
-const conversationSeries = [
+const departmentSeries = [
   {
     data: [80, 70, 65, 40, 40, 100, 100, 75, 60, 80],
   },
-];
-const eventCountSeries = [
-  {
-    data: [20, 70, 65, 60, 40, 60, 90, 75, 60, 40],
-  },
-];
-const newUserSeries = [
+]; 
+const newEmployeSeries = [
   {
     data: [20, 70, 65, 40, 100, 60, 100, 75, 60, 80],
+  },
+];
+const pendingleaverequestsSeries = [
+  {
+    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   },
 ];
 const ReportsSnapshot = () => {
@@ -47,51 +47,52 @@ const ReportsSnapshot = () => {
   })`;
   const tabsTrigger = [
     {
-      value: "all",
-      text: "all user",
+      value: "employee",
+      text: "Total Employee",
       total: "10,234",
       color: "primary",
     },
     {
-      value: "event",
-      text: "Event Count",
+      value: "newuser",
+      text: "New Employee",
+      total: "3321",
+      color: "info",
+    },
+    {
+      value: "department",
+      text: "Total Department",
       total: "536",
       color: "warning",
     },
     {
-      value: "conversation",
-      text: "conversations",
-      total: "21",
+      value: "pendingleaverequests",
+      text: "Pending Leave Requests",
+      total: "0",
       color: "success",
-    },
-    {
-      value: "newuser",
-      text: "New User",
-      total: "3321",
-      color: "info",
-    },
+    }, 
   ];
   const tabsContentData = [
     {
-      value: "all",
-      series: allUsersSeries,
+      value: "employee",
+      series: allEmployeesSeries,
       color: primary,
     },
     {
-      value: "event",
-      series: eventCountSeries,
+      value: "newuser",
+      series: newEmployeSeries,
+      color: info,
+    },
+    {
+      value: "department",
+      series: departmentSeries,
       color: warning,
     },
     {
-      value: "conversation",
-      series: conversationSeries,
+      value: "pendingleaverequests",
+      series: pendingleaverequestsSeries,
       color: success,
     },
-    {
-      value: "newuser",
-      series: newUserSeries,
-      color: info,
-    },
+    
   ];
   return (
     <Card>
@@ -99,10 +100,10 @@ const ReportsSnapshot = () => {
         <div className="flex items-center gap-2 flex-wrap ">
           <div className="flex-1">
             <div className="text-xl font-semibold text-default-900 whitespace-nowrap">
-              Reports Snapshot
+              Workforce Overview
             </div>
             <span className="text-xs text-default-600">
-              Demographic properties of your customer
+              Demographic properties of your workforce
             </span>
           </div>
           <div className="flex-none">
@@ -111,7 +112,7 @@ const ReportsSnapshot = () => {
         </div>
       </CardHeader>
       <CardContent className="p-1 md:p-5">
-        <Tabs defaultValue="all">
+        <Tabs defaultValue="employee">
           <TabsList className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-6 justify-start w-full bg-transparent h-full">
             {tabsTrigger.map((item, index) => (
               <TabsTrigger

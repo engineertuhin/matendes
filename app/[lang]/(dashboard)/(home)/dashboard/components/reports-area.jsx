@@ -5,44 +5,46 @@ import { Icon } from "@iconify/react";
 import { Cup, Eye, Increase, Session } from "@/components/svg";
 
 const ReportsArea = () => {
-  const reports = [
-    {
-      id: 1,
-      name: "Sessions",
-      count: "6,132",
-      rate: "150",
-      isUp: true,
-      icon: <Session className="h-4 w-4" />,
-      color: "primary",
-    },
-    {
-      id: 2,
-      name: "Page Views",
-      count: "11,236",
-      rate: "202",
-      isUp: false,
-      icon: <Eye className="h-4 w-4" />,
-      color: "info",
-    },
-    {
-      id: 3,
-      name: "Avg. Duration",
-      count: "46s",
-      rate: "22",
-      isUp: true,
-      icon: <Increase className="h-4 w-4" />,
-      color: "warning",
-    },
-    {
-      id: 4,
-      name: "Bounce Rate",
-      count: "46s",
-      rate: "30",
-      isUp: false,
-      icon: <Cup className="h-4 w-4" />,
-      color: "destructive",
-    },
-  ];
+const reports = [
+  {
+    id: 1,
+    name: "Active Employees",
+    count: "3,321",
+    rate: "10",
+    isUp: true,
+    icon: <Icon icon="heroicons:users-20-solid" className="h-4 w-4" />,
+    color: "primary",
+  },
+  {
+    id: 2,
+    name: "Attendance Records",
+    count: "8,245",
+    rate: "15",
+    isUp: true,
+    icon: <Icon icon="mdi:calendar-check" className="h-4 w-4" />, // updated
+    color: "info",
+  },
+  {
+    id: 3,
+    name: "Avg. Working Hours",
+    count: "7h 46m",
+    rate: "-2",
+    isUp: false,
+    icon: <Icon icon="heroicons:clock-20-solid" className="h-4 w-4" />,
+    color: "warning",
+  },
+  {
+    id: 4,
+    name: "Pending Approvals",
+    count: "63",
+    rate: "5",
+    isUp: true,
+    icon: <Icon icon="mdi:clipboard-text" className="h-4 w-4" />, // updated
+    color: "destructive",
+  },
+];
+
+  
   return (
     <>
       {reports.map((item, index) => (

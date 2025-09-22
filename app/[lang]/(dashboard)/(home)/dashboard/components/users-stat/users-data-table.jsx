@@ -17,10 +17,10 @@ const UsersDataTable = ({ users }) => {
           <TableHeader>
             <TableRow className="border-b border-border">
               <TableHead className="text-sm h-10 font-medium text-default-800">
-                Top Countries
+                Top Departments
               </TableHead>
               <TableHead className="text-sm h-10 font-medium text-default-800 text-right">
-                Users
+                Employes
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -28,7 +28,7 @@ const UsersDataTable = ({ users }) => {
             {users.map((item) => (
               <TableRow key={item.id} className="border-b border-border">
                 <TableCell className="text-xs text-default-600 py-2">
-                  {item.country}
+                  {item.department}
                 </TableCell>
                 <TableCell className="text-xs text-default-600 text-right pr-6 py-2">
                   {item.count}

@@ -41,6 +41,7 @@ export const useJobPosition = () => {
         data: JobPosition?.data?.job_positions || [],
         form,
     };
+    console.log(jobPositionState.data);
 
     const actions = {
         onCreate: async (data) => {
@@ -49,6 +50,7 @@ export const useJobPosition = () => {
                 let preparedData = normalizeSelectValues(other, [
                     "company_id",
                     "department_id",
+                    "branch_id",
                 ]);
 
                 const response = await JobPositionCreate(preparedData).unwrap();
@@ -70,6 +72,10 @@ export const useJobPosition = () => {
                 id: data.id || "",
                 company_id:
                     companySearchTemplate([data.company])?.at(0) ?? null,
+                branch_id:
+                    branchSearchTemplate(data?.branch ? [data.branch] : [])?.at(
+                        0
+                    ) ?? null,
                 department_id:
                     departmentSearchTemplate(
                         data?.department ? [data.department] : []
@@ -85,18 +91,19 @@ export const useJobPosition = () => {
                 responsibilities: data?.requirements?.responsibilities || "",
                 requirements: data?.requirements?.requirements || "",
                 // =============== Classification ===============
-                type: data.type || "",
-                category: data?.position_info?.category || "",
-                employment_type: data?.position_info?.employment_type || "",
-                grade: data?.position_info?.grade || "",
+
+                job_category: data?.classification_info?.job_category || "",
+                employment_type:
+                    data?.classification_info?.employment_type || "",
+                job_level: data?.classification_info?.job_level || "",
 
                 // =============== Level & Salary ===============
-                level: data?.position_info?.level ?? "",
-                min_salary: data?.salary_info?.salary_min ?? "",
-                max_salary: data?.salary_info?.salary_max ?? "",
-                salary_currency: data?.salary_info?.salary_currency || "",
-                salary_period: data?.salary_info?.salary_period || "",
-                benefits: data?.recruitment_info?.benefits_offered || "",
+
+                min_salary: data?.salary_and_benefits?.min_salary ?? "",
+                max_salary: data?.salary_and_benefits?.max_salary ?? "",
+                currency: data?.salary_and_benefits?.currency || "",
+                salary_type: data?.salary_and_benefits?.salary_type || "",
+                benefits: data?.salary_and_benefits?.benefits || "",
 
                 // =============== Requirements & Skills ===============
                 required_skills: data?.requirements?.required_skills || "",
@@ -106,20 +113,18 @@ export const useJobPosition = () => {
                     data?.requirements?.experience_years_min ?? "",
                 experience_years_max:
                     data?.requirements?.experience_years_max ?? "",
+                hierarchy_level: data?.hierarchy_info?.hierarchy_level ?? "",
+                hierarchy_path: data?.hierarchy_info?.hierarchy_path || "",
+                sort_order: data.sort_order ?? 0,
 
                 // =============== Recruitment & Vacancy ===============
-                total_positions: data?.position_metrics?.total_positions ?? "",
-                filled_positions:
-                    data?.position_metrics?.filled_positions ?? "",
-                vacant_positions:
-                    data?.position_metrics?.vacant_positions ?? "",
-                is_recruiting: Boolean(
-                    data?.recruitment_info?.is_active_recruitment
-                ),
-                recruitment_start_date:
-                    data?.recruitment_info?.recruitment_start_date || "", // not present; stays ""
-                recruitment_end_date:
-                    data?.recruitment_info?.recruitment_end_date || "", // not present; stays ""
+                total_positions: data?.position_info?.total_positions ?? "",
+                filled_positions: data?.position_info?.filled_positions ?? "",
+                vacant_positions: data?.position_info?.vacant_positions ?? "",
+                is_recruiting: Boolean(data?.position_info?.is_recruiting),
+                posting_date: data?.position_info?.posting_date || "", // not present; stays ""
+                application_deadline:
+                    data?.position_info?.application_deadline || "", // not present; stays ""
 
                 // =============== Status & Work Style ===============
                 status: data?.system_info?.status || "inactive",
@@ -144,6 +149,7 @@ export const useJobPosition = () => {
                 let preparedData = normalizeSelectValues(other, [
                     "company_id",
                     "department_id",
+                    "branch_id",
                 ]);
                 //set to api
                 const response = await JobPositionUpdate({

@@ -52,9 +52,7 @@ let columns = (actions) => [
             {status}
           </Pill>
           {isHQ ? <Pill className="bg-blue-100 text-blue-700">HQ</Pill> : null}
-          {d?.is_enabled === false ? (
-            <Pill className="bg-gray-100 text-gray-700">Disabled</Pill>
-          ) : null}
+          
         </div>
       );
     },
@@ -147,29 +145,7 @@ let columns = (actions) => [
     },
   },
 
-  // Capacity / TZ / Geo
-  {
-    id: "meta",
-    header: "Meta",
-    cell: ({ row }) => {
-      const d = row.original;
-      const cap = d?.employee_capacity ?? "—";
-      const tz = d?.timezone || "—";
-      const lat = d?.latitude ?? "";
-      const lng = d?.longitude ?? "";
-      return (
-        <div className="flex flex-col">
-          <span className="text-xs">Capacity: {cap}</span>
-          <span className="text-xs">TZ: {tz}</span>
-          {(lat || lng) && (
-            <span className="text-xs text-muted-foreground">
-              {lat || "—"}, {lng || "—"}
-            </span>
-          )}
-        </div>
-      );
-    },
-  },
+
 
   // Actions
   {

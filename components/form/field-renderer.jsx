@@ -187,6 +187,8 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                 <DynamicAsyncSelect
                                     loadOptions={loadOptions}
                                     field={field}
+                                    form={form}
+                                    handleChange={handleChange}
                                 />
                             ) : (
                                 <Input

@@ -10,21 +10,22 @@ const UserDeviceReport = ({ height = 250 }) => {
   const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
-  const series = [2200, 800, 1500];
+  const series = [40, 70, 150, 30];
   const options = {
     chart: {
       toolbar: {
         show: false,
       },
     },
-    labels: ["Desktop ", "Tablet", "Mobile"],
+    labels: ["Manager", "Team Lead", "Developer", "Intern"],
     dataLabels: {
       enabled: false,
     },
     colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      "#FF9E69",
-      "#FFD1A7",
+      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`, // primary
+      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,    // info
+      "#FFEDD5", // soft pastel
+      "#FFE4E1", // soft pink
     ],
     tooltip: {
       theme: mode === "dark" ? "dark" : "light",

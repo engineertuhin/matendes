@@ -13,7 +13,7 @@ const UsersDataChart = ({ height = 160 }) => {
 
   const series = [
     {
-      data: [400, 60, 448, 50, 540, 580, 690, 800],
+      data: [400, 60, 448, 50, 70],
     },
   ];
 

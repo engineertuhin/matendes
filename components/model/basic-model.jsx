@@ -19,6 +19,7 @@ export default function BasicModel({
     submitLabel,
     cancelLabel,
     size,
+    children,
 }) {
     const openModel = useWatch({
         control: form.control,
@@ -59,6 +60,8 @@ export default function BasicModel({
                         actions={null} // footer buttons below
                         gridCols="grid-cols-12"
                     />
+                    
+                    {fields.length <= 0 && children}
                 </div>
 
                 {/* Footer (fixed) */}

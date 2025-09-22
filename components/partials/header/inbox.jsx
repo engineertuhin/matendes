@@ -27,9 +27,9 @@ const Inbox = () => {
            hover:text-primary text-default-500 dark:text-default-800  rounded-full "
         >
           <Envelope className="h-5 w-5 " />
-          <Badge className="w-4 h-4 p-0 text-xs  font-medium  items-center justify-center absolute left-[calc(100%-18px)] bottom-[calc(100%-16px)] ring-2 ring-primary-foreground">
+          {/* <Badge className="w-4 h-4 p-0 text-xs  font-medium  items-center justify-center absolute left-[calc(100%-18px)] bottom-[calc(100%-16px)] ring-2 ring-primary-foreground">
             1
-          </Badge>
+          </Badge> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

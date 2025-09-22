@@ -12,11 +12,11 @@ import { Button } from "@/components/ui/button";
 const val = (v, f = "—") => (v ?? v === 0 ? v : f);
 
 const fmtSalary = (row) => {
-  const s = row.original?.salary_info || {};
-  const min = s.salary_min;
-  const max = s.salary_max;
-  const cur = s.salary_currency;
-  const per = s.salary_period;
+  const s = row.original?.salary_and_benefits || {};
+  const min = s.min_salary;
+  const max = s.max_salary;
+  const cur = s.currency;
+  const per = s.salary_type;
   if (min == null && max == null) return "—";
   const range =
     min != null && max != null
@@ -33,31 +33,27 @@ let columns = (actions) => [
   { accessorKey: "code", header: "Code" },
 
   // Classification
+  // {
+  //   id: "type",
+  //   header: "Type",
+  //   cell: ({ row }) => val(row.original?.type),
+  // },
   {
-    id: "type",
-    header: "Type",
-    cell: ({ row }) => val(row.original?.type),
-  },
-  {
-    id: "category",
+    id: "job_category",
     header: "Category",
-    cell: ({ row }) => val(row.original?.position_info?.category),
+    cell: ({ row }) => val(row.original?.classification_info?.job_category),
   },
   {
     id: "employment_type",
     header: "Employment",
-    cell: ({ row }) => val(row.original?.position_info?.employment_type),
+    cell: ({ row }) => val(row.original?.classification_info?.employment_type),
   },
-  {
-    id: "level",
-    header: "Level",
-    cell: ({ row }) => val(row.original?.position_info?.level),
-  },
-  {
-    accessorKey: "grade",
-    header: "Grade",
-    cell: ({ row }) => val(row.original?.position_info?.grade),
-  },
+  // {
+  //   id: "level",
+  //   header: "Level",
+  //   cell: ({ row }) => val(row.original?.position_info?.level),
+  // },
+ 
 
   // Salary
   {
@@ -71,7 +67,7 @@ let columns = (actions) => [
     id: "vacancies",
     header: "Vacancies",
     cell: ({ row }) => {
-      const m = row.original?.position_metrics || {};
+      const m = row.original?.position_info || {};
       const t = m.total_positions ?? "—";
       const f = m.filled_positions ?? "—";
       const v = m.vacant_positions ?? "—";

@@ -5,7 +5,7 @@ import columns from "./config/columns";
 
 import { useEmploy } from "@/domains/employ/hook/useEmploy";
 
-const departmentPage = () => {
+const employeePage = () => {
     const { actions, employState } = useEmploy(); // Custom hook to manage user actions
 
     return (
@@ -23,4 +23,4 @@ const departmentPage = () => {
     );
 };
 
-export default departmentPage;
+export default employeePage;

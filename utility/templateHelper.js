@@ -30,3 +30,11 @@ export const jobPositionsTemplate = (res) => {
         value: data.id,
     }));
 };
+
+
+export const roleTemplate = (res) => {
+    return res.map((data) => ({
+        label: data.display_name ,
+        value: data.id,
+    }));
+};

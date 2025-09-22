@@ -7,6 +7,8 @@ export default function BasicTableLayout({
     data,
     addButtonLabel,
     to,
+    filter,
+    pagination,
 }) {
     return (
         <BasicDataTable
@@ -15,6 +17,8 @@ export default function BasicTableLayout({
             data={data}
             addButtonLabel={addButtonLabel}
             to={to}
+            filter={filter}
+            pagination={pagination}
         />
     );
 }
