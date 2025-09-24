@@ -1,20 +1,7 @@
 const fields = (actions) => {
     return [
         // =============== Relations ===============
-        {
-            name: "company_id",
-            type: "async-select",
-            label: "Company *",
-            loadOptions: [
-              "organization/companies", 
-              "companies", 
-              "companySearchTemplate", 
-              null, // no dependency
-              ["branch_id"] // childField
-            ],
-            colSpan: "col-span-12 md:col-span-6",
-            rules: { required: "Company is required" },
-          },  
+    
         {
             name: "branch_id",
             type: "async-select",
@@ -23,7 +10,7 @@ const fields = (actions) => {
                 "organization/branches",
                 "branches",
                 "branchSearchTemplate",
-                "company_id", // dependencyKey = parent 
+
             ],
             placeholder: "Optional",
             colSpan: "col-span-12 md:col-span-6",
@@ -56,7 +43,6 @@ const fields = (actions) => {
 
                 // Get all 4 IDs from the form
                 const filterData = {
-                    company_id: field.getValues("company_id")?.value || null,
                     branch_id: field.getValues("branch_id")?.value || null,
                     department_id:
                         field.getValues("department_id")?.value || null,

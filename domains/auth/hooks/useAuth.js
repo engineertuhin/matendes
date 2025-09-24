@@ -3,6 +3,7 @@ import {
     useLoginMutation,
     useLogoutMutation,
     useLazyMeQuery,
+    useLoginAsCompanyMutation,
 } from "../services/authApi";
 import { useAppDispatch, useAppSelector } from "../../../hooks/use-redux";
 import Cookies from "js-cookie";
@@ -11,10 +12,11 @@ const useAuth = () => {
     const dispatch = useAppDispatch();
 
     // Get current auth state
-    const { user, token, isAuthenticated,permissions } = useAppSelector(
+    const { user, token, isAuthenticated, permissions } = useAppSelector(
         (state) => state.auth
     );
 
+    const [loginAsCompanyMutation] = useLoginAsCompanyMutation();
     const [loginMutation, { isLoading: isLoggingIn, error: loginError }] =
         useLoginMutation();
 
@@ -48,11 +50,6 @@ const useAuth = () => {
                     setPermissions: response.data.permission,
                 })
             );
-    
-
-
-
-
 
             return { success: true, data: response };
         } catch (error) {
@@ -77,6 +74,24 @@ const useAuth = () => {
             return { success: false, error };
         }
     };
+    const loginAsCompany = async (companyId) => {
+        try {
+            const response = await loginAsCompanyMutation({
+                company_id: companyId,
+            }).unwrap();
+            
+            Cookies.set("auth-token", response.data.token, { expires: 7 }); // expires in 7 days
+            dispatch(
+                setCredentials({
+                    user: response.user,
+                    token: response.token,
+                })
+            );
+            return { success: true };
+        } catch (error) {
+            return { success: false, error };
+        }
+    }
 
     return {
         // Auth state
@@ -84,6 +99,7 @@ const useAuth = () => {
         token,
         isAuthenticated,
         getMe,
+        loginAsCompany,
 
         // Actions
         login,
@@ -95,6 +111,7 @@ const useAuth = () => {
 
         // Errors
         loginError,
+
     };
 };
 

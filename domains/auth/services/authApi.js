@@ -23,10 +23,23 @@ export const authApi = createApi({
                 method: "GET",
             }),
         }),
+        loginAsCompany: builder.mutation({
+            query: (company_id) => ({
+                url: "auth/login-as-company",
+                method: "POST",
+                body: company_id,
+            }),
+        }),
         // fetchUser: builder.query({
         //   query: () => "/v1/auth/me",
         // }),
     }),
 });
 
-export const { useLoginMutation, useLogoutMutation,useMeQuery,useLazyMeQuery } = authApi;
+export const {
+    useLoginMutation,
+    useLogoutMutation,
+    useMeQuery,
+    useLazyMeQuery,
+    useLoginAsCompanyMutation,
+} = authApi;

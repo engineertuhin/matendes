@@ -23,7 +23,7 @@ const NavTools = ({ isDesktop, isMobile, sidebarType }) => {
       {isDesktop && <FullScreen />}
 
       <ThemeButton />
-      <Inbox />
+      {/* <Inbox /> */}
       <NotificationMessage />
 
       <div className="ltr:pl-2 rtl:pr-2">

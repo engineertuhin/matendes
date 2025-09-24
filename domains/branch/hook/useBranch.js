@@ -45,7 +45,7 @@ export const useBranch = () => {
             try {
                 let { openModel, ...other } = data;
                 let preparedData = normalizeSelectValues(other, [
-                    "company_id",
+                    // "company_id",
                     "parent_branch_id",
                 ]);
 
@@ -66,10 +66,6 @@ export const useBranch = () => {
             form.reset({
                 // IDs
                 id: data.id || "",
-                company_id:
-                    companySearchTemplate(
-                        data?.company ? [data.company] : []
-                    )?.at(0) ?? null,
                 parent_branch_id:
                     branchSearchTemplate(
                         data?.parent_branch ? [data.parent_branch] : []
@@ -134,7 +130,7 @@ export const useBranch = () => {
                 let { openModel, id, ...other } = data;
                 //prepare data
                 let preparedData = normalizeSelectValues(other, [
-                    "company_id",
+                    // "company_id",
                     "parent_branch_id",
                 ]);
                 //set to api

@@ -12,20 +12,7 @@ const fields = () => {
 
     return [
         // ============= Relations =============
-        {
-            name: "company_id",
-            type: "async-select",
-            label: "Company *",
-            loadOptions: [
-              "organization/companies", 
-              "companies", 
-              "companySearchTemplate", 
-              null, // no dependency
-              ["branch_id"] // childField
-            ],
-            colSpan: "col-span-12 md:col-span-4",
-            rules: { required: "Company is required" },
-          },  
+  
         {
             name: "branch_id",
             type: "async-select",
@@ -34,7 +21,7 @@ const fields = () => {
                 "organization/branches",
                 "branches",
                 "branchSearchTemplate",
-                "company_id", // dependencyKey = parent 
+            
             ],
             placeholder: "Optional",
             colSpan: "col-span-12 md:col-span-4",

@@ -44,7 +44,7 @@ export const useDepartment = () => {
             try {
                 let { openModel, ...other } = data;
                 let preparedData = normalizeSelectValues(other, [
-                    "company_id",
+                    // "company_id",
                     "branch_id",
                     "parent_department_id",
                 ]);
@@ -67,8 +67,6 @@ export const useDepartment = () => {
             form.reset({
                 // IDs
                 id: data.id || "",
-                company_id:
-                    companySearchTemplate(data?.company ? [data.company] : [])?.at(0) ?? null,
                 branch_id:
                     branchSearchTemplate(data?.branch ? [data.branch] : [])?.at(
                         0
@@ -140,7 +138,7 @@ export const useDepartment = () => {
                 let { openModel, id, ...other } = data;
                 //prepare data
                 let preparedData = normalizeSelectValues(other, [
-                    "company_id",
+                    // "company_id",
                     "branch_id",
                     "parent_department_id",
                 ]);

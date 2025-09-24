@@ -40,9 +40,10 @@ const fields = [
     {
         name: "registration_number",
         type: "input",
-        label: "Registration Number",
+        label: "Registration Number *",
         placeholder: "REG-12345",
         colSpan: "col-span-12 md:col-span-6",
+        rules: { required: "Registration number is required" },
     },
     {
         name: "tax_id",
@@ -77,7 +78,7 @@ const fields = [
     {
         name: "email",
         type: "email",
-        label: "Email",
+        label: "Email *",
         placeholder: "info@acme.com",
         colSpan: "col-span-12 md:col-span-6",
         rules: {
@@ -85,14 +86,28 @@ const fields = [
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                 message: "Enter a valid email address",
             },
+            required: { value: true, message: "Email is required" },
+        },
+    },
+    {
+        name: "password",
+        type: "input",
+        label: "Login Password *",
+        placeholder: "******",
+        colSpan: "col-span-12 md:col-span-6",
+        inputProps: { type: "password", autoComplete: "new-password" },
+        rules: {
+            minLength: { value: 6, message: "Minimum length is 6" },
+            required: { value: true, message: "Password is required" },
         },
     },
     {
         name: "phone",
         type: "input",
-        label: "Phone",
+        label: "Phone *",
         placeholder: "+1-555-123456",
         colSpan: "col-span-12 md:col-span-6",
+        rules: { required: "Phone is required" },
     },
 
     {
@@ -189,14 +204,15 @@ const fields = [
     {
         name: "locale",
         type: "input",
-        label: "Locale",
+        label: "Locale *",
         placeholder: "en",
         colSpan: "col-span-12 md:col-span-6",
+        rules: { required: "Locale is required" },
     },
     {
         name: "currency",
         type: "input",
-        label: "Currency",
+        label: "Currency *",
         placeholder: "USD",
         colSpan: "col-span-12 md:col-span-6",
     },
@@ -232,7 +248,7 @@ const fields = [
     {
         name: "subscription_plan",
         type: "select",
-        label: "Subscription Plan",
+        label: "Subscription Plan *",
         placeholder: "Select plan",
         colSpan: "col-span-12 md:col-span-6",
         options: [
@@ -241,11 +257,12 @@ const fields = [
             { label: "Professional", value: "professional" },
             { label: "Enterprise", value: "enterprise" },
         ],
+        rules: { required: "Subscription plan is required" },
     },
     {
         name: "subscription_status",
         type: "select",
-        label: "Subscription Status",
+        label: "Subscription Status *",
         placeholder: "Select status",
         colSpan: "col-span-12 md:col-span-6",
         options: [
@@ -254,6 +271,7 @@ const fields = [
             { label: "Cancelled", value: "cancelled" },
             { label: "Expired", value: "expired" },
         ],
+        rules: { required: "Subscription status is required" },
     },
 
     // Timestamps

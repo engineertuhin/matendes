@@ -12,10 +12,13 @@ import { formReset } from "@/utility/helpers";
 import { debounce } from "@/utility/helpers";
 import { companySearchTemplate } from "@/utility/templateHelper";
 
+import useAuth from "@/domains/auth/hooks/useAuth";
+
 export const useCompany = () => {
     const [userCreate] = useCompanyCreateMutation();
     const [userUpdate] = useCompanyUpdateMutation();
     const [userDelete] = useCompanyDeleteMutation();
+    const { loginAsCompany } = useAuth();
 
     const form = useForm({
         mode: "onBlur",
@@ -55,8 +58,6 @@ export const useCompany = () => {
             }
         },
         onEdit: (data) => {
-
-            console.log(data);
             form.reset({
                 id: data.id || "",
                 code: data.code || "",
@@ -82,16 +83,6 @@ export const useCompany = () => {
                 suspended_at: data.suspended_at,
                 slug: data.slug,
                 subdomain: data.subdomain,
-                responsibilities: data.requirements.responsibilities,
-                requirements: data.requirements.requirements,
-                education_required: data.requirements.education_required,
-                experience_required:
-                    data.classification_info.experience_required,
-
-                educational_requirements:
-                    data.requirements.educational_requirements,
-                preferred_experience: data.requirements.preferred_experience,
-                recruitment_status: data.position_info.recruitment_status,
 
                 // business_info
                 industry: data.business_info?.industry || "",
@@ -145,6 +136,19 @@ export const useCompany = () => {
 
             callback(companySearchTemplate(res));
         }, 500),
+
+        onLoginAsCompany: async (data) => {
+        const res = await    loginAsCompany(data.id);
+
+        if(res.success){
+            toast.success("Login as company successfully");
+          
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+           
+        },
     };
 
     return {

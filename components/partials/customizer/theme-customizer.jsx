@@ -63,7 +63,7 @@ const ThemeCustomize = ({
             <FooterStyle />
           </div>
         </ScrollArea>
-        <SheetFooter className="py-4 gap-3 lg:flex justify-between hidden  ">
+        {/* <SheetFooter className="py-4 gap-3 lg:flex justify-between hidden  ">
           <Button asChild className="w-full">
             <Link href="https://1.envato.market/vNaJR3">Buy Now</Link>
           </Button>
@@ -75,7 +75,7 @@ const ThemeCustomize = ({
               Our Portfolio
             </Link>
           </Button>
-        </SheetFooter>
+        </SheetFooter> */}
       </SheetContent>
     </Sheet>
   );

@@ -13,6 +13,11 @@ const protectedRoutes = [
     "/department",
     "/employee",
     "/settings",
+    "/profile",
+    "/users",
+    "/roles",
+    "/permissions",
+    "/attendance",
 ];
 // Public routes that should redirect to dashboard if authenticated
 const authRoutes = ["/login", "/register", "/forgot-password"];

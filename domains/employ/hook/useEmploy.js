@@ -44,7 +44,6 @@ export const useEmploy = () => {
             try {
                 let { openModel, ...other } = data;
                 let preparedData = normalizeSelectValues(other, [
-                    "company_id",
                     "branch_id",
                     "department_id",
                     "job_position_id",
@@ -69,8 +68,7 @@ export const useEmploy = () => {
             form.reset({
                 // =============== Identity & Org ===============
                 id: data.id || "",
-                company_id:
-                    companySearchTemplate([data.company])?.at(0) ?? null,
+
                 branch_id:
                     branchSearchTemplate(data?.branch ? [data.branch] : [])?.at(
                         0
@@ -214,7 +212,7 @@ export const useEmploy = () => {
                 let { openModel, id, ...other } = data;
                 //prepare data
                 let preparedData = normalizeSelectValues(other, [
-                    "company_id",
+
                     "branch_id",
                     "department_id",
                     "job_position_id",
