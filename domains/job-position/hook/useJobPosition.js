@@ -90,6 +90,8 @@ export const useJobPosition = () => {
 
                 responsibilities: data?.requirements?.responsibilities || "",
                 requirements: data?.requirements?.requirements || "",
+                education_required: data?.requirements?.education_required || "",
+                education_preferred: data?.requirements?.education_preferred || "",
                 // =============== Classification ===============
 
                 job_category: data?.classification_info?.job_category || "",
@@ -108,7 +110,7 @@ export const useJobPosition = () => {
                 // =============== Requirements & Skills ===============
                 required_skills: data?.requirements?.required_skills || "",
                 preferred_skills: data?.requirements?.preferred_skills || "",
-                education_level: data?.requirements?.required_education || "",
+                education_level: data?.requirements?.education_level || "",
                 experience_years_min:
                     data?.requirements?.experience_years_min ?? "",
                 experience_years_max:

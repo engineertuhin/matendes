@@ -207,6 +207,12 @@ const fields = () => {
                     colSpan: "col-span-12 md:col-span-4",
                 },
                 {
+                    name: "contact_preferences",
+                    type: "input",
+                    label: "Contact Preferences",
+                    colSpan: "col-span-12 md:col-span-4",
+                },
+                {
                     name: "emergency_contact_name",
                     type: "input",
                     label: "Emergency Contact Name",

@@ -79,6 +79,7 @@ export const useCompany = () => {
                 subscription_status: data.subscription_status,
                 subscription_plan: data.subscription_plan,
                 suspended_reason: data.suspended_reason,
+                feature_configuration: data.feature_configuration,
                 trial_ends_at: data.trial_ends_at,
                 suspended_at: data.suspended_at,
                 slug: data.slug,
@@ -144,7 +145,8 @@ export const useCompany = () => {
             toast.success("Login as company successfully");
           
             setTimeout(() => {
-                window.location.reload();
+        
+                window.location.href = '/dashboard'
             }, 1000);
         }
            

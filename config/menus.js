@@ -81,6 +81,12 @@ export const menusConfig = {
                     permission: "view-attendance",
                 },
                 {
+                    title: "Attendance View",
+                    href: "/attendance/view-attendance",
+                    icon: ScanLine,
+                    permission: "view-attendance",
+                },
+                {
                     title: "Salary Generate",
                     href: "/salary/generate",
                     icon: Banknote,
@@ -164,6 +170,12 @@ export const menusConfig = {
                     {
                         title: "QR Attendance",
                         href: "/attendance/qr-attendance",
+                        icon: ScanLine,
+                        permission: "view-attendance",
+                    },
+                    {
+                        title: "Attendance View",
+                        href: "/attendance/view-attendance",
                         icon: ScanLine,
                         permission: "view-attendance",
                     },
@@ -262,6 +274,12 @@ export const menusConfig = {
                     {
                         title: "QR Attendance",
                         href: "/attendance/qr-attendance",
+                        icon: ScanLine,
+                        permission: "view-attendance",
+                    },
+                    {
+                        title: "Attendance View",
+                        href: "/attendance/view-attendance",
                         icon: ScanLine,
                         permission: "view-attendance",
                     },

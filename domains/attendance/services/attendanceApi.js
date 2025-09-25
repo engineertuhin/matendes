@@ -28,7 +28,6 @@ export const attendanceApi = createApi({
                     action: action,
                     latitude: latitude,
                     longitude: longitude,
-    
                 },
             }),
             invalidatesTags: ["Attendance"],
@@ -78,6 +77,13 @@ export const attendanceApi = createApi({
             providesTags: ["Attendance"],
         }),
 
+        viewAttendance: builder.query({
+            query: () => ({
+                url: "hrm/attendance",
+                method: "GET",
+            }),
+            providesTags: ["Attendance"],
+        }),
         getAttendanceHistory: builder.query({
             query: (params = {}) => ({
                 url: "api/v1/hrm/attendance",
@@ -153,4 +159,5 @@ export const {
     useLazyGetAttendanceReportQuery,
     useDeleteAttendanceMutation,
     useUpdateAttendanceMutation,
+    useViewAttendanceQuery,
 } = attendanceApi;

@@ -99,7 +99,7 @@ const columns = (actions) => {
             cell: ({ row }) => row.original?.department?.name || "—",
         },
         {
-            id: "job_position",
+            id: "job_position_id",
             header: "Position",
             cell: ({ row }) => row.original?.job_position?.title || "—",
         },

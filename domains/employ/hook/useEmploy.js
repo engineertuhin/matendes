@@ -104,10 +104,11 @@ export const useEmploy = () => {
                 // =============== Contact Info ===============
                 personal_email: data?.contact_info?.personal_email || "",
                 work_email: data?.contact_info?.work_email || "",
-                phone_primary: data?.contact_info?.phone_primary || "",
-                phone_secondary: data?.contact_info?.phone_secondary || "",
+                primary_phone: data?.contact_info?.primary_phone || "",
+                secondary_phone: data?.contact_info?.secondary_phone || "",
 
                 // =============== Emergency Contact ===============
+                contact_preferences: data?.emergency_contact?.contact_preferences || "",
                 emergency_contact_name: data?.emergency_contact?.name || "",
                 emergency_contact_relation:
                     data?.emergency_contact?.relation || "",
@@ -153,10 +154,8 @@ export const useEmploy = () => {
                 work_mode: data?.employment_info?.work_mode || "office",
 
                 // =============== Professional Info ===============
-                previous_company:
-                    data?.professional_info?.previous_company || "",
-                previous_position:
-                    data?.professional_info?.previous_position || "",
+                work_history:
+                    data?.professional_info?.work_history || "",
                 years_of_experience:
                     data?.professional_info?.years_of_experience || "",
                 skills: data?.professional_info?.skills || "",

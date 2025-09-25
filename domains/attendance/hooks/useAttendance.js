@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/use-redux";
 import {
+    useViewAttendanceQuery,
     useGenerateQRCodeMutation,
     useScanQRCodeMutation,
     useLazyGetQRStatusQuery,
@@ -46,6 +47,15 @@ const useAttendance = () => {
     const [checkOutMutation, { isLoading: isCheckingOut }] = useCheckOutMutation();
     const [triggerGetTodayAttendance] = useLazyGetTodayAttendanceQuery();
     const [syncOfflineDataMutation, { isLoading: isSyncing }] = useSyncOfflineDataMutation();
+
+    //  const { data: attendance} = useViewAttendanceQuery();
+      const { data} = useViewAttendanceQuery();
+
+    console.log(data)
+        const attendanceState = {
+    data: data?.data || [], 
+
+  };
 
     // QR Code operations
     const generateQRCode = useCallback(async (branchId, expiresInMinutes = 30) => {
@@ -371,7 +381,9 @@ const useAttendance = () => {
         isCheckingIn,
         isCheckingOut,
         isSyncing,
+        attendanceState,
     };
+   
 };
 
 export default useAttendance;
