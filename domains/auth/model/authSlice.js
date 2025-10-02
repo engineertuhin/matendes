@@ -15,6 +15,7 @@ const initialState = {
   token: token || null,
   isAuthenticated: !!token,
   permissions: [],
+  notificationData: [],
 };
 
 const authSlice = createSlice({
@@ -22,10 +23,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { user, token } = action.payload;
+      const { user, token, notificationData } = action.payload;
       state.user = user;
       state.token = token;
       state.isAuthenticated = true;
+      state.notificationData = notificationData;
       
     },
     logout: (state) => {

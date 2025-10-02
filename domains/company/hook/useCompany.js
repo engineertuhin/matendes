@@ -11,8 +11,10 @@ import { useForm } from "react-hook-form";
 import { formReset } from "@/utility/helpers";
 import { debounce } from "@/utility/helpers";
 import { companySearchTemplate } from "@/utility/templateHelper";
+import { getFilterParams } from "@/utility/helpers";
 
 import useAuth from "@/domains/auth/hooks/useAuth";
+import { useMemo } from "react";
 
 export const useCompany = () => {
     const [userCreate] = useCompanyCreateMutation();
@@ -27,16 +29,19 @@ export const useCompany = () => {
     });
 
     // Only run query if searchValue is not empty
-    const { data: companySearchResult, isLoading } = useCompanySearchQuery(
+    const { data: companySearchResult } = useCompanySearchQuery(
         { search: form.watch("search") },
         { skip: !form.watch("search") } // skip query if empty
     );
 
-    const { data: company, refetch } = useCompanyFetchQuery();
+    const { data: company, refetch, isFetching } = useCompanyFetchQuery();
 
     const companiesState = {
         data: company?.data?.companies || [],
         form,
+        refetch,
+        pagination: company?.data?.pagination || {},
+        isFetching,
     };
 
     const actions = {
@@ -137,19 +142,16 @@ export const useCompany = () => {
 
             callback(companySearchTemplate(res));
         }, 500),
-
         onLoginAsCompany: async (data) => {
-        const res = await    loginAsCompany(data.id);
+            const res = await loginAsCompany(data.id);
 
-        if(res.success){
-            toast.success("Login as company successfully");
-          
-            setTimeout(() => {
-        
-                window.location.href = '/dashboard'
-            }, 1000);
-        }
-           
+            if (res.success) {
+                toast.success("Login as company successfully");
+
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 1000);
+            }
         },
     };
 

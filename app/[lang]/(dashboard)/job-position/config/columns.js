@@ -11,21 +11,21 @@ import { Button } from "@/components/ui/button";
 
 const val = (v, f = "—") => (v ?? v === 0 ? v : f);
 
-const fmtSalary = (row) => {
-  const s = row.original?.salary_and_benefits || {};
-  const min = s.min_salary;
-  const max = s.max_salary;
-  const cur = s.currency;
-  const per = s.salary_type;
-  if (min == null && max == null) return "—";
-  const range =
-    min != null && max != null
-      ? `${min}–${max}`
-      : min != null
-      ? `${min}+`
-      : `${max}`;
-  return [range, cur, per].filter(Boolean).join(" ");
-};
+// const fmtSalary = (row) => {
+//   const s = row.original?.salary_and_benefits || {};
+//   const min = s.min_salary;
+//   const max = s.max_salary;
+//   const cur = s.currency;
+//   const per = s.salary_type;
+//   if (min == null && max == null) return "—";
+//   const range =
+//     min != null && max != null
+//       ? `${min}–${max}`
+//       : min != null
+//       ? `${min}+`
+//       : `${max}`;
+//   return [range, cur, per].filter(Boolean).join(" ");
+// };
 
 let columns = (actions) => [
   // Core
@@ -56,11 +56,11 @@ let columns = (actions) => [
  
 
   // Salary
-  {
-    id: "salary",
-    header: "Salary",
-    cell: ({ row }) => fmtSalary(row),
-  },
+  // {
+  //   id: "salary",
+  //   header: "Salary",
+  //   cell: ({ row }) => fmtSalary(row),
+  // },
 
   // Vacancy metrics
   {

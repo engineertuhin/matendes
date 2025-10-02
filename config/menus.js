@@ -12,6 +12,13 @@ import {
     Settings,
     Shield,
     Banknote,
+    FileCheck,
+    FileText,
+    FileCode,
+    FolderKanban,
+    ClipboardList,
+    UserCheck,
+    UserCog,
 } from "lucide-react";
 
 export const menusConfig = {
@@ -64,9 +71,21 @@ export const menusConfig = {
             child: [
                 {
                     title: "Employee list",
-                    href: "/employ",
+                    href: "/employees",
                     icon: UserCircle,
                     permission: "view-employee",
+                },
+                {
+                    title: "View Attendance",
+                    href: "/attendance/view-attendance",
+                    icon: UserCircle,
+                    permission: "view-attendance",
+                },
+                {
+                    title: "Manual Attendance",
+                    href: "/attendance/manual-attendance",
+                    icon: UserCheck,
+                    permission: "manual-attendance",
                 },
                 {
                     title: "Generate QR Code",
@@ -81,19 +100,69 @@ export const menusConfig = {
                     permission: "view-attendance",
                 },
                 {
-                    title: "Attendance View",
-                    href: "/attendance/view-attendance",
-                    icon: ScanLine,
-                    permission: "view-attendance",
-                },
-                {
                     title: "Salary Generate",
                     href: "/salary/generate",
                     icon: Banknote,
-                    permission: "generate_salary",
+                    permission: "view-salary",
                 },
             ],
         },
+        {
+            title: "Contact Persons",
+            icon: Users,
+            child: [
+                {
+                    title: "Client list",
+                    href: "/client",
+                    icon: UserCircle,
+                    permission: "view-client",
+                },
+            ],
+        },
+        {
+            title: "Project",
+            icon: FolderKanban,
+            child: [
+                {
+                    title: "Project list",
+                    href: "/project",
+                    icon: ClipboardList,
+                    permission: "view-project",
+                },
+            ],
+        },
+        {
+            title: "Document",
+            icon: FileCheck,
+            child: [
+                {
+                    title: "Document Types",
+                    href: "/document/document-type",
+                    icon: FileCode,
+                    permission: "view-document",
+                },
+                {
+                    title: "Documents",
+                    href: "/document/documents",
+                    icon: FileText,
+                    permission: "view-document",
+                },
+            ],
+        },
+        // {
+        //     title: "Client",
+        //     icon: UserCog,
+        //     isOpen: false,
+        //     isHide: false,
+        //     child: [
+        //         {
+        //             title: "Clients List",
+        //             href: "/client/clients",
+        //             icon: Users,
+        //             permission: "view-job-position",
+        //         },
+        //     ],
+        // },
         {
             title: "Settings",
             icon: Settings,
@@ -157,9 +226,21 @@ export const menusConfig = {
                 child: [
                     {
                         title: "Employee list",
-                        href: "/employ",
+                        href: "/employees",
                         icon: UserCircle,
                         permission: "view-employee",
+                    },
+                    {
+                        title: "View Attendance",
+                        href: "/attendance/view-attendance",
+                        icon: UserCircle,
+                        permission: "view-attendance",
+                    },
+                    {
+                        title: "Manual Attendance",
+                        href: "/attendance/manual-attendance",
+                        icon: UserCheck,
+                        permission: "manual-attendance",
                     },
                     {
                         title: "Generate QR Code",
@@ -174,19 +255,56 @@ export const menusConfig = {
                         permission: "view-attendance",
                     },
                     {
-                        title: "Attendance View",
-                        href: "/attendance/view-attendance",
-                        icon: ScanLine,
-                        permission: "view-attendance",
-                    },
-                    {
                         title: "Salary Generate",
                         href: "/salary/generate",
                         icon: Banknote,
-                        permission: "generate_salary",
+                        permission: "view-salary",
                     },
                 ],
             },
+            {
+                title: "Contact Persons",
+                icon: Users,
+                child: [
+                    {
+                        title: "Client list",
+                        href: "/client",
+                        icon: UserCircle,
+                        permission: "view-client",
+                    },
+                ],
+            },
+            {
+                title: "Project",
+                icon: FolderKanban, // represents projects/boards
+                child: [
+                    {
+                        title: "Project List",
+                        href: "/project",
+                        icon: ClipboardList, // represents task/project listing
+                        permission: "view-project",
+                    },
+                ],
+            },
+            {
+                title: "Document",
+                icon: FileCheck,
+                child: [
+                    {
+                        title: "Document Types",
+                        href: "/document/document-type",
+                        icon: FileCode,
+                        permission: "view-document",
+                    },
+                    {
+                        title: "Documents",
+                        href: "/document/documents",
+                        icon: FileText,
+                        permission: "view-document",
+                    },
+                ],
+            },
+
             {
                 title: "Settings",
                 icon: Settings,
@@ -261,9 +379,21 @@ export const menusConfig = {
                 child: [
                     {
                         title: "Employee list",
-                        href: "/employ",
+                        href: "/employees",
                         icon: UserCircle,
                         permission: "view-employee",
+                    },
+                    {
+                        title: "View Attendance",
+                        href: "/attendance/view-attendance",
+                        icon: UserCircle,
+                        permission: "view-attendance",
+                    },
+                    {
+                        title: "Manual Attendance",
+                        href: "/attendance/manual-attendance",
+                        icon: UserCheck,
+                        permission: "manual-attendance",
                     },
                     {
                         title: "Generate QR Code",
@@ -278,19 +408,58 @@ export const menusConfig = {
                         permission: "view-attendance",
                     },
                     {
-                        title: "Attendance View",
-                        href: "/attendance/view-attendance",
-                        icon: ScanLine,
-                        permission: "view-attendance",
-                    },
-                    {
                         title: "Salary Generate",
                         href: "/salary/generate",
                         icon: Banknote,
-                        permission: "generate_salary",
+                        permission: "view-salary",
                     },
                 ],
             },
+            {
+                title: "Contact Person",
+                icon: Users,
+                child: [
+                    {
+                        title: "Client list",
+                        href: "/client",
+                        icon: UserCircle,
+                        permission: "view-client",
+                    },
+                ],
+            },
+            {
+                title: "Project",
+                icon: FolderKanban,
+                child: [
+                    {
+                        title: "Project list",
+                        href: "/project",
+                        icon: ClipboardList,
+                        permission: "view-project",
+                    },
+                ],
+            },
+            {
+                title: "Document",
+                icon: FileCheck,
+                isOpen: false,
+                isHide: false,
+                child: [
+                    {
+                        title: "Document Types",
+                        href: "/document/document-type",
+                        icon: FileCode,
+                        permission: "view-document",
+                    },
+                    {
+                        title: "Documents",
+                        href: "/document/documents",
+                        icon: FileText,
+                        permission: "view-document",
+                    },
+                ],
+            },
+
             {
                 title: "Settings",
                 icon: Settings,

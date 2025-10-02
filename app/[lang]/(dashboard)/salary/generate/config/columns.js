@@ -2,7 +2,14 @@ const safe = (v, fallback = "—") => (v ?? v === 0 ? v : fallback);
 
 let columns = (actions) => [
     // Core employee info
-    { accessorKey: "employee.first_name", header: "Name" },
+{
+  header: "Name",
+  accessorKey: "employee", // pass the whole employee object
+  cell: ({ row }) => {
+    const emp = row.original.employee;
+    return `${emp.first_name ?? ""} ${emp.last_name ?? ""}`;
+  }
+},
     { accessorKey: "employee.employee_code", header: "Code" },
 
     // Company

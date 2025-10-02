@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
-
+import { getFilterParams } from "@/utility/helpers";
 export const salaryApi = createApi({
     reducerPath: "salaryApi",
     baseQuery: baseQuery,
@@ -19,14 +19,10 @@ export const salaryApi = createApi({
 
         // Fetch all salaries with filters and pagination
         salaryFetch: builder.query({
-            query: (params = {}) => ({
+            query: () => ({
                 url: "hrm/salaries",
                 method: "GET",
-                params: {
-                    per_page: params.per_page || 15,
-                    page: params.page || 1,
-                    ...params
-                }
+                params: { ...getFilterParams() }, // fetch all salaries
             }),
             providesTags: ["Salary"],
         }),

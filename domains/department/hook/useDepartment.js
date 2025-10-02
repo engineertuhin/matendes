@@ -15,12 +15,14 @@ import {
     commonSearchTemplate,
     companySearchTemplate,
 } from "@/utility/templateHelper";
+import { getFilterParams } from "@/utility/helpers";
+import { useMemo } from "react";
 
 export const useDepartment = () => {
     const [departmentCreate] = useDepartmentCreateMutation();
     const [departmentUpdate] = useDepartmentUpdateMutation();
     const [departmentDelete] = useDepartmentDeleteMutation();
-    const { data: department, refetch } = useDepartmentFetchQuery();
+    const { data: department, refetch, isFetching } = useDepartmentFetchQuery();
 
     const form = useForm({
         mode: "onBlur",
@@ -28,15 +30,17 @@ export const useDepartment = () => {
         shouldFocusError: true,
     });
 
-    const { data: departmentSearchResult, isLoading } =
-        useDepartmentSearchQuery(
-            { search: form.watch("search") },
-            { skip: !form.watch("search") } // skip query if empty
-        );
+    const { data: departmentSearchResult } = useDepartmentSearchQuery(
+        { search: form.watch("search") },
+        { skip: !form.watch("search") } // skip query if empty
+    );
 
     const departmentState = {
         data: department?.data?.departments || [],
         form,
+        refetch,
+        pagination: department?.data?.pagination || {},
+        isFetching,
     };
 
     const actions = {
@@ -62,8 +66,7 @@ export const useDepartment = () => {
                 handleServerValidationErrors(apiErrors, form.setError);
             }
         },
-        onEdit: (data) => { 
-            
+        onEdit: (data) => {
             form.reset({
                 // IDs
                 id: data.id || "",
@@ -80,7 +83,8 @@ export const useDepartment = () => {
                 name: data.name || "",
                 code: data.code || "",
                 description: data.description || "",
-                department_type: data?.operational_info?.department_type || "technical",
+                department_type:
+                    data?.operational_info?.department_type || "technical",
                 type: data?.type || "department",
 
                 // Hierarchy
@@ -96,7 +100,7 @@ export const useDepartment = () => {
                 extension: data.extension || "",
 
                 is_billable: Boolean(data.is_billable),
-                is_cost_center: Boolean(data.is_cost_center), 
+                is_cost_center: Boolean(data.is_cost_center),
 
                 // Manager / Heads
                 head_of_department_id: data.head_of_department_id || "",
@@ -105,8 +109,7 @@ export const useDepartment = () => {
                 // Finance / Cost center
                 is_billable: Boolean(data.is_billable),
                 is_cost_center: Boolean(data.is_cost_center),
-                cost_center_code:
-                    data?.cost_center_code || "",
+                cost_center_code: data?.cost_center_code || "",
                 budget_allocated:
                     data?.cost_center_info?.budget_allocated ?? "",
                 budget_utilized: data?.cost_center_info?.budget_utilized ?? "",
@@ -120,12 +123,12 @@ export const useDepartment = () => {
                 functions: data?.operational_info?.functions || "",
 
                 // Dates & numbers
-                established_date: data?.system_info?.established_date || "", 
+                established_date: data?.system_info?.established_date || "",
                 hierarchy_level: data?.hierarchy_info?.hierarchy_level ?? "",
                 hierarchy_path: data.hierarchy_info.hierarchy_path,
 
                 // System
-                status: data?.system_info?.status || "inactive", 
+                status: data?.system_info?.status || "inactive",
             });
 
             form.setValue("openModel", true);
@@ -170,7 +173,7 @@ export const useDepartment = () => {
                         toast.success("Branch deleted successfully");
                         refetch();
                     } else if (response?.error?.data?.errors?.message) {
-                       toast.error(response?.error?.data?.errors?.message);
+                        toast.error(response?.error?.data?.errors?.message);
                     } else {
                         toast.error(
                             "Failed to delete branch. Please try again."

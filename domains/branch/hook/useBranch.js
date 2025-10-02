@@ -13,16 +13,15 @@ import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { formReset, normalizeSelectValues } from "@/utility/helpers";
 import { debounce } from "@/utility/helpers";
-import {
-    branchSearchTemplate,
-    companySearchTemplate,
-} from "@/utility/templateHelper";
+import { branchSearchTemplate } from "@/utility/templateHelper";
+import { getFilterParams } from "@/utility/helpers";
+import { useMemo } from "react";
 
 export const useBranch = () => {
     const [branchCreate] = useBranchCreateMutation();
     const [branchUpdate] = useBranchUpdateMutation();
     const [branchDelete] = useBranchDeleteMutation();
-    const { data: branch, refetch } = useBranchFetchQuery();
+    const { data: branch, refetch, isFetching } = useBranchFetchQuery();
 
     const form = useForm({
         mode: "onBlur",
@@ -30,7 +29,7 @@ export const useBranch = () => {
         shouldFocusError: true,
     });
 
-    const { data: branchSearchResult, isLoading } = useBranchSearchQuery(
+    const { data: branchSearchResult} = useBranchSearchQuery(
         { search: form.watch("search") },
         { skip: !form.watch("search") } // skip query if empty
     );
@@ -38,6 +37,9 @@ export const useBranch = () => {
     const branchesState = {
         data: branch?.data?.branches || [],
         form,
+        refetch,
+        pagination: branch?.data?.pagination || {},
+        isFetching,
     };
 
     const actions = {
@@ -50,7 +52,7 @@ export const useBranch = () => {
                 ]);
 
                 const response = await branchCreate(preparedData).unwrap();
-             
+
                 if (response.success) {
                     toast.success("Branch Create Successfully");
                     refetch();
@@ -155,12 +157,12 @@ export const useBranch = () => {
             try {
                 if (confirm("Are you sure you want to delete this branch?")) {
                     const response = await branchDelete({ id });
-               
+
                     if (response?.data?.success) {
                         toast.success("Branch deleted successfully");
                         refetch();
                     } else if (response?.error?.data?.errors?.message) {
-                       toast.error(response?.error?.data?.errors?.message);
+                        toast.error(response?.error?.data?.errors?.message);
                     } else {
                         toast.error(
                             "Failed to delete branch. Please try again."

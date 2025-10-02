@@ -34,15 +34,7 @@ let columns = (actions) => [
             const d = row.original;
             return (
                 <div className="flex items-center gap-2 min-w-[180px]">
-                    {d?.system_info?.logo_url ? (
-                        <img
-                            src={d.system_info.logo_url}
-                            alt={d.name || "logo"}
-                            className="h-6 w-6 rounded object-cover"
-                        />
-                    ) : (
-                        <div className="h-6 w-6 rounded bg-muted" />
-                    )}
+             
                     <div className="flex flex-col">
                         <span className="font-medium">{d?.name || "—"}</span>
                         {d?.legal_name ? (

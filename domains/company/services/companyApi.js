@@ -1,5 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
+import { getFilterParams } from "@/utility/helpers";
+
 export const companyApi = createApi({
     reducerPath: "Company",
     baseQuery: baseQuery,
@@ -29,9 +31,14 @@ export const companyApi = createApi({
             invalidatesTags: ["Company"],
         }),
         companyFetch: builder.query({
-            query: () => "organization/companies",
+            query: () => ({
+                url: "organization/companies",
+                method: "GET",
+                params: { ...getFilterParams()}, // fetch all companies
+            }),
             providesTags: ["Company"],
         }),
+
         companySearch: builder.query({
             query: ({ search }) => ({
                 url: "organization/companies",

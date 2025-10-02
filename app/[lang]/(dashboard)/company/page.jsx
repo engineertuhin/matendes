@@ -15,8 +15,7 @@ const CompanyPage = () => {
                 <BasicTableLayout
                     addButtonLabel="Add Company"
                     columns={columns(actions)}
-                    form={companiesState.form}
-                    data={companiesState.data} // Pass data from operations
+                    state={companiesState}
                 />
                 <BasicModel
                     title={

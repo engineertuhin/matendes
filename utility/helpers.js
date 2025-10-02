@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 // Single Field Validation
 export const singleValidateError = (name, errors) => {
     return errors[name] && errors[name].message;
@@ -9,6 +11,7 @@ export const multipleValidateError = (name, errors, index) => {
 
 //Server site Validation
 export const handleServerValidationErrors = (error, setError) => {
+    handleServerValidationErrorsToast(error, toast);
     if (error?.data?.errors) {
         const errors = error.data.errors;
         Object.keys(errors).forEach((field) => {
@@ -21,9 +24,8 @@ export const handleServerValidationErrors = (error, setError) => {
 };
 //Server site Validation with toast
 export const handleServerValidationErrorsToast = (error, toast) => {
-    console.log(error);
     // Direct Laravel-like: error.errors
-    if (error?.errors && typeof error.errors === "object") {
+    if (error?.data?.errors && typeof error.errors === "object") {
         const firstKey = Object.keys(error.errors)[0];
         const firstMsg = error.errors[firstKey]?.[0];
         toast.error(firstMsg || "Validation error", { duration: 4000 });
@@ -92,4 +94,20 @@ export function buildFormData(values, method = "POST") {
 
     appendFormData(values);
     return formData;
+}
+
+//
+export function setFilterParams(params, data) {
+    const url = new URL(window.location.href);
+    url.searchParams.set(params, data); // set page number
+    window.history.pushState({}, "", url.toString()); // update URL without reload
+}
+
+export function getFilterParams(params = false) {
+    const url = new URL(window.location.href);
+    if (!params) {
+        return Object.fromEntries(url.searchParams.entries());
+    }
+
+    return url.searchParams.get(params);
 }

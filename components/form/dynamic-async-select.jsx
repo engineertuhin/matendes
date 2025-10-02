@@ -1,6 +1,6 @@
 import AsyncSelect from "react-select/async";
 import { useDynamicSelect } from "@/domains/dynamic-select/hook/useDynamicSelect";
-export default function DynamicAsyncSelect({ loadOptions = [], field,form, handleChange = false }) {
+export default function DynamicAsyncSelect({ loadOptions = [], field, form, handleChange = false, isMulti = false }) {
     const {
         actions: { onSearch, onLoadData },
         isLoading,
@@ -17,7 +17,7 @@ export default function DynamicAsyncSelect({ loadOptions = [], field,form, handl
     
     return (
         <AsyncSelect
-          
+            isMulti={isMulti}
             loadOptions={(i, c) => {
                 return onSearch(i, c);
             }}
@@ -26,6 +26,7 @@ export default function DynamicAsyncSelect({ loadOptions = [], field,form, handl
                onLoadData();
             }}
             defaultOptions={transformed}
+            placeholder={isMulti ? "Select multiple options..." : "Select option..."}
             onChange={(val) =>{
                 if (Array.isArray(child)) {
                     child.forEach((item) => {

@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
+import { getFilterParams } from "@/utility/helpers";
 export const employApi = createApi({
     reducerPath: "Employ",
     baseQuery: baseQuery,
@@ -29,7 +30,11 @@ export const employApi = createApi({
             invalidatesTags: ["Employ"],
         }),
         employFetch: builder.query({
-            query: () => "hrm/employees",
+            query: () => ({
+                url: "hrm/employees",
+                method: "GET",
+                params: { ...getFilterParams() }, // fetch all employees
+            }),
             providesTags: ["Employ"],
         }),
     }),

@@ -1,24 +1,24 @@
-
 import BasicDataTable from "@/components/table/basic-table";
 
 export default function BasicTableLayout({
     columns,
-    form,
-    data,
     addButtonLabel,
     to,
     filter,
-    pagination,
+    pagination = true,
+    state,
 }) {
     return (
         <BasicDataTable
             columns={columns}
-            form={form}
-            data={data}
+            form={state.form}
+            data={state.data}
             addButtonLabel={addButtonLabel}
             to={to}
             filter={filter}
-            pagination={pagination}
+            pagination={pagination ? state.pagination : false}
+            refetch={state.refetch}
+            loading={state.isFetching}
         />
     );
 }

@@ -49,13 +49,16 @@ const useAttendance = () => {
     const [syncOfflineDataMutation, { isLoading: isSyncing }] = useSyncOfflineDataMutation();
 
     //  const { data: attendance} = useViewAttendanceQuery();
-      const { data} = useViewAttendanceQuery();
+      const { data, refetch, isFetching } = useViewAttendanceQuery();
 
-    console.log(data)
+
         const attendanceState = {
-    data: data?.data || [], 
-
-  };
+            data: data?.data || [],
+         
+            refetch,
+            pagination: data?.data?.pagination || {},
+            isFetching,
+        };
 
     // QR Code operations
     const generateQRCode = useCallback(async (branchId, expiresInMinutes = 30) => {

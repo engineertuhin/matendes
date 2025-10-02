@@ -15,8 +15,8 @@ const departmentPage = () => {
                 <BasicTableLayout
                     addButtonLabel="Add Job Position"
                     columns={columns(actions)}
-                    form={jobPositionState.form}
-                    data={jobPositionState.data} // Pass data from operations
+                     state={jobPositionState}
+
                 />
                 <BasicModel
                     title={

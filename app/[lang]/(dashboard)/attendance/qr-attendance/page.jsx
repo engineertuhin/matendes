@@ -465,7 +465,7 @@ export default function QRAttendance() {
 
             <button onClick={()=>{
                 handleScanResult('text','error');
-            }}>hello worl</button>
+            }}>Test Attendance</button>
         </PageLayout>
     );
 }

@@ -1,19 +1,19 @@
 const fields = [
     // =============== Relations ===============
 
-      {
+    {
         name: "parent_branch_id",
         type: "async-select",
         label: "Parent Branch",
         loadOptions: [
-          "organization/branches",
-          "branches",
-          "branchSearchTemplate",
-          "company_id" // dependencyKey = parent
+            "organization/branches",
+            "branches",
+            "branchSearchTemplate",
+            
         ],
         placeholder: "Optional",
         colSpan: "col-span-12 md:col-span-6",
-      },
+    },
 
     // =============== Core Info ===============
     {
@@ -105,14 +105,25 @@ const fields = [
         colSpan: "col-span-12 md:col-span-6",
         rules: { maxLength: { value: 50, message: "Max 50 characters" } },
     },
-    {
-        name: "manager_id",
-        type: "async-select",
-        label: "Manager",
-        colSpan: "col-span-12 md:col-span-6",
-    },
+  
 
     // =============== Operations ===============
+    {
+        name: "latitude",
+        type: "input",
+        label: "Latitude",
+        placeholder: "e.g. 23.8103",
+        colSpan: "col-span-12 md:col-span-6",
+       
+    },
+    {
+        name: "longitude",
+        type: "input",
+        label: "Longitude",
+        placeholder: "e.g. 90.4125",
+        colSpan: "col-span-12 md:col-span-6",
+        
+    },
     {
         name: "time_zone",
         type: "input",

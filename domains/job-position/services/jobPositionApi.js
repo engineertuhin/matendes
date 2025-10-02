@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
+import { getFilterParams } from "@/utility/helpers";
 export const jobPositionApi = createApi({
     reducerPath: "Job-position",
     baseQuery: baseQuery,
@@ -29,7 +30,11 @@ export const jobPositionApi = createApi({
             invalidatesTags: ["Job-position"],
         }),
         jobPositionFetch: builder.query({
-            query: () => "organization/job-positions",
+            query: () => ({
+                url: "organization/job-positions",
+                method: "GET",
+                params: { ...getFilterParams() }, // fetch all job positons
+            }),
             providesTags: ["Job-position"],
         }),
         jobPositionSearch: builder.query({

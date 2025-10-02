@@ -9,7 +9,6 @@ const fields = () => {
             label: "Identity & Organization",
             description: "Organizational mapping and core identity",
             fields: [
-   
                 {
                     name: "branch_id",
                     type: "async-select",
@@ -18,11 +17,10 @@ const fields = () => {
                         "organization/branches",
                         "branches",
                         "branchSearchTemplate",
-                       
                     ],
                     placeholder: "Optional",
                     colSpan: "col-span-12 md:col-span-4",
-                },  
+                },
                 {
                     name: "department_id",
                     type: "async-select",
@@ -45,12 +43,12 @@ const fields = () => {
                         "jobPositionsTemplate",
                     ],
                 },
-                {
-                    name: "manager_id",
-                    type: "async-select",
-                    label: "Manager",
-                    colSpan: "col-span-12 md:col-span-4",
-                },
+                // {
+                //     name: "manager_id",
+                //     type: "async-select",
+                //     label: "Manager",
+                //     colSpan: "col-span-12 md:col-span-4",
+                // },
                 {
                     name: "employee_code",
                     type: "input",
@@ -346,6 +344,31 @@ const fields = () => {
                     type: "date",
                     label: "Start Date",
                     colSpan: "col-span-12 md:col-span-4",
+                },
+                {
+                    name: "basic_salary",
+                    type: "number",
+                    label: "Basic Salary",
+                    placeholder: "90000.00",
+                    colSpan: "col-span-12 md:col-span-4",
+                    inputProps: { min: 0, step: "0.01" },
+                    rules: { min: { value: 0, message: "Must be ≥ 0" } },
+                },
+
+                {
+                    name: "salary_type",
+                    type: "select",
+                    label: "Salary Type *",
+                    colSpan: "col-span-12 md:col-span-4",
+                    options: [
+                        { label: "Hourly", value: "hourly" },
+                        { label: "Daily", value: "daily" },
+                        { label: "Weekly", value: "weekly" },
+                        { label: "Monthly", value: "monthly" },
+                        { label: "Yearly", value: "yearly" },
+                        { label: "Annual", value: "annual" },
+                    ],
+                    rules: { required: "Salary type is required" },
                 },
                 {
                     name: "probation_end_date",

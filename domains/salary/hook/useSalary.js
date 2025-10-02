@@ -12,11 +12,13 @@ import {
     useSalaryFetchQuery,
     useSalaryFilterMutation, // filter salary by company/branch/department/job
 } from "../services/salaryApi";
+import { getFilterParams } from "@/utility/helpers";
+import { useMemo } from "react";
 
 export const useSalary = () => {
     const [salaryFilter] = useSalaryFilterMutation();
     const [salaryCreate] = useSalaryCreateMutation();
-    const { data, refetch } = useSalaryFetchQuery();
+    const { data: salary, refetch, isFetching  } = useSalaryFetchQuery();
 
     const form = useForm({
         mode: "onBlur",
@@ -36,7 +38,12 @@ export const useSalary = () => {
         }
     }, [openModel]);
 
-    const salaryState = { data: data?.data || [], form };
+    const salaryState = { data: salary?.data || [], 
+        form,
+         refetch,
+        pagination:  salary?.data?.pagination || {},
+        isFetching,
+     };
 
     const actions = {
         onCreate: async (data) => {

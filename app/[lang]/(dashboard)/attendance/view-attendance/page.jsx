@@ -16,10 +16,8 @@ const attendanceViewPage = () => {
             <PageLayout>
                 <BasicTableLayout
                     columns={columns(actions)}
-                    form={attendanceState.form}
-                    data={attendanceState.data} // Pass data from operations
+                    state={attendanceState}
                 />
-                
             </PageLayout>
         </>
     );

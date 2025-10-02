@@ -9,45 +9,48 @@ import fields from "./config/fields";
 import { useRole } from "@/domains/role-and-permission/role/hook/useRole";
 
 const RolePage = () => {
-    const {
-        actions,
-        rolesState, 
-    } = useRole(); // Custom hook handles roles and permissions
-    
+    const { actions, rolesState } = useRole(); // Custom hook handles roles and permissions
+
+    const form = rolesState.form;
+    const isEdit = !!form?.watch("id");
+    const isPermissionMode = !!form?.watch("openPermissionMode");
+
     return (
         <PageLayout>
             {/* Role Table */}
             <BasicTableLayout
                 addButtonLabel="Add Role"
                 columns={columns(actions)}
-                form={rolesState.form}
-                data={rolesState.data}
+                state={rolesState}
             />
 
             {/* Role Create/Edit Modal */}
             <BasicModel
                 title={
-                    rolesState?.form?.watch("openPermissionMode") ? "Permission Update" : (rolesState?.form?.watch("id") ? "Role Edit" : "Role Create")
+                    isPermissionMode
+                        ? "Permission Update"
+                        : isEdit
+                        ? "Role Edit"
+                        : "Role Create"
                 }
-                submitLabel={
-                    rolesState?.form?.watch("id") || rolesState?.form?.watch("openPermissionMode") ? "Update" : "Create"
-                }
+                submitLabel={isEdit || isPermissionMode ? "Update" : "Create"}
                 cancelLabel="Cancel"
                 size="2xl"
                 form={rolesState.form}
-                fields={rolesState?.form?.watch("openPermissionMode") ? [] : fields}
+                fields={isPermissionMode ? [] : fields}
                 actions={actions}
             >
-                <div>
-                    <BasicTableLayout
-                        addButtonLabel={false}
-                        columns={permissionColumns(actions,rolesState.form)}
-                        form={rolesState.form}
-                        data={rolesState.permissions}
-                        pagination={false}
-                        filter={false}
-                    />
-                </div>
+                <BasicTableLayout
+                    addButtonLabel={false}
+                    columns={permissionColumns(actions, form)}
+                    state={{
+                        form: rolesState.form,
+                        data: rolesState.permissions,
+                        pagination: false,
+                        isFetching: false,
+                    }}
+                    filter={false}
+                />
             </BasicModel>
         </PageLayout>
     );

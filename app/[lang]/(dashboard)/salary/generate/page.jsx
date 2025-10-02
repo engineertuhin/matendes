@@ -15,8 +15,8 @@ const SalaryGeneratePage = () => {
             <BasicTableLayout
                 addButtonLabel="Generate Salary"
                 columns={columns(actions)}
-                form={salaryState.form}
-                data={salaryState.data} // Pass salary data
+                state={salaryState }
+                
             />
             <BasicModel
                 title="Generate Salary"

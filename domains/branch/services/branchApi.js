@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
+import { getFilterParams } from "@/utility/helpers";
 export const branchApi = createApi({
     reducerPath: "Branch",
     baseQuery: baseQuery,
@@ -29,7 +30,11 @@ export const branchApi = createApi({
             invalidatesTags: ["Branch"],
         }),
         branchFetch: builder.query({
-            query: () => "organization/branches",
+            query: () => ({
+                url: "organization/branches",
+                method: "GET",
+                params: { ...getFilterParams() }, // fetch all branches
+            }),
             providesTags: ["Branch"],
         }),
         branchSearch: builder.query({

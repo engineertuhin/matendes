@@ -4,7 +4,7 @@ import {
     useRoleUpdateMutation,
     useRoleDeleteMutation,
     useRoleFetchQuery,
-    useRolePermissionsFetchQuery, 
+    useRolePermissionsFetchQuery,
     useRolePermissionsUpdateMutation, // ✅ add this
 } from "../services/roleApi";
 import toast from "react-hot-toast";
@@ -12,28 +12,35 @@ import { useForm } from "react-hook-form";
 import { formReset } from "@/utility/helpers";
 import { debounce } from "@/utility/helpers";
 import { roleSearchTemplate } from "@/utility/templateHelper";
+import { getFilterParams } from "@/utility/helpers";
+import { useMemo } from "react";
 
 export const useRole = () => {
     const [userCreate] = useRoleCreateMutation();
     const [userUpdate] = useRoleUpdateMutation();
     const [userDelete] = useRoleDeleteMutation();
     const [permissionsUpdate] = useRolePermissionsUpdateMutation();
-    const { data: roleAndPermission, refetch } = useRoleFetchQuery();
+    const {
+        data: roleAndPermission,
+        refetch,
+        isFetching,
+    } = useRoleFetchQuery();
 
     const form = useForm({
         mode: "onBlur",
         reValidateMode: "onSubmit",
         shouldFocusError: true,
     });
- 
 
     const rolesState = {
         data: roleAndPermission?.data?.roles || [],
         form,
         permissions: roleAndPermission?.data?.permissions || [],
-    }; 
+        refetch,
+        pagination: roleAndPermission?.data?.pagination || {},
+        isFetching,
+    };
 
-    
     const actions = {
         onCreate: async (data) => {
             try {
@@ -93,8 +100,8 @@ export const useRole = () => {
         },
 
         onManagePermissions: (data) => {
-            const ids = data.permissions.map((data)=>data.id); 
-            
+            const ids = data.permissions.map((data) => data.id);
+
             form.setValue("id", data.id);
             form.setValue("openModel", true);
             form.setValue("openPermissionMode", true);

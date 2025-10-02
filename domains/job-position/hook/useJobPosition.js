@@ -18,12 +18,18 @@ import {
     companySearchTemplate,
     departmentSearchTemplate,
 } from "@/utility/templateHelper";
+import { getFilterParams } from "@/utility/helpers";
+import { useMemo } from "react";
 
 export const useJobPosition = () => {
     const [JobPositionCreate] = useJobPositionCreateMutation();
     const [JobPositionUpdate] = useJobPositionUpdateMutation();
     const [JobPositionDelete] = useJobPositionDeleteMutation();
-    const { data: JobPosition, refetch } = useJobPositionFetchQuery();
+    const {
+        data: JobPosition,
+        refetch,
+        isFetching,
+    } = useJobPositionFetchQuery();
 
     const form = useForm({
         mode: "onBlur",
@@ -31,15 +37,17 @@ export const useJobPosition = () => {
         shouldFocusError: true,
     });
 
-    const { data: JobPositionSearchResult, isLoading } =
-        useJobPositionSearchQuery(
-            { search: form.watch("search") },
-            { skip: !form.watch("search") } // skip query if empty
-        );
+    const { data: JobPositionSearchResult } = useJobPositionSearchQuery(
+        { search: form.watch("search") },
+        { skip: !form.watch("search") } // skip query if empty
+    );
 
     const jobPositionState = {
         data: JobPosition?.data?.job_positions || [],
         form,
+        refetch,
+        pagination: JobPosition?.data?.pagination || {},
+        isFetching,
     };
     console.log(jobPositionState.data);
 
@@ -90,8 +98,10 @@ export const useJobPosition = () => {
 
                 responsibilities: data?.requirements?.responsibilities || "",
                 requirements: data?.requirements?.requirements || "",
-                education_required: data?.requirements?.education_required || "",
-                education_preferred: data?.requirements?.education_preferred || "",
+                education_required:
+                    data?.requirements?.education_required || "",
+                education_preferred:
+                    data?.requirements?.education_preferred || "",
                 // =============== Classification ===============
 
                 job_category: data?.classification_info?.job_category || "",

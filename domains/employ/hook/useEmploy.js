@@ -20,12 +20,14 @@ import {
     jobPositionsTemplate,
     roleTemplate
 } from "@/utility/templateHelper";
+import { getFilterParams } from "@/utility/helpers";
+import { useMemo } from "react";
 
 export const useEmploy = () => {
     const [EmployCreate] = useEmployCreateMutation();
     const [EmployUpdate] = useEmployUpdateMutation();
     const [EmployDelete] = useEmployDeleteMutation();
-    const { data: employ, refetch } = useEmployFetchQuery();
+    const { data: employ, refetch, isFetching } = useEmployFetchQuery();
     const abcd = [];
 
     const form = useForm({
@@ -37,6 +39,9 @@ export const useEmploy = () => {
     const employState = {
         data: employ?.data?.employees || [],
         form,
+        refetch,
+        pagination: employ?.data?.pagination || {},
+        isFetching,
     };
 
     const actions = {
@@ -152,6 +157,8 @@ export const useEmploy = () => {
                 employment_type:
                     data?.employment_info?.employment_type || "permanent",
                 work_mode: data?.employment_info?.work_mode || "office",
+                basic_salary: data?.employment_info?.basic_salary || "",
+                salary_type: data?.employment_info?.salary_type|| "monthly",
 
                 // =============== Professional Info ===============
                 work_history:

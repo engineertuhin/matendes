@@ -53,13 +53,13 @@ const fields = () => {
             },
             inputProps: { maxLength: 20 },
         },
-        {
-            name: "manager_id",
-            type: "async-select",
-            label: "Select Manager",
-            loadOptions: ["managers", "managers", "commonSearchTemplate"],
-            colSpan: "col-span-12 md:col-span-6", 
-        },
+        // {
+        //     name: "manager_id",
+        //     type: "async-select",
+        //     label: "Select Manager",
+        //     loadOptions: ["managers", "managers", "commonSearchTemplate"],
+        //     colSpan: "col-span-12 md:col-span-6", 
+        // },
         {
             name: "type",
             type: "select",
@@ -83,22 +83,22 @@ const fields = () => {
         },
 
         // =============== Heads & Contacts ===============
-        {
-            name: "head_of_department_id",
-            type: "async-select",
-            label: "Head of Department",
+        // {
+        //     name: "head_of_department_id",
+        //     type: "async-select",
+        //     label: "Head of Department",
 
-            placeholder: "Optional",
-            colSpan: "col-span-12 md:col-span-6",
-        },
-        {
-            name: "deputy_head_id",
-            type: "async-select",
-            label: "Deputy Head",
+        //     placeholder: "Optional",
+        //     colSpan: "col-span-12 md:col-span-6",
+        // },
+        // {
+        //     name: "deputy_head_id",
+        //     type: "async-select",
+        //     label: "Deputy Head",
 
-            placeholder: "Optional",
-            colSpan: "col-span-12 md:col-span-6",
-        },
+        //     placeholder: "Optional",
+        //     colSpan: "col-span-12 md:col-span-6",
+        // },
         {
             name: "email",
             type: "email",

@@ -15,42 +15,42 @@ const Providers = ({ children }) => {
 
   if (location === "/") {
     return (
-      <body className={cn("dash-tail-app ", inter.className)}>
-        <ThemeProvider
-          attribute="class"
-          enableSystem={false}
-          defaultTheme="light"
-        >
-          <div className={cn("h-full  ")}>
-            {children}
-            <ReactToaster />
-          </div>
-          <Toaster />
-          <SonnToaster />
-        </ThemeProvider>
-      </body>
+        <body className={cn("dash-tail-app ", inter.className)}>
+            <ThemeProvider
+                attribute="class"
+                enableSystem={false}
+                defaultTheme="light"
+            >
+                <div className={cn("h-full  ")}>
+                    {children}
+                    <ReactToaster />
+                </div>
+                <Toaster containerStyle={{ zIndex: 99999 }} />
+                <SonnToaster />
+            </ThemeProvider>
+        </body>
     );
   }
   return (
-    <body
-      className={cn("dash-tail-app ", inter.className, "theme-" + theme)}
-      style={{
-        "--radius": `${radius}rem`,
-      }}
-    >
-      <ThemeProvider
-        attribute="class"
-        enableSystem={false}
-        defaultTheme="light"
+      <body
+          className={cn("dash-tail-app ", inter.className, "theme-" + theme)}
+          style={{
+              "--radius": `${radius}rem`,
+          }}
       >
-        <div className={cn("h-full  ")}>
-          {children}
-          <ReactToaster />
-        </div>
-        <Toaster />
-        <SonnToaster />
-      </ThemeProvider>
-    </body>
+          <ThemeProvider
+              attribute="class"
+              enableSystem={false}
+              defaultTheme="light"
+          >
+              <div className={cn("h-full  ")}>
+                  {children}
+                  <ReactToaster />
+              </div>
+              <Toaster containerStyle={{ zIndex: 99999 }} />
+              <SonnToaster />
+          </ThemeProvider>
+      </body>
   );
 };
 

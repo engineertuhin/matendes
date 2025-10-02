@@ -26,14 +26,21 @@ export function DynamicForm({
                 className={cn("space-y-6", className)}
             >
                 <div className={cn("grid gap-6", gridCols)}>
-                    {fieldDefs.map((f) => (
-                        <div
-                            key={f.name}
-                            className={cn(f.colSpan || "col-span-12")}
-                        >
-                            <FieldRenderer fieldConfig={f} form={form} />
-                        </div>
-                    ))}
+                    {fieldDefs.map((f) => {
+                        // Hide the entire column if visibility is false
+                        if (f.visibility === false) {
+                            return null;
+                        }
+                        
+                        return (
+                            <div
+                                key={f.name}
+                                className={cn(f.colSpan || "col-span-12")}
+                            >
+                                <FieldRenderer fieldConfig={f} form={form} />
+                            </div>
+                        );
+                    })}
                 </div>
 
                 {/* <div className="flex items-center justify-end gap-3">

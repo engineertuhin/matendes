@@ -14,9 +14,8 @@ const employeePage = () => {
                 <BasicTableLayout
                     addButtonLabel="Add Employee"
                     columns={columns(actions)}
-                    to="employ/create"
-                    form={employState.form}
-                    data={employState.data} // Pass data from operations
+                    to="employees/create"
+                    state={employState}
                 />
             </PageLayout>
         </>

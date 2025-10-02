@@ -58,26 +58,7 @@ let columns = (actions) => [
     },
   },
 
-  // Manager
-  {
-    id: "manager",
-    header: "Manager",
-    cell: ({ row }) => {
-      const m = row.original || {};
-      const nm = m.manager_name || "—";
-      const em = m.manager_email || "";
-      const ph = m.manager_phone || "";
-      return (
-        <div className="flex flex-col">
-          <span className="font-medium">{nm}</span>
-          <span className="text-xs text-muted-foreground lowercase">
-            {em || ""}
-          </span>
-          <span className="text-xs text-muted-foreground">{ph || ""}</span>
-        </div>
-      );
-    },
-  },
+
 
   // Contact
   {

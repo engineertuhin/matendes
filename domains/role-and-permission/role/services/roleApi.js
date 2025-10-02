@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
+import { getFilterParams } from "@/utility/helpers";
 
 export const roleApi = createApi({
     reducerPath: "Role",
@@ -18,7 +19,6 @@ export const roleApi = createApi({
 
         // Update role
         roleUpdate: builder.mutation({
-            
             query: ({ id, credentials }) => ({
                 url: `admin/roles-permissions/roles/${id}`,
                 method: "PUT",
@@ -38,13 +38,18 @@ export const roleApi = createApi({
 
         // Fetch all roles
         roleFetch: builder.query({
-            query: () => "admin/roles-permissions/roles",
+            query: () => ({
+                url: "admin/roles-permissions/roles",
+                method: "GET",
+                params: { ...getFilterParams() }, // fetch all roles
+            }),
             providesTags: ["Role"],
-        }), 
+        }),
 
         // Fetch permissions for a specific role
         rolePermissionsFetch: builder.query({
-            query: (roleId) => `admin/roles-permissions/roles/${roleId}/permissions`,
+            query: (roleId) =>
+                `admin/roles-permissions/roles/${roleId}/permissions`,
             providesTags: ["Role"],
         }),
 
@@ -67,8 +72,5 @@ export const {
     useRoleDeleteMutation,
     useRoleFetchQuery,
     useRolePermissionsFetchQuery,
-    useRolePermissionsUpdateMutation, 
+    useRolePermissionsUpdateMutation,
 } = roleApi;
-
-
- 

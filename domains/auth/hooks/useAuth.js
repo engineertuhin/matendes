@@ -48,6 +48,7 @@ const useAuth = () => {
                     user: response.data,
                     token: Cookies.get("auth-token") || null,
                     setPermissions: response.data.permission,
+                    notificationData: response.data.notificationData,
                 })
             );
 
@@ -81,12 +82,7 @@ const useAuth = () => {
             }).unwrap();
             
             Cookies.set("auth-token", response.data.token, { expires: 7 }); // expires in 7 days
-            dispatch(
-                setCredentials({
-                    user: response.user,
-                    token: response.token,
-                })
-            );
+      
             return { success: true };
         } catch (error) {
             return { success: false, error };

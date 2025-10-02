@@ -11,8 +11,9 @@ import {
 import { useRouter } from "next/navigation";
 import { setEmployData } from "@/domains/employ/model/employSlice";
 import { useAppDispatch } from "@/hooks/use-redux";
-
+import { useProfile } from "@/domains/profile/hook/useProfile";
 const columns = (actions) => {
+    const { actions: profileActions } = useProfile();
     const router = useRouter();
     const dispatch = useAppDispatch();
     return [
@@ -75,6 +76,18 @@ const columns = (actions) => {
             cell: ({ row }) => row.original?.employment_info?.hire_date || "—",
         },
         {
+            accessorKey: "employment_info.basic_salary",
+            header: "Basic Salary",
+            cell: ({ row }) =>
+                row.original?.employment_info?.basic_salary || "—",
+        },
+        {
+            accessorKey: "employment_info.salary_type ",
+            header: "Salary Type",
+            cell: ({ row }) =>
+                row.original?.employment_info?.salary_type || "—",
+        },
+        {
             accessorKey: "employment_info.employment_status",
             header: "Status",
             cell: ({ row }) =>
@@ -105,14 +118,11 @@ const columns = (actions) => {
         },
 
         // Manager
-        {
-            id: "manager",
-            header: "Manager",
-            cell: ({ row }) => row.original?.manager?.name || "—",
-        },
-
-     
-
+        // {
+        //     id: "manager",
+        //     header: "Manager",
+        //     cell: ({ row }) => row.original?.manager?.name || "—",
+        // },
 
         // Actions
         {
@@ -136,7 +146,17 @@ const columns = (actions) => {
 
                                 <DropdownMenuItem
                                     onClick={() => {
-                                        router.push(`/employ/edit/${data?.id}`);
+                                        profileActions.getProfile(data?.id);
+                                        router.push(`/user-profile`);
+                                    }}
+                                >
+                                    View
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        router.push(
+                                            `/employees/edit/${data?.id}`
+                                        );
                                         dispatch(setEmployData(data));
                                     }}
                                 >

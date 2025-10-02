@@ -15,8 +15,8 @@ const BranchPage = () => {
                 <BasicTableLayout
                     addButtonLabel="Add Branch"
                     columns={columns(actions)}
-                    form={branchesState.form}
-                    data={branchesState.data} // Pass data from operations
+                    state={branchesState} 
+                   
                 />
                 <BasicModel
                     title={
