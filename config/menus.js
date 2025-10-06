@@ -19,6 +19,11 @@ import {
     ClipboardList,
     UserCheck,
     UserCog,
+    UserSquare,
+    Hammer,
+    LayoutGrid,
+    Scale, 
+    Boxes,
 } from "lucide-react";
 
 export const menusConfig = {
@@ -109,16 +114,40 @@ export const menusConfig = {
         },
         {
             title: "Contact Persons",
-            icon: Users,
+            icon: UserSquare,
             child: [
                 {
                     title: "Client list",
                     href: "/client",
-                    icon: UserCircle,
+                    icon: UserSquare,
                     permission: "view-client",
                 },
             ],
         },
+        // {
+        //     title: "Inventory",
+        //     icon: Boxes,
+        //     child: [
+        //         {
+        //             title: "Category",
+        //             href: "/inventory/tool/category",
+        //             icon: LayoutGrid,
+        //             permission: "view-client",
+        //         },
+        //         {
+        //             title: "Unit",
+        //             href: "/inventory/tool/unit",
+        //             icon: Scale,
+        //             permission: "view-client",
+        //         },
+        //         {
+        //             title: "Tool List",
+        //             href: "/inventory/tool/tool-list",
+        //             icon: Hammer,
+        //             permission: "view-client",
+        //         },
+        //     ],
+        // },
         {
             title: "Project",
             icon: FolderKanban,
@@ -264,16 +293,40 @@ export const menusConfig = {
             },
             {
                 title: "Contact Persons",
-                icon: Users,
+                icon: UserSquare,
                 child: [
                     {
                         title: "Client list",
                         href: "/client",
-                        icon: UserCircle,
+                        icon: UserSquare,
                         permission: "view-client",
                     },
                 ],
             },
+            // {
+            //     title: "Inventory",
+            //     icon: Boxes,
+            //     child: [
+            //         {
+            //             title: "Category",
+            //             href: "/inventory/tool/category",
+            //             icon: LayoutGrid,
+            //             permission: "view-client",
+            //         },
+            //         {
+            //             title: "Unit",
+            //             href: "/inventory/tool/unit",
+            //             icon: Scale ,
+            //             permission: "view-client",
+            //         },
+            //         {
+            //             title: "Tool List",
+            //             href: "/inventory/tool/tool-list",
+            //             icon: Hammer,
+            //             permission: "view-client",
+            //         },
+            //     ],
+            // },
             {
                 title: "Project",
                 icon: FolderKanban, // represents projects/boards
@@ -417,16 +470,40 @@ export const menusConfig = {
             },
             {
                 title: "Contact Person",
-                icon: Users,
+                icon: UserSquare,
                 child: [
                     {
                         title: "Client list",
                         href: "/client",
-                        icon: UserCircle,
+                        icon: UserSquare,
                         permission: "view-client",
                     },
                 ],
             },
+            // {
+            //     title: "Inventory",
+            //     icon: Boxes,
+            //     child: [
+            //         {
+            //             title: "Category",
+            //             href: "/inventory/tool/category",
+            //             icon: LayoutGrid,
+            //             permission: "view-client",
+            //         },
+            //         {
+            //             title: "Unit",
+            //             href: "/inventory/tool/unit",
+            //             icon: Scale,
+            //             permission: "view-client",
+            //         },
+            //         {
+            //             title: "Tool List",
+            //             href: "/inventory/tool/tool-list",
+            //             icon: Hammer,
+            //             permission: "view-client",
+            //         },
+            //     ],
+            // },
             {
                 title: "Project",
                 icon: FolderKanban,

@@ -1,13 +1,5 @@
 import * as LucideIcons from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { TableActions } from "@/components/table/TableActions";
 
 const columns = (actions) => [
     {
@@ -18,6 +10,8 @@ const columns = (actions) => [
     {
         id: "icon",
         header: "Icon",
+        thClass: "!text-center", 
+        tdClass: "!text-center",
         cell: ({ row }) => {
             const iconName = row.original.icon; // e.g. "FileText"
             const IconComponent = LucideIcons[iconName] || LucideIcons.FileText;
@@ -32,43 +26,28 @@ const columns = (actions) => [
     {
         id: "status",
         header: "Status",
+        thClass: "!text-center", 
+        tdClass: "!text-center",
         cell: ({ row }) => (row.original.status ? "Active" : "Inactive"),
     },
+    // Actions
     {
         id: "actions",
         enableHiding: false,
-        cell: ({ row }) => {
-            const document = row.original;
-
-            return (
-                <div className="text-end">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <LucideIcons.MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                onClick={() => actions?.onEdit?.(document)}
-                            >
-                                Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                                onClick={() =>
-                                    actions?.onDelete?.(document?.id)
-                                }
-                            >
-                                Delete
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-            );
-        },
+        header: " ",
+        thClass: "!text-center w-[70px] whitespace-nowrap",
+        tdClass: "!text-center w-[70px] whitespace-nowrap",
+        cell: ({ row }) => (
+            <TableActions
+                data={row.original}
+                label="Actions"
+                // alignmentClass is omitted here, so it defaults to "flex justify-center"
+                items={[
+                    { label: "Edit", onClick: actions?.onEdit },
+                    { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+                ]}
+            />
+        ),
     },
 ];
 

@@ -135,53 +135,45 @@ export const useDocument = () => {
                 handleServerValidationErrors(apiErrors, form.setError);
             }
         },
-        onEdit: (data) => { 
-          
-            // Prepare document details for editing
-            const documentDetails = (data.document_details || []).map(
-                (detail) => ({
-                    id: detail.id,
-                    title: detail.title, 
-                    type:
-                        documentTypeTemplate(
-                            detail.type ? [detail.type] : []
-                        )?.at(0) ?? null,
-                    expiry_date: detail.expiry_date,
-                    expiry_warning: detail.expiry_warning,
-                    file_path: detail.file_path,
-                    file_name: detail.file_name,
-                    status: detail.status,
-                    // Note: file object will be null for existing files, only set when uploading new files
-                    file: null,
-                })
-            );
-
+        onEdit: (data) => {
+            console.log("Editing document:", data);
+        
+            // Prepare document details for the form
+            const documentDetails = (data.document_details || []).map((detail) => ({
+                id: detail.id,
+                title: detail.title,
+                type: documentTypeTemplate(detail.type ? [detail.type] : [])?.at(0) ?? null,
+                expiry_date: detail.expiry_date,
+                expiry_warning: detail.expiry_warning,
+                file_path: detail.file_path,
+                file_name: detail.file_name,
+                status: detail.status,
+                // Use full URL for file preview
+                file: detail.file_url || null,
+            }));
+        
+            // Prepare the full form reset data
             const resetData = {
                 id: data.id || "",
                 title: data.title || "",
                 description: data.description || "",
                 document_for: data.document_for || "",
                 document_type_id: data.document_type?.id || "",
-                employee_id: employTemplate(
-                    data.employee ? [data.employee] : []
-                )?.at(0) ?? null,
-                branch_id: branchSearchTemplate(
-                    data.branch ? [data.branch] : []
-                )?.at(0) ?? null,
-                client_id: clientTemplate(
-                    data.client ? [data.client] : []
-                )?.at(0) ?? null,
-                project_id: projectTemplate(
-                    data.project ? [data.project] : []
-                )?.at(0) ?? null,
+                employee_id: employTemplate(data.employee ? [data.employee] : [])?.at(0) ?? null,
+                branch_id: branchSearchTemplate(data.branch ? [data.branch] : [])?.at(0) ?? null,
+                client_id: clientTemplate(data.client ? [data.client] : [])?.at(0) ?? null,
+                project_id: projectTemplate(data.project ? [data.project] : [])?.at(0) ?? null,
                 status: data.status ? "active" : "inactive",
                 document: documentDetails,
             };
-
         
+            // Reset the form with existing data
             form.reset(resetData);
+        
+            // Open the modal for editing
             form.setValue("openModel", true);
         },
+        
         onUpdate: async (data) => {
            
             try {

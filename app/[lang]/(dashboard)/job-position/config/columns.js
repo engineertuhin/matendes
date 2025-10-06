@@ -1,36 +1,28 @@
-import { MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { TableActions } from "@/components/table/TableActions";
 
 const val = (v, f = "—") => (v ?? v === 0 ? v : f);
 
-// const fmtSalary = (row) => {
-//   const s = row.original?.salary_and_benefits || {};
-//   const min = s.min_salary;
-//   const max = s.max_salary;
-//   const cur = s.currency;
-//   const per = s.salary_type;
-//   if (min == null && max == null) return "—";
-//   const range =
-//     min != null && max != null
-//       ? `${min}–${max}`
-//       : min != null
-//       ? `${min}+`
-//       : `${max}`;
-//   return [range, cur, per].filter(Boolean).join(" ");
-// };
+const fmtSalary = (row) => {
+  const s = row.original?.salary_and_benefits || {};
+  const min = s.min_salary;
+  const max = s.max_salary;
+  const cur = s.currency;
+  const per = s.salary_type;
+  if (min == null && max == null) return "—";
+  const range =
+    min != null && max != null
+      ? `${min}–${max}`
+      : min != null
+      ? `${min}+`
+      : `${max}`;
+  return [range, cur, per].filter(Boolean).join(" ");
+};
 
 let columns = (actions) => [
   // Core
   { accessorKey: "title", header: "Title" },
-  { accessorKey: "code", header: "Code" },
+  // { accessorKey: "code", header: "Code" ,thClass: "!text-center", 
+  //   tdClass: "!text-center",},
 
   // Classification
   // {
@@ -41,11 +33,15 @@ let columns = (actions) => [
   {
     id: "job_category",
     header: "Category",
+    thClass: "!text-center", 
+    tdClass: "!text-center",
     cell: ({ row }) => val(row.original?.classification_info?.job_category),
   },
   {
     id: "employment_type",
     header: "Employment",
+    thClass: "!text-center", 
+    tdClass: "!text-center",
     cell: ({ row }) => val(row.original?.classification_info?.employment_type),
   },
   // {
@@ -59,70 +55,71 @@ let columns = (actions) => [
   // {
   //   id: "salary",
   //   header: "Salary",
+  //   thClass: "!text-center", 
+  //   tdClass: "!text-center",
   //   cell: ({ row }) => fmtSalary(row),
   // },
 
   // Vacancy metrics
-  {
-    id: "vacancies",
-    header: "Vacancies",
-    cell: ({ row }) => {
-      const m = row.original?.position_info || {};
-      const t = m.total_positions ?? "—";
-      const f = m.filled_positions ?? "—";
-      const v = m.vacant_positions ?? "—";
-      return `${t}/${f}/${v}`;
-    },
-  },
+  // {
+  //   id: "vacancies",
+  //   header: "Vacancies",
+  //   thClass: "!text-center", 
+  //   tdClass: "!text-center",
+  //   cell: ({ row }) => {
+  //     const m = row.original?.position_info || {};
+  //     const t = m.total_positions ?? "—";
+  //     const f = m.filled_positions ?? "—";
+  //     const v = m.vacant_positions ?? "—";
+  //     return `${t}/${f}/${v}`;
+  //   },
+  // },
 
   // Recruiting & status
-  {
-    id: "recruiting",
-    header: "Recruiting",
-    cell: ({ row }) =>
-      row.original?.recruitment_info?.is_active_recruitment ? "Yes" : "No",
-  },
+  // {
+  //   id: "recruiting",
+  //   header: "Recruiting",
+  //   thClass: "!text-center", 
+  //   tdClass: "!text-center",
+  //   cell: ({ row }) =>
+  //     row.original?.recruitment_info?.is_active_recruitment ? "Yes" : "No",
+  // },
   {
     id: "status",
     header: "Status",
+    thClass: "!text-center", 
+    tdClass: "!text-center",
     cell: ({ row }) => val(row.original?.system_info?.status),
   },
-  {
-    id: "enabled",
-    header: "Enabled",
-    cell: ({ row }) => (row.original?.system_info?.is_enabled ? "Yes" : "No"),
-  },
+  // {
+  //   id: "enabled",
+  //   header: "Enabled",
+  //   thClass: "!text-center", 
+  //   tdClass: "!text-center",
+  //   cell: ({ row }) => (row.original?.system_info?.is_enabled ? "Yes" : "No"),
+  // },
 
-  // Actions
+  // Actions 
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const data = row.original;
-      return (
-        <div className="text-end">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => actions?.onEdit?.(data)}>
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => actions?.onDelete?.(data?.id)}>
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
-  },
+    header: " ",
+    thClass: "!text-center w-[70px] whitespace-nowrap", 
+    tdClass: "!text-center w-[70px] whitespace-nowrap",
+    cell: ({ row }) => (
+      <TableActions
+        data={row.original}
+        label="Actions"
+        // alignmentClass is omitted here, so it defaults to "flex justify-center"
+        items={[
+          { label: "Edit", onClick: actions?.onEdit }, // needs full data
+          { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+        ]}
+      />
+    ),
+  }
+
+  
 ];
 
 export default columns;

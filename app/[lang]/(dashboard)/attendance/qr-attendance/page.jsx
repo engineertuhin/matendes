@@ -16,7 +16,7 @@ const QrReader = dynamic(
 );
 export default function QRAttendance() {
     // Use attendance hook for API calls
-    const { qrCheckIn, qrCheckOut, isCheckingIn, isCheckingOut } = useAttendance();
+    const { qrCheckIn, qrCheckOut, isCheckingIn, isCheckingOut, branch } = useAttendance();
     
     // steps: "closed" | "scanner" | "result" | "processing"
     const [step, setStep] = useState("closed");
@@ -159,10 +159,11 @@ export default function QRAttendance() {
             console.log('Processing QR attendance with data:', qrData);
             console.log('Location coordinates:', { lat: coords.lat, lng: coords.lng });
             console.log('QR CheckIn function:', qrCheckIn);
+            console.log('Branch data:', branch);
             
             // For now, we'll assume check-in by default
             // You could enhance this to detect check-in/check-out based on QR content or current status
-            const result = await qrCheckIn(qrData, coords.lat, coords.lng);
+            const result = await qrCheckIn(qrData, coords.lat, coords.lng, branch);
             
             console.log('QR CheckIn result:', result);
         

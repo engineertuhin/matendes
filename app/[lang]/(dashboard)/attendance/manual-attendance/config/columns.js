@@ -1,22 +1,6 @@
-import {
-    MoreHorizontal,
-    Edit,
-    Trash2,
-    Users,
-    Calendar,
-    Clock,
-    Building2,
-} from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { Users, Calendar, Clock, Building2 } from "lucide-react";
 
+import { TableActions } from "@/components/table/TableActions";
 const Pill = ({ children, className = "" }) => (
     <span
         className={[
@@ -122,7 +106,7 @@ const columns = (actions) => [
             </span>
         ),
     },
-   
+
     {
         accessorKey: "timeRange",
         header: ({ column }) => (
@@ -170,54 +154,24 @@ const columns = (actions) => [
         header: "Status",
         cell: ({ row }) => <StatusBadge status={row.original?.status} />,
     },
+    // Actions
     {
         id: "actions",
         enableHiding: false,
-        header: "Actions",
-        cell: ({ row }) => {
-            const data = row.original;
-            const canEdit = data?.canEdit !== false;
-            const canDelete = data?.canDelete !== false;
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-
-                        {canEdit && (
-                            <DropdownMenuItem
-                                onClick={() => actions?.onEdit?.(data)}
-                            >
-                                <Edit className="mr-2 h-4 w-4" />
-                                Edit
-                            </DropdownMenuItem>
-                        )}
-
-                        {canDelete && (
-                            <>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem
-                                    onClick={() =>
-                                        actions?.onDelete?.(data?.id)
-                                    }
-                                    className="text-red-600"
-                                >
-                                    <Trash2 className="mr-2 h-4 w-4" />
-                                    Delete
-                                </DropdownMenuItem>
-                            </>
-                        )}
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        },
+        header: " ",
+        thClass: "!text-center w-[70px] whitespace-nowrap",
+        tdClass: "!text-center w-[70px] whitespace-nowrap",
+        cell: ({ row }) => (
+            <TableActions
+                data={row.original}
+                label="Actions"
+                // alignmentClass is omitted here, so it defaults to "flex justify-center"
+                items={[
+                    { label: "Edit", onClick: actions?.onEdit },
+                    { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+                ]}
+            />
+        ),
     },
 ];
 
@@ -230,7 +184,5 @@ export const compactColumns = (actions) =>
         )
     );
 export const detailedColumns = (actions) => columns(actions);
-
-
 
 export default columns;

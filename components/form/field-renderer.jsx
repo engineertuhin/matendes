@@ -221,18 +221,43 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                     ) : null}
                                 </div>
                             ) : type === "file" ? (
-                                <Input
-                                    type="file"
-                                    disabled={disabled}
-                                    {...(inputProps || {})}
-                                    onChange={(e) => {
+                                <div>
+                                    <Input
+                                        type="file"
+                                        disabled={disabled}
+                                        {...(inputProps || {})}
+                                        onChange={(e) => {
                                         const file = e.target.files?.[0] || null;
                                         field.onChange(file);
                                         if (handleChange) {
                                             handleChange(file, form);
                                         }
-                                    }}
-                                />
+                                        }}
+                                    />
+
+                                    {/* Simple preview text */}
+                                    {field.value && (
+                                        <p className="mt-2 text-sm text-gray-600">
+                                        {typeof field.value === "string"
+                                            ? (
+                                            <a
+                                                href={field.value.startsWith("http")
+                                                ? field.value
+                                                : `${window.location.origin}${field.value}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-blue-600 underline"
+                                            >
+                                                View current file
+                                            </a>
+                                            )
+                                            : ``}
+                                        </p>
+                                    )}
+                                    </div>
+
+                                // console.log(field.value)
+                                
                             ) : type === "radio" ? (
                                 <RadioGroup
                                     onValueChange={(value) => {

@@ -9,7 +9,6 @@ const fields = [
             "organization/branches",
             "branches",
             "branchSearchTemplate",
-            
         ],
         placeholder: "Optional",
         colSpan: "col-span-12 md:col-span-6",
@@ -105,7 +104,6 @@ const fields = [
         colSpan: "col-span-12 md:col-span-6",
         rules: { maxLength: { value: 50, message: "Max 50 characters" } },
     },
-  
 
     // =============== Operations ===============
     {
@@ -114,15 +112,25 @@ const fields = [
         label: "Latitude",
         placeholder: "e.g. 23.8103",
         colSpan: "col-span-12 md:col-span-6",
-       
     },
+
     {
         name: "longitude",
         type: "input",
         label: "Longitude",
         placeholder: "e.g. 90.4125",
         colSpan: "col-span-12 md:col-span-6",
-        
+    },
+    {
+        name: "allowed_range_meters",
+        type: "number",
+        label: "Allowed Range (Meters)",
+        placeholder: "e.g. 100",
+        colSpan: "col-span-12 md:col-span-6",
+        inputProps: { min: 0, step: "1" },
+        rules: {
+            min: { value: 0, message: "Must be ≥ 0" },
+        },
     },
     {
         name: "time_zone",

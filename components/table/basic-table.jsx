@@ -153,7 +153,7 @@ export function BasicDataTable({
                                     // Use debounced search for server requests
                                     debouncedSearch(value);
                                 }}
-                                className="w-[200px] sm:w-[250px] h-10"
+                                className="w-full sm:w-[250px] h-10"
                             />
                         </div>
                     )}
@@ -172,21 +172,20 @@ export function BasicDataTable({
                             ) : (
                                 <Button
                                     onClick={() => {
-                                   form.reset({
-                                       ...Object.fromEntries(
-                                           Object.entries(form.getValues()).map(
-                                               ([key, value]) => {
-                                                   // If the field value is an array (useFieldArray), reset it to empty array
-                                                   if (Array.isArray(value))
-                                                       return [key, []];
-                                                   // Otherwise, reset normal fields to empty string
-                                                   return [key, ""];
-                                               }
-                                           )
-                                       ),
-                                       openModel: true, // keep this field true
-                                   });
-
+                                        form.reset({
+                                            ...Object.fromEntries(
+                                                Object.entries(
+                                                    form.getValues()
+                                                ).map(([key, value]) => {
+                                                    // If the field value is an array (useFieldArray), reset it to empty array
+                                                    if (Array.isArray(value))
+                                                        return [key, []];
+                                                    // Otherwise, reset normal fields to empty string
+                                                    return [key, ""];
+                                                })
+                                            ),
+                                            openModel: true, // keep this field true
+                                        });
                                     }}
                                 >
                                     {addButtonLabel}
@@ -198,24 +197,23 @@ export function BasicDataTable({
             )}
 
             <div>
-                <div className="rounded-lg h-full">
-                    <Table className="min-w-full">
-                        <TableHeader className="sticky top-0 z-10 bg-background">
-                            {table.getHeaderGroups().map((headerGroup) => (
-                                <TableRow key={headerGroup.id}>
-                                    {headerGroup.headers.map((header) => (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                      header.column.columnDef
-                                                          .header,
-                                                      header.getContext()
-                                                  )}
-                                        </TableHead>
-                                    ))}
-                                </TableRow>
-                            ))}
+                <div className="rounded-lg h-full w-full">
+                    <Table>
+                        <TableHeader className="sticky top-0 z-10 bg-background"> 
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <TableRow key={headerGroup.id}>
+                                {headerGroup.headers.map((header) => (
+                                <TableHead
+                                    key={header.id}
+                                    className={header?.column?.columnDef?.thClass} // <-- this is your thClass
+                                >
+                                    {header.isPlaceholder
+                                    ? null
+                                    : flexRender(header.column.columnDef.header, header.getContext())}
+                                </TableHead>
+                                ))}
+                            </TableRow>
+                        ))}
                         </TableHeader>
                         <TableBody>
                             {loading ? (
@@ -241,12 +239,12 @@ export function BasicDataTable({
                                         }
                                     >
                                         {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id}>
-                                                {flexRender(
-                                                    cell.column.columnDef.cell,
-                                                    cell.getContext()
-                                                )}
-                                            </TableCell>
+                                            <TableCell
+                                            key={cell.id}
+                                            className={cell.column.columnDef?.tdClass || ""} // <-- Use tdClass if defined
+                                          >
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                          </TableCell>
                                         ))}
                                     </TableRow>
                                 ))

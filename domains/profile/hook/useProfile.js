@@ -37,11 +37,11 @@ export const useProfile = () => {
         },
         getProfile: async (id = null) => {
             // ✅ trigger API
-            const result = await triggerGetProfile({ id });
-            console.log(result?.data);
-            
+            const result = await triggerGetProfile({ id }); 
+            console.log(result); 
             // ✅ if data exists, push to redux + form
             if (result?.data) {
+                
                 dispatch(setProfile(result.data));
                 actions.onEditProfile(result.data);
             }
