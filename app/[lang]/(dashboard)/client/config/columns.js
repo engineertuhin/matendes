@@ -1,58 +1,43 @@
-import { MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-
+import { TableActions } from "@/components/table/TableActions";
 const safe = (v, fallback = "—") => (v ?? v === 0 ? v : fallback);
 
 const clientColumns = (actions) => [
   { accessorKey: "name", header: "Client Name" },
-  { accessorKey: "email", header: "Email" },
-  { accessorKey: "phone", header: "Phone" },
-  { accessorKey: "client_type", header: "Client Type" },
+  { accessorKey: "email", header: "Email" ,thClass: "!text-center", 
+    tdClass: "!text-center",},
+  { accessorKey: "phone", header: "Phone" ,thClass: "!text-center", 
+    tdClass: "!text-center",},
+  { accessorKey: "client_type", header: "Client Type" ,thClass: "!text-center", 
+    tdClass: "!text-center",},
 
   {
     id: "status",
     header: "Status",
+    thClass: "!text-center", 
+    tdClass: "!text-center",
     cell: ({ row }) => safe(row.original?.status),
   },
 
-  // Actions
+  // Actions 
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const data = row.original;
-      return (
-        <div className="text-end">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => actions?.onEdit?.(data)}>
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => actions?.onDelete?.(data?.id)}>
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
-  },
+    header: " ",
+    thClass: "!text-center w-[70px] whitespace-nowrap", 
+    tdClass: "!text-center w-[70px] whitespace-nowrap",
+    cell: ({ row }) => (
+      <TableActions
+        data={row.original}
+        label="Actions"
+        // alignmentClass is omitted here, so it defaults to "flex justify-center"
+        items={[
+          { label: "Edit", onClick: actions?.onEdit }, // needs full data
+          { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+        ]}
+      />
+    ),
+  }
+
 ];
 
 export default clientColumns;

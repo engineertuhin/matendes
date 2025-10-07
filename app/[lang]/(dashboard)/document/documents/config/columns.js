@@ -1,13 +1,4 @@
-import * as LucideIcons from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { TableActions } from "@/components/table/TableActions";
 
 const columns = (actions) => [
     {
@@ -19,6 +10,8 @@ const columns = (actions) => [
     {
         id: "employee",
         header: "Employee",
+        thClass: "!text-center", 
+        tdClass: "!text-center",
         cell: ({ row }) => {
             const employee = row.original.employee;
             return employee
@@ -29,6 +22,8 @@ const columns = (actions) => [
     {
         id: "client",
         header: "Client",
+        thClass: "!text-center", 
+        tdClass: "!text-center",
         cell: ({ row }) => { 
             const client = row?.original?.client ? row?.original?.client?.name + " (" + row?.original?.client?.email + ")" : "N/A";
             return client || "N/A";
@@ -37,6 +32,8 @@ const columns = (actions) => [
     {
         id: "project",
         header: "Project",
+        thClass: "!text-center", 
+        tdClass: "!text-center",
         cell: ({ row }) => { 
             const project = row?.original?.project?.name;
             return project || "N/A";
@@ -46,56 +43,31 @@ const columns = (actions) => [
     {
         id: "created_at",
         header: "Created",
+        thClass: "!text-center", 
+        tdClass: "!text-center",
         cell: ({ row }) => {
             const date = row.original.system_info?.created_at;
             return date ? new Date(date).toLocaleDateString() : "N/A";
         },
     },
+    // Actions
     {
         id: "actions",
         enableHiding: false,
-        cell: ({ row }) => {
-            const document = row.original;
-
-            return (
-                <div className="text-end">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <LucideIcons.MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                onClick={() => {
-                                    console.log(
-                                        "Edit clicked for document:",
-                                        document
-                                    );
-                                    actions?.onEdit?.(document);
-                                }}
-                            >
-                                Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                                onClick={() => {
-                                    console.log(
-                                        "Delete clicked for document ID:",
-                                        document?.id
-                                    );
-                                    actions?.onDelete?.(document?.id);
-                                }}
-                            >
-                                Delete
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-            );
-        },
+        header: " ",
+        thClass: "!text-center w-[70px] whitespace-nowrap",
+        tdClass: "!text-center w-[70px] whitespace-nowrap",
+        cell: ({ row }) => (
+            <TableActions
+                data={row.original}
+                label="Actions"
+                // alignmentClass is omitted here, so it defaults to "flex justify-center"
+                items={[
+                    { label: "Edit", onClick: actions?.onEdit },
+                    { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+                ]}
+            />
+        ),
     },
 ];
 

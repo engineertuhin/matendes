@@ -5,21 +5,19 @@ import columns from "./config/columns";
 
 import { useEmploy } from "@/domains/employ/hook/useEmploy";
 
-const employeePage = () => {
-    const { actions, employState } = useEmploy(); // Custom hook to manage user actions
+const EmployeePage = () => {
+    const { actions, employState } = useEmploy();
 
     return (
-        <>
-            <PageLayout>
-                <BasicTableLayout
-                    addButtonLabel="Add Employee"
-                    columns={columns(actions)}
-                    to="employees/create"
-                    state={employState}
-                />
-            </PageLayout>
-        </>
+        <PageLayout>
+            <BasicTableLayout
+                addButtonLabel="Add Employee"
+                columns={columns(actions)}
+                to="employees/create"
+                state={employState}
+            />
+        </PageLayout>
     );
 };
 
-export default employeePage;
+export default EmployeePage;

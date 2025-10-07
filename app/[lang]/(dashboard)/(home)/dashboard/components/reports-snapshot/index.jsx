@@ -147,7 +147,7 @@ const ReportsSnapshot = () => {
                     }
                   )}
                 ></span>
-                <span className="text-sm text-default-800 dark:text-primary-foreground font-semibold capitalize relative z-10">
+                <span className="text-sm text-default-800 dark:text-primary-foreground font-semibold capitalize relative z-10 text-wrap text-start">
                   {" "}
                   {item.text}
                 </span>

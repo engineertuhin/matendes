@@ -107,6 +107,7 @@ export const useBranch = () => {
                 // Location
                 latitude: data.latitude ?? "",
                 longitude: data.longitude ?? "",
+                allowed_range_meters: data.allowed_range_meters ?? "",
                 timezone: data.timezone || "",
 
                 // Operational

@@ -1,13 +1,4 @@
-import { MoreHorizontal } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { TableActions } from "@/components/table/TableActions";
 
 const Pill = ({ children, className = "" }) => (
   <span
@@ -42,11 +33,13 @@ let columns = (actions) => [
   {
     id: "lavel",
     header: "Level",
+    thClass: "!text-center", 
+    tdClass: "!text-center",
     cell: ({ row }) => {
       
       const d = row.original; 
       return (
-        <div className="flex items-center gap-2 min-w-[180px]">  
+        <div className="flex items-center justify-center gap-2 min-w-[180px]">  
             <span className="font-medium">{d?.level ?? "—"}</span> 
         </div>
       );
@@ -56,11 +49,13 @@ let columns = (actions) => [
   {
     id: "created_at",
     header: "Created At",
+    thClass: "!text-center", 
+    tdClass: "!text-center",
     cell: ({ row }) => {
       
       const d = row.original;
       return (
-        <div className="flex items-center gap-2 min-w-[180px]">  
+        <div className="flex items-center justify-center gap-2 min-w-[180px]">  
             <span className="font-medium">{d?.created_at || "—"}</span> 
         </div>
       );
@@ -71,35 +66,18 @@ let columns = (actions) => [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const data = row.original;
-      return (
-        <div className="text-end">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => actions.onManagePermissions?.(data)}>
-                Manage Permissions
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => actions.onEdit?.(data)}>
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => actions.onDelete?.(data.id)}>
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
-  },
+    cell: ({ row }) => (
+      <TableActions
+        data={row.original}
+        items={[
+          { label: "Manage Permissions", onClick: actions?.onManagePermissions },
+          { label: "Edit", onClick: actions?.onEdit },
+          { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+        ]}
+      />
+    ),
+  }
+  
 ];
 
 export default columns;

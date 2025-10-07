@@ -42,6 +42,7 @@ export const useCompany = () => {
         refetch,
         pagination: company?.data?.pagination || {},
         isFetching,
+        
     };
 
     const actions = {

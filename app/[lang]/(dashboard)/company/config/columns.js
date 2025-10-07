@@ -1,14 +1,4 @@
-import { MoreHorizontal } from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-
+import { TableActions } from "@/components/table/TableActions";
 const Pill = ({ children, className = "" }) => (
     <span
         className={[
@@ -34,7 +24,6 @@ let columns = (actions) => [
             const d = row.original;
             return (
                 <div className="flex items-center gap-2 min-w-[180px]">
-             
                     <div className="flex flex-col">
                         <span className="font-medium">{d?.name || "—"}</span>
                         {d?.legal_name ? (
@@ -77,60 +66,60 @@ let columns = (actions) => [
     },
 
     // Emails & Phones
-    {
-        id: "contact_email",
-        header: "Email",
-        cell: ({ row }) => (
-            <div className="lowercase whitespace-nowrap">
-                {row.original?.contact_info?.email || "—"}
-            </div>
-        ),
-    },
-    {
-        id: "contact_phone",
-        header: "Phone",
-        cell: ({ row }) => row.original?.contact_info?.phone || "—",
-    },
+    // {
+    //     id: "contact_email",
+    //     header: "Email",
+    //     cell: ({ row }) => (
+    //         <div className="lowercase whitespace-nowrap">
+    //             {row.original?.contact_info?.email || "—"}
+    //         </div>
+    //     ),
+    // },
+    // {
+    //     id: "contact_phone",
+    //     header: "Phone",
+    //     cell: ({ row }) => row.original?.contact_info?.phone || "—",
+    // },
 
     // Website
-    {
-        id: "website",
-        header: "Website",
-        cell: ({ row }) => {
-            const url = row.original?.contact_info?.website;
-            return url ? (
-                <a
-                    href={/^https?:\/\//i.test(url) ? url : `https://${url}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-primary hover:underline"
-                >
-                    {url}
-                </a>
-            ) : (
-                "—"
-            );
-        },
-    },
+    // {
+    //     id: "website",
+    //     header: "Website",
+    //     cell: ({ row }) => {
+    //         const url = row.original?.contact_info?.website;
+    //         return url ? (
+    //             <a
+    //                 href={/^https?:\/\//i.test(url) ? url : `https://${url}`}
+    //                 target="_blank"
+    //                 rel="noreferrer"
+    //                 className="text-primary hover:underline"
+    //             >
+    //                 {url}
+    //             </a>
+    //         ) : (
+    //             "—"
+    //         );
+    //     },
+    // },
 
     // Address (compact)
 
     // Locale / Currency / Timezone
-    {
-        id: "locale",
-        header: "Locale",
-        cell: ({ row }) => row.original?.locale || "—",
-    },
-    {
-        id: "currency",
-        header: "Currency",
-        cell: ({ row }) => row.original?.business_info?.currency || "—",
-    },
-    {
-        id: "timezone",
-        header: "Timezone",
-        cell: ({ row }) => row.original?.business_info?.timezone || "—",
-    },
+    // {
+    //     id: "locale",
+    //     header: "Locale",
+    //     cell: ({ row }) => row.original?.locale || "—",
+    // },
+    // {
+    //     id: "currency",
+    //     header: "Currency",
+    //     cell: ({ row }) => row.original?.business_info?.currency || "—",
+    // },
+    // {
+    //     id: "timezone",
+    //     header: "Timezone",
+    //     cell: ({ row }) => row.original?.business_info?.timezone || "—",
+    // },
 
     // Subscription
     {
@@ -149,24 +138,24 @@ let columns = (actions) => [
             );
         },
     },
-    {
-        id: "billing_dates",
-        header: "Trial / Suspended",
-        cell: ({ row }) => {
-            const trial = row.original?.trial_ends_at;
-            const suspAt = row.original?.suspended_at;
-            const reason = row.original?.suspended_reason;
-            return (
-                <div className="flex flex-col">
-                    <span className="text-xs">Trial: {fmtDate(trial)}</span>
-                    <span className="text-xs">
-                        Suspended: {fmtDate(suspAt)}
-                        {reason ? ` (${reason})` : ""}
-                    </span>
-                </div>
-            );
-        },
-    },
+    // {
+    //     id: "billing_dates",
+    //     header: "Trial / Suspended",
+    //     cell: ({ row }) => {
+    //         const trial = row.original?.trial_ends_at;
+    //         const suspAt = row.original?.suspended_at;
+    //         const reason = row.original?.suspended_reason;
+    //         return (
+    //             <div className="flex flex-col">
+    //                 <span className="text-xs">Trial: {fmtDate(trial)}</span>
+    //                 <span className="text-xs">
+    //                     Suspended: {fmtDate(suspAt)}
+    //                     {reason ? ` (${reason})` : ""}
+    //                 </span>
+    //             </div>
+    //         );
+    //     },
+    // },
 
     // Registration / Tax
     {
@@ -188,42 +177,20 @@ let columns = (actions) => [
     {
         id: "actions",
         enableHiding: false,
-        cell: ({ row }) => {
-            const data = row.original;
-            return (
-                <div className="text-end">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                                onClick={() =>
-                                    actions.onLoginAsCompany?.(data)
-                                }
-                            >
-                                Login as Company
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                                onClick={() => actions.onEdit?.(data)}
-                            >
-                                Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                                onClick={() => actions.onDelete?.(data.id)}
-                            >
-                                Delete
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-            );
-        },
+        header: " ",
+        thClass: "!text-center w-[70px] whitespace-nowrap",
+        tdClass: "!text-center w-[70px] whitespace-nowrap",
+        cell: ({ row }) => (
+            <TableActions
+                data={row.original}
+                label="Actions"
+                onLoginAsCompany={actions?.onLoginAsCompany} // ✅ just add this line
+                items={[
+                    { label: "Edit", onClick: actions?.onEdit },
+                    { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+                ]}
+            />
+        ),
     },
 ];
 

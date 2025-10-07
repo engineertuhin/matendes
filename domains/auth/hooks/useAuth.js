@@ -49,6 +49,7 @@ const useAuth = () => {
                     token: Cookies.get("auth-token") || null,
                     setPermissions: response.data.permission,
                     notificationData: response.data.notificationData,
+                    branch: response?.data?.employee?.branch,
                 })
             );
 
@@ -80,14 +81,14 @@ const useAuth = () => {
             const response = await loginAsCompanyMutation({
                 company_id: companyId,
             }).unwrap();
-            
+
             Cookies.set("auth-token", response.data.token, { expires: 7 }); // expires in 7 days
-      
+
             return { success: true };
         } catch (error) {
             return { success: false, error };
         }
-    }
+    };
 
     return {
         // Auth state
@@ -107,7 +108,6 @@ const useAuth = () => {
 
         // Errors
         loginError,
-
     };
 };
 

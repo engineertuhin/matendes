@@ -1,35 +1,15 @@
-import { MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { TableActions } from "@/components/table/TableActions";
 import { useRouter } from "next/navigation";
 import { setEmployData } from "@/domains/employ/model/employSlice";
 import { useAppDispatch } from "@/hooks/use-redux";
 import { useProfile } from "@/domains/profile/hook/useProfile";
+
 const columns = (actions) => {
     const { actions: profileActions } = useProfile();
     const router = useRouter();
     const dispatch = useAppDispatch();
-    return [
-        // Employee Code & Badge
-        {
-            accessorKey: "employee_code",
-            header: "Employee Code",
-            cell: ({ row }) => row.original?.employee_code || "—",
-        },
-        {
-            accessorKey: "badge_number",
-            header: "Badge",
-            cell: ({ row }) => row.original?.badge_number || "—",
-        },
 
-        // Name
+    return [
         {
             id: "name",
             header: "Name",
@@ -43,135 +23,87 @@ const columns = (actions) => {
                 );
             },
         },
-
-        // Gender & DOB
         {
-            accessorKey: "personal_info.gender",
-            header: "Gender",
-            cell: ({ row }) => row.original?.personal_info?.gender || "—",
+            accessorKey: "employee_code",
+            header: "Employee Id",
+            thClass: "!text-center",
+            tdClass: "!text-center",
+            cell: ({ row }) => row.original?.employee_code || "—",
         },
         {
-            accessorKey: "personal_info.date_of_birth",
-            header: "DOB",
-            cell: ({ row }) =>
-                row.original?.personal_info?.date_of_birth || "—",
+            accessorKey: "badge_number",
+            header: "Badge",
+            thClass: "!text-center",
+            tdClass: "!text-center",
+            cell: ({ row }) => row.original?.badge_number || "—",
         },
-
-        // Contact
-        {
-            accessorKey: "contact_info.work_email",
-            header: "Work Email",
-            cell: ({ row }) => row.original?.contact_info?.work_email || "—",
-        },
-        {
-            accessorKey: "contact_info.primary_phone",
-            header: "Phone",
-            cell: ({ row }) => row.original?.contact_info?.primary_phone || "—",
-        },
-
-        // Employment
-        {
-            accessorKey: "employment_info.hire_date",
-            header: "Hire Date",
-            cell: ({ row }) => row.original?.employment_info?.hire_date || "—",
-        },
-        {
-            accessorKey: "employment_info.basic_salary",
-            header: "Basic Salary",
-            cell: ({ row }) =>
-                row.original?.employment_info?.basic_salary || "—",
-        },
-        {
-            accessorKey: "employment_info.salary_type ",
-            header: "Salary Type",
-            cell: ({ row }) =>
-                row.original?.employment_info?.salary_type || "—",
-        },
-        {
-            accessorKey: "employment_info.employment_status",
-            header: "Status",
-            cell: ({ row }) =>
-                row.original?.employment_info?.employment_status || "—",
-        },
-        {
-            accessorKey: "employment_info.employment_type",
-            header: "Type",
-            cell: ({ row }) =>
-                row.original?.employment_info?.employment_type || "—",
-        },
-        {
-            accessorKey: "employment_info.work_mode",
-            header: "Work Mode",
-            cell: ({ row }) => row.original?.employment_info?.work_mode || "—",
-        },
-
-        // Department / Position (relationship)
         {
             id: "department",
             header: "Department",
+            thClass: "!text-center",
+            tdClass: "!text-center",
             cell: ({ row }) => row.original?.department?.name || "—",
         },
         {
             id: "job_position_id",
             header: "Position",
+            thClass: "!text-center",
+            tdClass: "!text-center",
             cell: ({ row }) => row.original?.job_position?.title || "—",
         },
-
-        // Manager
-        // {
-        //     id: "manager",
-        //     header: "Manager",
-        //     cell: ({ row }) => row.original?.manager?.name || "—",
-        // },
-
+        {
+            accessorKey: "contact_info.work_email",
+            header: "Work Email",
+            thClass: "!text-center",
+            tdClass: "!text-center",
+            cell: ({ row }) => row.original?.contact_info?.work_email || "—",
+        },
+        {
+            accessorKey: "contact_info.primary_phone",
+            header: "Phone",
+            thClass: "!text-center",
+            tdClass: "!text-center",
+            cell: ({ row }) => row.original?.contact_info?.primary_phone || "—",
+        },
+        {
+            accessorKey: "employment_info.employment_status",
+            header: "Status",
+            thClass: "!text-center",
+            tdClass: "!text-center",
+            cell: ({ row }) =>
+                row.original?.employment_info?.employment_status || "—",
+        },
         // Actions
         {
             id: "actions",
             enableHiding: false,
             header: "",
+            thClass: "!text-center w-[70px] whitespace-nowrap", 
+            tdClass: "!text-center w-[70px] whitespace-nowrap",
             cell: ({ row }) => {
                 const data = row.original;
                 return (
-                    <div className="text-end">
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                    <span className="sr-only">Open menu</span>
-                                    <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-
-                                <DropdownMenuItem
-                                    onClick={() => {
-                                        profileActions.getProfile(data?.id);
-                                        router.push(`/user-profile`);
-                                    }}
-                                >
-                                    View
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => {
-                                        router.push(
-                                            `/employees/edit/${data?.id}`
-                                        );
-                                        dispatch(setEmployData(data));
-                                    }}
-                                >
-                                    Edit
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() =>
-                                        actions?.onDelete?.(data?.id)
-                                    }
-                                >
-                                    Delete
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
+                    <TableActions
+                        data={data}
+                        label="Actions" 
+                        items={[
+                            { 
+                                label: "View", 
+                                onClick: (rowData) => { // Define the custom handler here
+                                    profileActions.getProfile(rowData?.id);
+                                    router.push(`/user-profile`);
+                                } 
+                            },
+                            { 
+                                label: "Edit", 
+                                onClick: (rowData) => { // Define the custom handler here
+                                    router.push(`/employees/edit/${rowData?.id}`);
+                                    dispatch(setEmployData(rowData));
+                                } 
+                            },
+                            { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+                        ]}
+                    />
                 );
             },
         },
