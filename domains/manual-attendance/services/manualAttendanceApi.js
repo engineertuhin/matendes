@@ -59,7 +59,7 @@ export const manualAttendanceApi = createApi({
             query: (filterTerm) => ({
                 url: "hrm/filter-employees",
                 method: "GET",
-                params: { filter: filterTerm },
+                params: { ...filterTerm },
             }),
             providesTags: ["ManualAttendance"],
         }),

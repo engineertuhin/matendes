@@ -1,20 +1,38 @@
 import { TableActions } from "@/components/table/TableActions";
 
-export default (actions) => [
-  { accessorKey: "name", header: "Name" },
+const columns = (actions) => [
+  { accessorKey: "name", header: "Category Name" },
+  {
+    accessorKey: "status",
+    header: "Status",
+    thClass: "!text-center",
+    tdClass: "!text-center",
+    cell: ({ row }) => {
+      const status = row.original.status || "—";
+      const className =
+        status === "active"
+          ? "bg-green-100 text-green-700 px-2 py-0.5 rounded-full"
+          : "bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full";
+      return <span className={className}>{status}</span>;
+    },
+  },
   {
     id: "actions",
-    header: "",
-    thClass: "!text-center w-[70px]",
-    tdClass: "!text-center w-[70px]",
+    enableHiding: false,
+    header: " ",
+    thClass: "!text-center w-[70px] whitespace-nowrap",
+    tdClass: "!text-center w-[70px] whitespace-nowrap",
     cell: ({ row }) => (
       <TableActions
         data={row.original}
+        label="Actions"
         items={[
-          { label: "Edit", onClick: actions.onEdit },
-          { label: "Delete", onClick: actions.onDelete, danger: true, passId: true },
+          { label: "Edit", onClick: actions?.onEdit },
+          { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true },
         ]}
       />
     ),
   },
 ];
+
+export default columns;

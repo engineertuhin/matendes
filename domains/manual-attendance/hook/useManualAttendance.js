@@ -14,6 +14,11 @@ import {
     useLazyFilterEmployeesForAttendanceQuery,
     useCreateManualAttendanceMutation,
 } from "../services/manualAttendanceApi";
+import {
+    branchSearchTemplate,
+    departmentSearchTemplate,
+    projectTemplate,
+} from "@/utility/templateHelper";
 
 export const useManualAttendance = () => {
     // RTK Query mutations
@@ -47,43 +52,38 @@ export const useManualAttendance = () => {
     });
 
     // Debounced filter function
-    const debouncedEmployeeFilter = useMemo(
-        () =>
-            debounce(async (filterTerm) => {
-                if (filterTerm && filterTerm.length >= 2) {
-                    try {
-                        const response = await filterEmployees(filterTerm);
-                        fieldArray.remove();
-                        response?.data?.data?.map((item) => {
-                            fieldArray.append({
-                                name: item.first_name + " " + item.last_name,
-                                employee_id: item.id,
-                                check_in_time: "",
-                                check_out_time: "",
-                            });
-                        });
-                    } catch (error) {
-                        console.error("Employee filter error:", error);
-                        toast.error("Failed to filter employees");
-                    }
-                }
-            }, 300),
-        [filterEmployees]
-    );
+    async function handleEmployeeFilter(filterTerm) {
+        try {
+            const response = await filterEmployees(filterTerm);
+            fieldArray.remove();
+
+            response?.data?.data?.forEach((item) => {
+                fieldArray.append({
+                    name: `${item.first_name} ${item.last_name}`,
+                    employee_id: item.id,
+                    check_in_time: "",
+                    check_out_time: "",
+                });
+            });
+        } catch (error) {
+            console.error("Employee filter error:", error);
+            toast.error("Failed to filter employees");
+        }
+    }
 
     // State object
-const manualAttendanceState = {
-    data: manualAttendanceData?.data?.master_attendances || [],
-    form: {
-        ...form,
-        fields: fieldArray,
-    },
-    refetch,
-    pagination: manualAttendanceData?.pagination || {},
-    isFetching,
-    employeeFilterResults: employeeFilterResults?.data || [],
-    isFiltering,
-};
+    const manualAttendanceState = {
+        data: manualAttendanceData?.data?.master_attendances || [],
+        form: {
+            ...form,
+            fields: fieldArray,
+        },
+        refetch,
+        pagination: manualAttendanceData?.pagination || {},
+        isFetching,
+        employeeFilterResults: employeeFilterResults?.data || [],
+        isFiltering,
+    };
 
     // Actions
     const actions = {
@@ -171,8 +171,13 @@ const manualAttendanceState = {
                     toast.error(`Validation failed: ${validationErrors[0]}`);
                     return;
                 }
+                let value = normalizeSelectValues(data, [
+                    "branch_id",
+                    "department_id",
+                    "project_id",
+                ]);
 
-                const response = await createManualAttendance(data).unwrap();
+                const response = await createManualAttendance(value).unwrap();
                 if (response.success) {
                     toast.success("Master attendance created successfully");
                     refetch();
@@ -197,11 +202,6 @@ const manualAttendanceState = {
 
         onEdit: (masterAttendanceData) => {
             try {
-                console.log(
-                    "Editing master attendance data:",
-                    masterAttendanceData
-                );
-
                 // Validate input data
                 if (!masterAttendanceData || !masterAttendanceData.id) {
                     toast.error("Invalid attendance data provided for editing");
@@ -238,10 +238,24 @@ const manualAttendanceState = {
                         global_check_out_time: formatTime(
                             masterAttendanceData.global_check_out_time
                         ),
+                        branch_id:
+                            branchSearchTemplate(
+                                masterAttendanceData?.branch
+                                    ? [masterAttendanceData.branch]
+                                    : []
+                            )?.at(0) ?? null,
+                        department_id:
+                            departmentSearchTemplate(
+                                masterAttendanceData?.department
+                                    ? [masterAttendanceData.department]
+                                    : []
+                            )?.at(0) ?? null,
                         project_id:
-                            masterAttendanceData.project_id ||
-                            masterAttendanceData.project?.id ||
-                            null,
+                            projectTemplate(
+                                masterAttendanceData?.project
+                                    ? [masterAttendanceData.project]
+                                    : []
+                            )?.at(0) ?? null,
                         notes: masterAttendanceData.notes || "",
                         // Prepare employee data from raw attendances array
                         employees: (masterAttendanceData.attendances || []).map(
@@ -320,7 +334,12 @@ const manualAttendanceState = {
                 }
 
                 const { id, ...rest } = data;
-                const preparedData = normalizeSelectValues(rest, []);
+
+                const preparedData = normalizeSelectValues(rest, [
+                    "branch_id",
+                    "department_id",
+                    "project_id",
+                ]);
                 const response = await updateManualAttendance({
                     id,
                     ...preparedData,
@@ -334,7 +353,7 @@ const manualAttendanceState = {
             } catch (apiErrors) {
                 // Handle server validation errors
                 handleServerValidationErrors(apiErrors, form.setError);
-                
+
                 // Show specific error messages for duplicate attendance
                 if (apiErrors?.data?.errors?.employees) {
                     const employeeErrors = apiErrors.data.errors.employees;
@@ -412,107 +431,34 @@ const manualAttendanceState = {
         },
 
         // Employee filtering for attendance creation
-        onAttendanceTypeChange: async (filterTerm) => {
-            if (!filterTerm || filterTerm.length < 2) {
-                return [];
-            }
-
+        onAttendanceTypeChange: async () => {
             try {
-                form.setValue("attendance_type", filterTerm);
-                await debouncedEmployeeFilter(filterTerm);
-                return employeeFilterResults?.data || [];
+                const value = form.getValues();
+                const {
+                    branch_id,
+                    department_id,
+                    project_id,
+                    attendance_type,
+                } = normalizeSelectValues(value, [
+                    "branch_id",
+                    "department_id",
+                    "project_id",
+                ]);
+                let currentValueIs = {
+                    branch_id,
+                    department_id,
+                    project_id,
+                    attendance_type,
+                };
+
+                await handleEmployeeFilter(currentValueIs);
+                // return employeeFilterResults?.data || [];
             } catch (error) {
                 console.error("Employee filter error:", error);
                 toast.error("Failed to filter employees");
                 return [];
             }
         },
-
-        // Utility functions for table operations
-        getTableColumns: () => [
-            {
-                key: "displayDate",
-                title: "Date",
-                dataIndex: "displayDate",
-                sortable: true,
-            },
-            {
-                key: "attendanceTypeDisplay",
-                title: "Type",
-                dataIndex: "attendanceTypeDisplay",
-                sortable: true,
-            },
-            {
-                key: "displayProject",
-                title: "Project",
-                dataIndex: "displayProject",
-                sortable: true,
-            },
-            {
-                key: "displayTimeRange",
-                title: "Time Range",
-                dataIndex: "displayTimeRange",
-            },
-            {
-                key: "displayEmployeeCount",
-                title: "Employees",
-                dataIndex: "displayEmployeeCount",
-                render: (value, record) =>
-                    `${value} (${record.displayPresentCount} present)`,
-            },
-            {
-                key: "displayTotalHours",
-                title: "Total Hours",
-                dataIndex: "displayTotalHours",
-                render: (value) => `${value}h`,
-            },
-            {
-                key: "displayStatus",
-                title: "Status",
-                dataIndex: "displayStatus",
-                render: (value) => (
-                    <span
-                        className={`badge ${
-                            value === "Published"
-                                ? "badge-success"
-                                : "badge-warning"
-                        }`}
-                    >
-                        {value}
-                    </span>
-                ),
-            },
-            {
-                key: "actions",
-                title: "Actions",
-                render: (_, record) => (
-                    <div className="flex gap-2">
-                        <button
-                            onClick={() => actions.onViewDetails(record)}
-                            className="btn btn-sm btn-info"
-                        >
-                            View
-                        </button>
-                        {record.canEdit && (
-                            <button
-                                onClick={() => actions.onEdit(record)}
-                                className="btn btn-sm btn-primary"
-                            >
-                                Edit
-                            </button>
-                        )}
-                        {record.canDelete && (
-                            <button
-                                onClick={() => actions.onDelete(record.id)}
-                                className="btn btn-sm btn-danger"
-                            >
-                                Delete
-                            </button>
-                        )}
-                    </div>
-                ),
-            },
-        ],
     };
 
     return {

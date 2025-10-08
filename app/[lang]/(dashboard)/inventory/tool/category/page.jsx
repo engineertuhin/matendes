@@ -1,4 +1,5 @@
 "use client";
+
 import PageLayout from "@/components/page-layout";
 import BasicTableLayout from "@/components/table/basic-table-layout";
 import BasicModel from "@/components/model/basic-model";
@@ -16,14 +17,15 @@ const CategoryPage = () => {
         columns={columns(actions)}
         state={categoryState}
       />
+
       <BasicModel
-        title={categoryState.form.watch("id") ? "Edit Category" : "Create Category"}
-        submitLabel={categoryState.form.watch("id") ? "Update" : "Create"}
+        title={categoryState?.form?.watch("id") ? "Edit Category" : "Create Category"}
+        submitLabel={categoryState?.form?.watch("id") ? "Update" : "Create"}
         cancelLabel="Cancel"
         size="2xl"
         form={categoryState.form}
         fields={fields}
-        actions={actions}
+        actions={actions} // <-- pass full actions like BranchPage
       />
     </PageLayout>
   );

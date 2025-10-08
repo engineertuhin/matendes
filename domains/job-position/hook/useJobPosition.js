@@ -48,8 +48,7 @@ export const useJobPosition = () => {
         refetch,
         pagination: JobPosition?.data?.pagination || {},
         isFetching,
-    };
-    console.log(jobPositionState.data);
+    }; 
 
     const actions = {
         onCreate: async (data) => {
@@ -75,6 +74,7 @@ export const useJobPosition = () => {
             }
         },
         onEdit: (data) => {
+            console.log(data);
             form.reset({
                 // =============== Relations ===============
                 id: data.id || "",

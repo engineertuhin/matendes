@@ -67,3 +67,19 @@ export const clientTemplate = (res) => {
         value: client.id,
     })); // what is stored in form
 };
+
+// templates/categoryTemplate.js
+export const categorySearchTemplate = (res) => {
+    return res.map((category) => ({
+        label: category.name,
+        value: category.id,
+    })); // what is stored in form
+};
+
+// templates/unitTemplate.js
+export const unitSearchTemplate = (res) => {
+    return res.map((unit) => ({
+        label: unit.name,
+        value: unit.id,
+    })); // what is stored in form
+};

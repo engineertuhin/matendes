@@ -31,7 +31,7 @@ const ManualAttendancePage = () => {
                     cancelLabel="Cancel"
                     size="4xl"
                     form={manualAttendanceState.form}
-                    fields={fields(actions)}
+                    fields={fields(actions,manualAttendanceState.form)}
                     actions={actions}
                 />
             </PageLayout>
