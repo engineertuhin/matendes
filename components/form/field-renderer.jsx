@@ -61,6 +61,8 @@ const FieldRenderer = ({ fieldConfig, form }) => {
         refLink,
         visibility = true,
         addButtonLabel="Add More",
+        index=false,
+        getValue,
     } = fieldConfig;
 
     const styles = {
@@ -93,10 +95,12 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                               const raw = e.target.value;
                               const parsed =
                                   raw === "" ? undefined : Number(raw);
-                              const finalValue = Number.isNaN(parsed) ? undefined : parsed;
+                              const finalValue = Number.isNaN(parsed)
+                                  ? undefined
+                                  : parsed;
                               field.onChange(finalValue);
                               if (handleChange) {
-                                  handleChange(finalValue, form);
+                                  handleChange(finalValue, form,index);
                               }
                           }
                         : undefined;
@@ -143,7 +147,7 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                                   optionValue ?? "value"
                                               ];
                                         field.onChange(value);
-                                        
+
                                         // If handleChange exists, also call it with form
                                         if (handleChange) {
                                             handleChange(selectedOption, form);
@@ -191,7 +195,7 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                             ? handleChange(selectedOptions)
                                             : values;
                                         field.onChange(finalValue);
-                                        
+
                                         // If handleChange exists, also call it with form
                                         if (handleChange) {
                                             handleChange(selectedOptions, form);
@@ -227,38 +231,42 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                         disabled={disabled}
                                         {...(inputProps || {})}
                                         onChange={(e) => {
-                                        const file = e.target.files?.[0] || null;
-                                        field.onChange(file);
-                                        if (handleChange) {
-                                            handleChange(file, form);
-                                        }
+                                            const file =
+                                                e.target.files?.[0] || null;
+                                            field.onChange(file);
+                                            if (handleChange) {
+                                                handleChange(file, form);
+                                            }
                                         }}
                                     />
 
                                     {/* Simple preview text */}
                                     {field.value && (
                                         <p className="mt-2 text-sm text-gray-600">
-                                        {typeof field.value === "string"
-                                            ? (
-                                            <a
-                                                href={field.value.startsWith("http")
-                                                ? field.value
-                                                : `${window.location.origin}${field.value}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-blue-600 underline"
-                                            >
-                                                View current file
-                                            </a>
-                                            )
-                                            : ``}
+                                            {typeof field.value === "string" ? (
+                                                <a
+                                                    href={
+                                                        field.value.startsWith(
+                                                            "http"
+                                                        )
+                                                            ? field.value
+                                                            : `${window.location.origin}${field.value}`
+                                                    }
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-blue-600 underline"
+                                                >
+                                                    View current file
+                                                </a>
+                                            ) : (
+                                                ``
+                                            )}
                                         </p>
                                     )}
-                                    </div>
+                                </div>
+                            ) : // console.log(field.value)
 
-                                // console.log(field.value)
-                                
-                            ) : type === "radio" ? (
+                            type === "radio" ? (
                                 <RadioGroup
                                     onValueChange={(value) => {
                                         field.onChange(value);
@@ -308,6 +316,10 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                     form={form}
                                     addButtonLabel={addButtonLabel}
                                 />
+                            ) : type === "text-display" ? (
+                                <div>
+                                    {getValue ? getValue(form) : field.value}
+                                </div>
                             ) : (
                                 <>
                                     <Input
@@ -327,10 +339,15 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                         {...field}
                                         {...(inputProps || {})}
                                         onChange={
-                                            numberOnChange || ((e) => {
+                                            numberOnChange ||
+                                            ((e) => {
                                                 field.onChange(e);
                                                 if (handleChange) {
-                                                    handleChange(e.target.value, form);
+                                                    handleChange(
+                                                        e.target.value,
+                                                        form,
+                                                        index
+                                                    );
                                                 }
                                             })
                                         }
@@ -380,7 +397,7 @@ const FieldRenderer = ({ fieldConfig, form }) => {
 };
 
 const GroupFormField = ({ fieldConfig, form, addButtonLabel }) => {
-    const { name, fields: childFields, label } = fieldConfig;
+    const { name, fields: childFields, label, isDelete = true } = fieldConfig;
 
     // Use the fieldArray methods from the form (passed from useDocument)
     const { fields, append, remove } = form.fields;
@@ -419,24 +436,25 @@ const GroupFormField = ({ fieldConfig, form, addButtonLabel }) => {
                                     fieldConfig={{
                                         ...childField,
                                         name: fieldName,
+                                        index,
                                     }}
                                     form={form}
                                 />
                             </div>
                         );
                     })}
-
-                    {/* Delete Button (Red) */}
-                    <div className="col-span-12 md:col-span-2">
-                        <Button
-                            type="button"
-                            size="sm"
-                            onClick={() => remove(index)}
-                            className="bg-red-500 hover:bg-red-600 text-white"
-                        >
-                            <Trash2 className="w-4 h-4" />
-                        </Button>
-                    </div>
+                    {isDelete && (
+                        <div className="col-span-12 md:col-span-2">
+                            <Button
+                                type="button"
+                                size="sm"
+                                onClick={() => remove(index)}
+                                className="bg-red-500 hover:bg-red-600 text-white"
+                            >
+                                <Trash2 className="w-4 h-4" />
+                            </Button>
+                        </div>
+                    )}
                 </div>
             ))}
 

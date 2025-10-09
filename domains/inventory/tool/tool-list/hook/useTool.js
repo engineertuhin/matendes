@@ -51,7 +51,7 @@ export const useTool = () => {
       }
     },
 
-    onEdit: (item) => {
+    onEdit: (item) => { 
       console.log(item);
       
       form.reset({

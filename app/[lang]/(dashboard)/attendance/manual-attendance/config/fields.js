@@ -163,7 +163,7 @@ const fields = (actions,form) => {
                 {
                     name: "date",
                     type: "date",
-                    label: "Date *",
+                    label: "Attendance Date *",
                     placeholder: "Select date",
                     colSpan: "col-span-12 md:col-span-3",
                     inputProps: { type: "date" },

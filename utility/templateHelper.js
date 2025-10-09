@@ -36,8 +36,7 @@ export const jobPositionsTemplate = (res) => {
         value: data.id,
     }));
 };
-export const employTemplate = (res) => { 
-    
+export const employTemplate = (res) => {
     return res.map((data) => ({
         label: `${data?.personal_info?.first_name ?? data.first_name} ${
             data?.personal_info?.last_name ?? data.last_name
@@ -81,5 +80,23 @@ export const unitSearchTemplate = (res) => {
     return res.map((unit) => ({
         label: unit.name,
         value: unit.id,
+    })); // what is stored in form
+};
+
+// templates/toolTemplate.js
+export const toolSearchTemplate = (res) => {
+    return res.map((tool) => ({
+        label: tool.name + (tool.sku ? " (" + tool.sku + ")" : ""),
+        value: tool.id,
+        stock: tool?.company_stock ? tool?.company_stock?.quantity ?? 0 : 0,
+        unit_price: tool?.company_stock ? tool?.company_stock?.unit_price ?? 0 : 0,
+    })); // what is stored in form
+};
+
+// templates/purchaseTemplate.js
+export const purchaseSearchTemplate = (res) => {
+    return res.map((purchase) => ({
+        label: purchase.name,
+        value: purchase.id,
     })); // what is stored in form
 };

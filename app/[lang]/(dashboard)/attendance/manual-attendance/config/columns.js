@@ -96,7 +96,7 @@ const columns = (actions) => [
         accessorKey: "global_date",
         header: ({ column }) => (
             <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
+              
                 Date
             </div>
         ),
@@ -111,8 +111,8 @@ const columns = (actions) => [
         accessorKey: "timeRange",
         header: ({ column }) => (
             <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                Time Range
+             
+             Global Time Range
             </div>
         ),
         cell: ({ row }) => {
@@ -129,7 +129,7 @@ const columns = (actions) => [
     },
     {
         accessorKey: "totalHours",
-        header: "Total Hours",
+        header: "Global Total Hours",
         cell: ({ row }) => {
             const total = calculateTotalHours(
                 row.original?.global_check_in_time,

@@ -29,15 +29,7 @@ let columns = (actions) => [
   //   },
   // },
   // Manager
-  {
-    id: "manager",
-    header: "Manager",
-    thClass: "!text-center", 
-    tdClass: "!text-center",
-    cell: ({ row }) => {  
-      return row.original?.manager?.name ?? "-";
-    },
-  },
+
   // parent_department
   // {
   //   id: "parent_department",

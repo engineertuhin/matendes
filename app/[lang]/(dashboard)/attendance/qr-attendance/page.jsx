@@ -40,10 +40,10 @@ export default function QRAttendance() {
     // for legacy image scan
     const legacyRef = useRef(null);
 
-
-    const videoConstraints = {
+    // Camera constraints - will be updated dynamically
+    const [videoConstraints, setVideoConstraints] = useState({
         facingMode: { ideal: "environment" }, // back camera by default
-    };
+    });
 
     // --- Location gating (unchanged behavior) ---
     const allowLocation = () => {
@@ -92,17 +92,67 @@ export default function QRAttendance() {
         setIsRequesting(true);
 
         try {
-            // Proactively request camera permission to fail fast with a friendly error
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: false,
-            });
-            stream.getTracks().forEach((t) => t.stop());
+            let stream = null;
+            
+            // First try back camera (environment)
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { exact: "environment" } },
+                    audio: false,
+                });
+                
+                // If successful, set constraints for back camera
+                setVideoConstraints({
+                    facingMode: { exact: "environment" }
+                });
+                
+                console.log("Using back camera (environment)");
+                
+            } catch (backCameraError) {
+                console.log("Back camera not available, trying front camera:", backCameraError.message);
+                
+                // If back camera fails, try front camera (user)
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: { exact: "user" } },
+                        audio: false,
+                    });
+                    
+                    // If successful, set constraints for front camera
+                    setVideoConstraints({
+                        facingMode: { exact: "user" }
+                    });
+                    
+                    console.log("Using front camera (user)");
+                    
+                } catch (frontCameraError) {
+                    console.log("Front camera not available, trying any camera:", frontCameraError.message);
+                    
+                    // If both specific cameras fail, try any available camera
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: false,
+                    });
+                    
+                    // Set generic constraints
+                    setVideoConstraints({
+                        video: true
+                    });
+                    
+                    console.log("Using any available camera");
+                }
+            }
+            
+            // Stop the test stream
+            if (stream) {
+                stream.getTracks().forEach((t) => t.stop());
+            }
 
             setHasPermission(true);
             setStep("scanner");
             setMountScanner(false);
             setTimeout(() => setMountScanner(true), 0); // remount to ensure clean start
+            
         } catch (e) {
             setHasPermission(false);
             setStep("closed");

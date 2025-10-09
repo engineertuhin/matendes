@@ -39,11 +39,11 @@ const fields = () => [
   {
     name: "current_quantity",
     type: "input",
-    label: "Current Quantity *",
-    placeholder: "Enter current quantity",
+    label: "Opening Quantity *",
+    placeholder: "Enter opening quantity",
     colSpan: "col-span-12 md:col-span-6",
     rules: {
-      required: "Current quantity is required",
+      required: "Opening quantity is required",
       min: { value: 0, message: "Cannot be negative" },
     },
     inputProps: { type: "number", min: 0 },
@@ -54,6 +54,9 @@ const fields = () => [
     label: "Minimum Quantity",
     placeholder: "Enter minimum quantity",
     colSpan: "col-span-12 md:col-span-6",
+    rules: { 
+      min: { value: 0, message: "Cannot be negative" },
+    },
     inputProps: { type: "number", min: 0 },
   },
   {
@@ -62,6 +65,9 @@ const fields = () => [
     label: "Unit Price",
     placeholder: "Enter unit price",
     colSpan: "col-span-12 md:col-span-6",
+    rules: { 
+      min: { value: 0, message: "Cannot be negative" },
+    },
     inputProps: { type: "number", min: 0, step: "0.01" },
   },
   {
@@ -72,13 +78,13 @@ const fields = () => [
     placeholder: "Select unit",
     colSpan: "col-span-12 md:col-span-6",
   },
-  {
-    name: "location",
-    type: "input",
-    label: "Location",
-    placeholder: "Enter location",
-    colSpan: "col-span-12 md:col-span-6",
-  },
+  // {
+  //   name: "location",
+  //   type: "input",
+  //   label: "Location",
+  //   placeholder: "Enter location",
+  //   colSpan: "col-span-12 md:col-span-6",
+  // },
   {
     name: "status",
     type: "select",
