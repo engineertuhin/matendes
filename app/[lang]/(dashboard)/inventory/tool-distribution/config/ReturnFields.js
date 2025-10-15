@@ -1,7 +1,15 @@
 import { toast } from "react-hot-toast";
 
 const ReturnFields = (form) => [
-    //return_date
+    // Hidden warehouse_id field
+    {
+        name: "warehouse_id",
+        type: "input",
+        label: "Warehouse ID",
+        colSpan: "col-span-12",
+        inputProps: { type: "hidden" }, // hidden field
+    },
+    // return_date
     {
         name: "return_date",
         type: "input",
@@ -28,9 +36,7 @@ const ReturnFields = (form) => [
                 label: "Tool Name *",
                 placeholder: "Enter tool name",
                 colSpan: "col-span-12 md:col-span-4",
-                rules: {
-                    required: "Tool name is required",
-                },
+                rules: { required: "Tool name is required" },
                 disabled: true,
             },
             {
@@ -41,10 +47,7 @@ const ReturnFields = (form) => [
                 colSpan: "col-span-12 md:col-span-2",
                 rules: {
                     required: "Quantity is required",
-                    min: {
-                        value: 1,
-                        message: "Quantity must be at least 1",
-                    },
+                    min: { value: 1, message: "Quantity must be at least 1" },
                 },
                 disabled: true,
             },
@@ -56,13 +59,9 @@ const ReturnFields = (form) => [
                 colSpan: "col-span-12 md:col-span-2",
                 rules: {
                     required: "Return Quantity is required",
-                    min: {
-                        value: 0,
-                        message: "Return Quantity must be at least 0",
-                    },
+                    min: { value: 0, message: "Return Quantity must be at least 0" },
                 },
             },
-
             {
                 name: "status",
                 type: "select",

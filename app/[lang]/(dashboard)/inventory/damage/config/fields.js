@@ -11,6 +11,15 @@ const fields = (form) => [
         rules: { required: "Damage date is required" },
         inputProps: { type: "date" },
     },
+        {
+    name: "warehouse_id",
+    type: "async-select",
+    label: "Warehouse *",
+    loadOptions: ["inventory/warehouses", "warehouses", "warehouseSearchTemplate"],
+    placeholder: "Select Warehouse",
+    colSpan: "col-span-12 md:col-span-6",
+    // rules: { required: "Warehouse is required" },
+  },
 
     {
         name: "note",
@@ -24,7 +33,7 @@ const fields = (form) => [
         name: "tool_id",
         type: "async-select",
         label: "Tool ",
-        loadOptions: ["inventory/tools", "tools", "toolSearchTemplate"],
+        loadOptions: ["inventory/tools", "tools", "toolSearchTemplate","warehouse_id"],
         placeholder: "Select tool",
         colSpan: "col-span-12 md:col-span-12",
         rules: { required: "Tool is required" },

@@ -301,6 +301,7 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                     field={field}
                                     form={form}
                                     handleChange={handleChange}
+                                    isDisabled={!!disabled}
                                 />
                             ) : type === "multi-async-select" ? (
                                 <DynamicAsyncSelect
@@ -309,6 +310,7 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                     form={form}
                                     handleChange={handleChange}
                                     isMulti={true}
+                                    isDisabled={!!disabled}
                                 />
                             ) : type === "group-form" ? (
                                 <GroupFormField

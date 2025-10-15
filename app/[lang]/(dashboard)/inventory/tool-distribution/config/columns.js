@@ -63,28 +63,35 @@ const columns = (actions) => [
         cell: ({ row }) => {
             const returnData = row.original.return_date;
 
-            // Prepare the actions conditionally
+            // ✅ If tool is already returned, hide both Edit and Delete
             const prepare = returnData
-                ? []
+                ? [] // hide Edit when returned
                 : [{ label: "Edit", onClick: actions?.onEdit }];
+
+            // ✅ Build actions list dynamically
+            const actionItems = [
+                ...prepare,
+                {
+                    label: "Return Tool",
+                    onClick: actions?.onReturn,
+                },
+            ];
+
+            // ✅ Only show Delete if not returned
+            if (!returnData) {
+                actionItems.push({
+                    label: "Delete",
+                    onClick: actions?.onDelete,
+                    danger: true,
+                    passId: true,
+                });
+            }
 
             return (
                 <TableActions
                     data={row.original}
                     label="Actions"
-                    items={[
-                        ...prepare,
-                        {
-                            label: "Return Tool",
-                            onClick: actions?.onReturn,
-                        },
-                        {
-                            label: "Delete",
-                            onClick: actions?.onDelete,
-                            danger: true,
-                            passId: true,
-                        },
-                    ]}
+                    items={actionItems}
                 />
             );
         },

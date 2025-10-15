@@ -75,6 +75,13 @@ export const categorySearchTemplate = (res) => {
     })); // what is stored in form
 };
 
+export const warehouseSearchTemplate = (res) => {
+    return res.map((warehouse) => ({
+        label: warehouse.name,
+        value: warehouse.id,
+    })); // what is stored in form
+};
+
 // templates/unitTemplate.js
 export const unitSearchTemplate = (res) => {
     return res.map((unit) => ({

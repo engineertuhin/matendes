@@ -26,7 +26,7 @@ export const useDamage = () => {
         defaultValues: {
             id: "",
             date: "",
-      
+            warehouse_id: "",
             note: "",
             damageTools: [],
             openModel: false,
@@ -126,6 +126,12 @@ export const useDamage = () => {
             form.reset({
                 id: item.id,
                 date: item.date || "",
+                warehouse_id: item.warehouse
+                    ? { label: item.warehouse.name, value: item.warehouse.id }
+                    : item.warehouse_id
+                    ? { label: "Unknown", value: item.warehouse_id }
+                    : null,
+
                 note: item.note || "",
                 damageTools: damageTools,
                 openModel: true,

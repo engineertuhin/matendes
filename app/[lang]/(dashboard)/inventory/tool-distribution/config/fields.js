@@ -1,6 +1,28 @@
 import { toast } from "react-hot-toast";
+ 
 
-const fields = (form) => [
+const fields = (form) => 
+{
+    const disableWarehouse = form.watch("disableWarehouse") ?? false;
+
+    console.log(disableWarehouse);
+    
+
+    return [
+    { 
+        name: "warehouse_id",
+        type: "async-select",
+        label: "Warehouse *",
+        loadOptions: [
+            "inventory/warehouses",
+            "warehouses",
+            "warehouseSearchTemplate",
+        ],
+        placeholder: "Select Warehouse",
+        colSpan: "col-span-12 md:col-span-6",
+        disabled: disableWarehouse,
+        // rules: { required: "Warehouse is required" },
+    },
     {
         name: "project_id",
         type: "async-select",
@@ -45,11 +67,11 @@ const fields = (form) => [
         name: "tool_id",
         type: "async-select",
         label: "Tool ",
-        loadOptions: ["inventory/tools", "tools", "toolSearchTemplate"],
+        loadOptions: ["inventory/tools", "tools", "toolSearchTemplate","warehouse_id"],
         placeholder: "Select tool",
         colSpan: "col-span-12 md:col-span-12",
         rules: { required: "Tool is required" },
-        handleChange: (e, form, field, allData) => {
+        handleChange: (e, form, field, allData) => { 
             const existingTool = form.getValues("assignTools") || [];
             const exists = existingTool.some(
                 (tool) => tool.tool_id === e.value
@@ -134,6 +156,7 @@ const fields = (form) => [
             },
         ],
     },
-];
+    ];
+}
 
 export default fields;

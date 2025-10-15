@@ -75,8 +75,7 @@ export const useTool = () => {
     
       form.setValue("openModel", true);
     },
-    
-
+     
     onUpdate: async (data) => {
       try {
         const { openModel, id, ...other } = data;

@@ -6,6 +6,7 @@ export default function DynamicAsyncSelect({
     form,
     handleChange = false,
     isMulti = false,
+    isDisabled = false, // ✅ add this
 }) {
     const {
         actions: { onSearch, onLoadData },
@@ -18,6 +19,7 @@ export default function DynamicAsyncSelect({
     return (
         <AsyncSelect
             isMulti={isMulti}
+            isDisabled={isDisabled} // ✅ apply it here
             loadOptions={(i, c) => {
                 return onSearch(i, c);
             }}

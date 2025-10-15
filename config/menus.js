@@ -27,6 +27,8 @@ import {
     ShoppingCart,
     ShoppingBasket,
     AlertTriangle,
+    Warehouse,
+    Framer,
 } from "lucide-react";
 
 export const menusConfig = {
@@ -127,48 +129,61 @@ export const menusConfig = {
                 },
             ],
         },
+     {
+    title: "Inventory",
+    icon: Boxes,
+    child: [
         {
-            title: "Inventory",
-            icon: Boxes,
-            child: [
-                {
-                    title: "Category",
-                    href: "/inventory/tool/category",
-                    icon: LayoutGrid,
-                    permission: "view-tool-category",
-                },
-                {
-                    title: "Unit",
-                    href: "/inventory/tool/unit",
-                    icon: Scale,
-                    permission: "view-tool-unit",
-                },
-                {
-                    title: "Tool List",
-                    href: "/inventory/tool/tool-list",
-                    icon: Hammer,
-                    permission: "view-tool",
-                },
-                {
-                    title: "Purchase",
-                    href: "/inventory/purchase",
-                    icon: ShoppingCart,
-                    permission: "view-inventory",
-                },
-                {
-                    title: "Tool Distribution",
-                    href: "/inventory/tool-distribution",
-                    icon: ShoppingBasket,
-                    permission: "view-tool-distribution",
-                },
-                {
-                    title: "Tool Damage",
-                    href: "/inventory/damage",
-                    icon: AlertTriangle,
-                    permission: "view-tool-damage",
-                },
-            ],
+            title: "Category",
+            href: "/inventory/tool/category",
+            icon: LayoutGrid,
+            permission: "view-client",
         },
+        {
+            title: "Unit",
+            href: "/inventory/tool/unit",
+            icon: Scale,
+            permission: "view-client",
+        },
+        {
+            title: "Tool List",
+            href: "/inventory/tool/tool-list",
+            icon: Hammer,
+            permission: "view-client",
+        },
+        {
+            title: "Purchase",
+            href: "/inventory/purchase",
+            icon: ShoppingCart,
+            permission: "view-client",
+        },
+        {
+            title: "Tool Distribution",
+            href: "/inventory/tool-distribution",
+            icon: ShoppingBasket,
+            permission: "view-client",
+        },
+        {
+            title: "Tool Damage",
+            href: "/inventory/damage",
+            icon: AlertTriangle,
+            permission: "view-client",
+        },
+        {
+            title: "Warehouse",
+            href: "/inventory/warehouse",
+            icon: Warehouse,
+            permission: "view-tool-damage",
+        },
+        {
+            title: "Stock Transfer",
+            href: "/inventory/stock-transfers",
+            icon: Framer,
+            permission: "view-tool-damage",
+        },
+    ],
+},
+
         {
             title: "Project",
             icon: FolderKanban,
@@ -324,48 +339,61 @@ export const menusConfig = {
                     },
                 ],
             },
-            {
-                title: "Inventory",
-                icon: Boxes,
-                child: [
-                    {
-                        title: "Category",
-                        href: "/inventory/tool/category",
-                        icon: LayoutGrid,
-                        permission: "view-tool-category",
-                    },
-                    {
-                        title: "Unit",
-                        href: "/inventory/tool/unit",
-                        icon: Scale,
-                        permission: "view-tool-unit",
-                    },
-                    {
-                        title: "Tool List",
-                        href: "/inventory/tool/tool-list",
-                        icon: Hammer,
-                        permission: "view-tool",
-                    },
-                    {
-                        title: "Purchase",
-                        href: "/inventory/purchase",
-                        icon: ShoppingCart,
-                        permission: "view-inventory",
-                    },
-                    {
-                        title: "Tool Distribution",
-                        href: "/inventory/tool-distribution",
-                        icon: ShoppingBasket,
-                        permission: "view-tool-distribution",
-                    },
-                    {
-                        title: "Tool Damage",
-                        href: "/inventory/damage",
-                        icon: AlertTriangle,
-                        permission: "view-tool-damage",
-                    },
-                ],
-            },
+       {
+    title: "Inventory",
+    icon: Boxes,
+    child: [
+        {
+            title: "Category",
+            href: "/inventory/tool/category",
+            icon: LayoutGrid,
+            permission: "view-client",
+        },
+        {
+            title: "Unit",
+            href: "/inventory/tool/unit",
+            icon: Scale,
+            permission: "view-client",
+        },
+        {
+            title: "Tool List",
+            href: "/inventory/tool/tool-list",
+            icon: Hammer,
+            permission: "view-client",
+        },
+        {
+            title: "Purchase",
+            href: "/inventory/purchase",
+            icon: ShoppingCart,
+            permission: "view-client",
+        },
+        {
+            title: "Tool Distribution",
+            href: "/inventory/tool-distribution",
+            icon: ShoppingBasket,
+            permission: "view-client",
+        },
+        {
+            title: "Tool Damage",
+            href: "/inventory/damage",
+            icon: AlertTriangle,
+            permission: "view-client",
+        },
+        {
+            title: "Warehouse",
+            href: "/inventory/warehouse",
+            icon: Warehouse,
+            permission: "view-tool-damage",
+        },
+        {
+            title: "Stock Transfer",
+            href: "/inventory/stock-transfers",
+            icon: Framer,
+            permission: "view-tool-damage",
+        },
+    ],
+}
+,
             {
                 title: "Project",
                 icon: FolderKanban, // represents projects/boards
@@ -519,48 +547,61 @@ export const menusConfig = {
                     },
                 ],
             },
-            {
-                title: "Inventory",
-                icon: Boxes,
-                child: [
-                    {
-                        title: "Category",
-                        href: "/inventory/tool/category",
-                        icon: LayoutGrid,
-                        permission: "view-client",
-                    },
-                    {
-                        title: "Unit",
-                        href: "/inventory/tool/unit",
-                        icon: Scale,
-                        permission: "view-client",
-                    },
-                    {
-                        title: "Tool List",
-                        href: "/inventory/tool/tool-list",
-                        icon: Hammer,
-                        permission: "view-client",
-                    },
-                    {
-                        title: "Purchase",
-                        href: "/inventory/purchase",
-                        icon: ShoppingCart,
-                        permission: "view-client",
-                    },
-                    {
-                        title: "Tool Distribution",
-                        href: "/inventory/tool-distribution",
-                        icon: ShoppingBasket,
-                        permission: "view-client",
-                    },
-                    {
-                        title: "Tool Damage",
-                        href: "/inventory/damage",
-                        icon: AlertTriangle,
-                        permission: "view-client",
-                    },
-                ],
-            },
+           {
+    title: "Inventory",
+    icon: Boxes,
+    child: [
+        {
+            title: "Category",
+            href: "/inventory/tool/category",
+            icon: LayoutGrid,
+            permission: "view-client",
+        },
+        {
+            title: "Unit",
+            href: "/inventory/tool/unit",
+            icon: Scale,
+            permission: "view-client",
+        },
+        {
+            title: "Tool List",
+            href: "/inventory/tool/tool-list",
+            icon: Hammer,
+            permission: "view-client",
+        },
+        {
+            title: "Purchase",
+            href: "/inventory/purchase",
+            icon: ShoppingCart,
+            permission: "view-client",
+        },
+        {
+            title: "Tool Distribution",
+            href: "/inventory/tool-distribution",
+            icon: ShoppingBasket,
+            permission: "view-client",
+        },
+        {
+            title: "Tool Damage",
+            href: "/inventory/damage",
+            icon: AlertTriangle,
+            permission: "view-client",
+        },
+        {
+            title: "Warehouse",
+            href: "/inventory/warehouse",
+            icon: Warehouse,
+            permission: "view-tool-damage",
+        },
+        {
+            title: "Stock Transfer",
+            href: "/inventory/stock-transfers",
+            icon: Framer,
+            permission: "view-tool-damage",
+        },
+    ],
+},
+
             {
                 title: "Project",
                 icon: FolderKanban,

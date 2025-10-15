@@ -18,6 +18,15 @@ const fields = (form) => [
     placeholder: "Enter reference number",
     colSpan: "col-span-12 md:col-span-6",
   },
+    {
+    name: "warehouse_id",
+    type: "async-select",
+    label: "Warehouse *",
+    loadOptions: ["inventory/warehouses", "warehouses", "warehouseSearchTemplate"],
+    placeholder: "Select Warehouse",
+    colSpan: "col-span-12 md:col-span-6",
+    // rules: { required: "Warehouse is required" },
+  },
   // {
   //   name: "purchase_status",
   //   type: "select",
