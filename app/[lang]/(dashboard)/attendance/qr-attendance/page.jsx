@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 import useAttendance from "@/hooks/useAttendance";
-
+import { useSelector } from "react-redux";
 
 // load QR reader only on client
 const QrReader = dynamic(
@@ -16,13 +16,21 @@ const QrReader = dynamic(
 );
 export default function QRAttendance() {
     // Use attendance hook for API calls
-    const { qrCheckIn, qrCheckOut, isCheckingIn, isCheckingOut, branch } = useAttendance();
-    
+    const { qrCheckIn, qrCheckOut, isCheckingIn, isCheckingOut, branch } =
+        useAttendance();
+    // Employee Manual Attendance
+    const { user } = useSelector((state) => state.auth);
+    const userPermissions = user?.permissions || [];
+
+    // If permissions are array of objects
+    const canManualAttendance = userPermissions.some(
+        (perm) => perm.name === "attendance-manual-manage"
+    );
+
     // steps: "closed" | "scanner" | "result" | "processing"
     const [step, setStep] = useState("closed");
     const [scannedText, setScannedText] = useState(null);
     const [attendanceResult, setAttendanceResult] = useState(null);
-
     // camera permission
     const [hasPermission, setHasPermission] = useState(null); // null | true | false
     const [isRequesting, setIsRequesting] = useState(false);
@@ -40,10 +48,10 @@ export default function QRAttendance() {
     // for legacy image scan
     const legacyRef = useRef(null);
 
-
-    const videoConstraints = {
+    // Camera constraints - will be updated dynamically
+    const [videoConstraints, setVideoConstraints] = useState({
         facingMode: { ideal: "environment" }, // back camera by default
-    };
+    });
 
     // --- Location gating (unchanged behavior) ---
     const allowLocation = () => {
@@ -92,17 +100,67 @@ export default function QRAttendance() {
         setIsRequesting(true);
 
         try {
-            // Proactively request camera permission to fail fast with a friendly error
-            const stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: false,
-            });
-            stream.getTracks().forEach((t) => t.stop());
+            let stream = null;
+            
+            // First try back camera (environment)
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { exact: "environment" } },
+                    audio: false,
+                });
+                
+                // If successful, set constraints for back camera
+                setVideoConstraints({
+                    facingMode: { exact: "environment" }
+                });
+                
+                console.log("Using back camera (environment)");
+                
+            } catch (backCameraError) {
+                console.log("Back camera not available, trying front camera:", backCameraError.message);
+                
+                // If back camera fails, try front camera (user)
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: { exact: "user" } },
+                        audio: false,
+                    });
+                    
+                    // If successful, set constraints for front camera
+                    setVideoConstraints({
+                        facingMode: { exact: "user" }
+                    });
+                    
+                    console.log("Using front camera (user)");
+                    
+                } catch (frontCameraError) {
+                    console.log("Front camera not available, trying any camera:", frontCameraError.message);
+                    
+                    // If both specific cameras fail, try any available camera
+                    stream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: false,
+                    });
+                    
+                    // Set generic constraints
+                    setVideoConstraints({
+                        video: true
+                    });
+                    
+                    console.log("Using any available camera");
+                }
+            }
+            
+            // Stop the test stream
+            if (stream) {
+                stream.getTracks().forEach((t) => t.stop());
+            }
 
             setHasPermission(true);
             setStep("scanner");
             setMountScanner(false);
             setTimeout(() => setMountScanner(true), 0); // remount to ensure clean start
+            
         } catch (e) {
             setHasPermission(false);
             setStep("closed");
@@ -117,38 +175,54 @@ export default function QRAttendance() {
     };
 
     // --- Handle scanning results ---
-    const handleScanResult = useCallback(async (result, error) => {
-        if (!!result) {
-            const text = result?.getText?.() ?? result?.text ?? String(result);
-           
-            if (text) {
-                setScannedText(text);
-                setStep("processing");
-                
-                // Stop camera immediately after scan
-                setMountScanner(false);
-                
-                toast.success("QR scanned! Processing attendance...");
-                try {
-                    navigator.vibrate?.(60);
-                } catch {}
+    const handleScanResult = useCallback(
+        async (result, error) => {
+            if (!!result) {
+                const text =
+                    result?.getText?.() ?? result?.text ?? String(result);
 
-               
-                // Process attendance with location
-                await processAttendance(text);
+                if (text) {
+                    setScannedText(text);
+                    setStep("processing");
+
+                    // Stop camera immediately after scan
+                    setMountScanner(false);
+
+                    toast.success("QR scanned! Processing attendance...");
+                    try {
+                        navigator.vibrate?.(60);
+                    } catch {}
+
+                    // Process attendance with location
+                    await processAttendance(text);
+                }
             }
+            if (!!error) {
+                // keep it quiet; QR readers emit frequent decode errors while searching
+            }
+        },
+        [coords]
+    );
+
+    // Employee Manual Attendance
+    const handleManualAttendance = async () => {
+        try {
+            setStep("processing");
+            setScannedText("manual");
+            await processAttendance(user?.employee_code || user?.id);
+        } catch (error) {
+            console.error("Manual attendance failed:", error);
+            toast.error("Manual attendance failed");
+            setStep("scan");
         }
-        if (!!error) {
-            // keep it quiet; QR readers emit frequent decode errors while searching
-        }
-    }, [coords]);
+    };
 
     // Process attendance after QR scan
     const processAttendance = async (qrData) => {
-
-   
         if (!coords) {
-            setErrorMsg("Location is required for attendance. Please allow location access.");
+            setErrorMsg(
+                "Location is required for attendance. Please allow location access."
+            );
             setStep("result");
             return;
         }
@@ -156,38 +230,47 @@ export default function QRAttendance() {
         setIsProcessingAttendance(true);
 
         try {
-            console.log('Processing QR attendance with data:', qrData);
-            console.log('Location coordinates:', { lat: coords.lat, lng: coords.lng });
-            console.log('QR CheckIn function:', qrCheckIn);
-            console.log('Branch data:', branch);
-            
+            console.log("Processing QR attendance with data:", qrData);
+            console.log("Location coordinates:", {
+                lat: coords.lat,
+                lng: coords.lng,
+            });
+            console.log("QR CheckIn function:", qrCheckIn);
+            console.log("Branch data:", branch);
+
             // For now, we'll assume check-in by default
             // You could enhance this to detect check-in/check-out based on QR content or current status
-            const result = await qrCheckIn(qrData, coords.lat, coords.lng, branch);
-            
-            console.log('QR CheckIn result:', result);
-        
-            
+            const result = await qrCheckIn(
+                qrData,
+                coords.lat,
+                coords.lng,
+                branch
+            );
+
+            console.log("QR CheckIn result:", result);
+
             if (result.success) {
                 setAttendanceResult({
                     success: true,
                     message: result.message,
-                    data: result.data
+                    data: result.data,
                 });
                 toast.success(result.message);
             } else {
                 setAttendanceResult({
                     success: false,
-                    message: result.error
+                    message: result.error,
                 });
                 toast.error(result.error);
             }
         } catch (error) {
-            console.error('QR Attendance processing error:', error);
-            const errorMessage = error?.message || "Failed to process attendance. Please try again.";
+            console.error("QR Attendance processing error:", error);
+            const errorMessage =
+                error?.message ||
+                "Failed to process attendance. Please try again.";
             setAttendanceResult({
                 success: false,
-                message: errorMessage
+                message: errorMessage,
             });
             toast.error(errorMessage);
         } finally {
@@ -228,7 +311,6 @@ export default function QRAttendance() {
         }
     };
 
-  
     // Buttons (updated to handle new states)
     const buttonConfig = {
         closed: {
@@ -249,7 +331,11 @@ export default function QRAttendance() {
         },
         result: {
             label: attendanceResult?.success ? "✅ Done" : "🔄 Retry",
-            action: attendanceResult?.success ? closeResult : (attendanceResult ? retryAttendance : rescan),
+            action: attendanceResult?.success
+                ? closeResult
+                : attendanceResult
+                ? retryAttendance
+                : rescan,
             disabled: isProcessingAttendance,
         },
     };
@@ -266,23 +352,52 @@ export default function QRAttendance() {
                             <div className="space-y-3">
                                 {attendanceResult ? (
                                     <>
-                                        <div className={`text-xs ${attendanceResult.success ? 'text-green-600' : 'text-red-600'}`}>
-                                            {attendanceResult.success ? 'Attendance Success' : 'Attendance Failed'}
+                                        <div
+                                            className={`text-xs ${
+                                                attendanceResult.success
+                                                    ? "text-green-600"
+                                                    : "text-red-600"
+                                            }`}
+                                        >
+                                            {attendanceResult.success
+                                                ? "Attendance Success"
+                                                : "Attendance Failed"}
                                         </div>
-                                        <div className={`text-lg ${attendanceResult.success ? 'text-green-700' : 'text-red-700'}`}>
-                                            {attendanceResult.success ? '✅' : '❌'}
+                                        <div
+                                            className={`text-lg ${
+                                                attendanceResult.success
+                                                    ? "text-green-700"
+                                                    : "text-red-700"
+                                            }`}
+                                        >
+                                            {attendanceResult.success
+                                                ? "✅"
+                                                : "❌"}
                                         </div>
                                         <div className="max-h-36 overflow-auto rounded-lg bg-white p-3 text-slate-800 text-left break-words">
                                             {attendanceResult.message}
                                         </div>
-                                        {attendanceResult.success && attendanceResult.data && (
-                                            <div className="text-xs text-slate-600">
-                                                <div>Status: {attendanceResult.data.status}</div>
-                                                {attendanceResult.data.check_in_time && (
-                                                    <div>Time: {new Date(attendanceResult.data.check_in_time).toLocaleTimeString()}</div>
-                                                )}
-                                            </div>
-                                        )}
+                                        {attendanceResult.success &&
+                                            attendanceResult.data && (
+                                                <div className="text-xs text-slate-600">
+                                                    <div>
+                                                        Status:{" "}
+                                                        {
+                                                            attendanceResult
+                                                                .data.status
+                                                        }
+                                                    </div>
+                                                    {attendanceResult.data
+                                                        .check_in_time && (
+                                                        <div>
+                                                            Time:{" "}
+                                                            {new Date(
+                                                                attendanceResult.data.check_in_time
+                                                            ).toLocaleTimeString()}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
                                         <div className="flex items-center justify-center gap-2">
                                             <button
                                                 onClick={copyText}
@@ -293,7 +408,9 @@ export default function QRAttendance() {
                                             {!attendanceResult.success && (
                                                 <button
                                                     onClick={retryAttendance}
-                                                    disabled={isProcessingAttendance}
+                                                    disabled={
+                                                        isProcessingAttendance
+                                                    }
                                                     className="inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium hover:bg-slate-50 disabled:opacity-50"
                                                 >
                                                     🔄 Retry
@@ -325,7 +442,9 @@ export default function QRAttendance() {
                         <div className="w-full h-full grid place-items-center text-center p-4 text-slate-600">
                             <div className="space-y-3">
                                 <div className="text-4xl animate-spin">⏳</div>
-                                <div className="text-sm font-medium">Processing Attendance...</div>
+                                <div className="text-sm font-medium">
+                                    Processing Attendance...
+                                </div>
                                 <div className="text-xs text-slate-500">
                                     Submitting QR data with location
                                 </div>
@@ -369,7 +488,9 @@ export default function QRAttendance() {
             <div className="mt-4 text-center">
                 <p className="text-sm text-slate-700">
                     {step === "result" && attendanceResult
-                        ? attendanceResult.success ? "Attendance recorded successfully" : "Attendance failed"
+                        ? attendanceResult.success
+                            ? "Attendance recorded successfully"
+                            : "Attendance failed"
                         : step === "result"
                         ? "QR captured"
                         : step === "processing"
@@ -409,9 +530,11 @@ export default function QRAttendance() {
                     disabled={disabled}
                     title={title}
                     className={`w-full inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium shadow-sm active:scale-[.99] disabled:opacity-60 disabled:cursor-not-allowed ${
-                        step === "result" && attendanceResult?.success 
-                            ? "bg-green-600 text-white hover:bg-green-700" 
-                            : step === "result" && attendanceResult && !attendanceResult.success
+                        step === "result" && attendanceResult?.success
+                            ? "bg-green-600 text-white hover:bg-green-700"
+                            : step === "result" &&
+                              attendanceResult &&
+                              !attendanceResult.success
                             ? "bg-red-600 text-white hover:bg-red-700"
                             : "bg-slate-900 text-white hover:bg-slate-800"
                     }`}
@@ -462,11 +585,16 @@ export default function QRAttendance() {
                 </div>
             )}
 
-
-
-            <button onClick={()=>{
-                handleScanResult('text','error');
-            }}>Test Attendance</button>
+            {/* Manual Attendance Button — visible only if user has permission */}
+            {canManualAttendance && (
+                <button
+                    onClick={handleManualAttendance}
+                    disabled={isProcessingAttendance}
+                    className="mt-3 w-full inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-[#846CF9] text-white px-4 py-2.5 text-sm font-medium shadow-sm hover:bg-blue-700 disabled:opacity-60"
+                >
+                    🧍 Manual Attendance
+                </button>
+            )}
         </PageLayout>
     );
 }

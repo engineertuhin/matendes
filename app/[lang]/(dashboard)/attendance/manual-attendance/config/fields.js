@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 
-const fields = (actions) => {
+const fields = (actions,form) => {
     return [
         {
             name: "attendance_type",
@@ -17,10 +17,68 @@ const fields = (actions) => {
                     value: "project_attendance",
                 },
             ],
-            handleChange: (e, form) => {
-                actions.onAttendanceTypeChange(e.value, form);
+            handleChange: (e) => {   
+                form.setValue('attendance_type',e.value)
+                form.setValue('branch_id',null)
+                form.setValue('department_id',null)
+                form.setValue('project_id',null) 
             },
             rules: { required: "Status is required" },
+        },
+        {
+            name: "branch_id",
+            type: "async-select",
+            label: "Branch",
+            visibility: form.watch("attendance_type") === "company_attendance",
+            loadOptions: [
+                "organization/branches",
+                "branches",
+                "branchSearchTemplate",
+            
+            ],
+            placeholder: "Optional",
+            colSpan: "col-span-12 md:col-span-6",
+            handleChange: (e) => {  
+            
+                form.setValue('branch_id',e) 
+                actions.onAttendanceTypeChange();
+            },
+        },  
+        {
+            name: "department_id",
+            type: "async-select",
+            label: "Department",
+            visibility: form.watch("attendance_type") === "company_attendance",
+            loadOptions: [
+                "organization/departments",
+                "departments",
+                "departmentSearchTemplate",
+            ],
+            handleChange: (e) => {  
+              
+                form.setValue('department_id',e) 
+                actions.onAttendanceTypeChange();
+            },
+            placeholder: "Optional",
+            colSpan: "col-span-12 md:col-span-6",
+        },
+        {
+            name: "project_id",
+            type: "async-select",
+            label: "Project",
+            visibility: form.watch("attendance_type") === "project_attendance",
+            loadOptions: [
+                "projects",
+                "projects",
+                "projectTemplate",
+            ],
+            handleChange: (e) => {  
+              
+                form.setValue('project_id',e) 
+                actions.onAttendanceTypeChange();
+            },
+            placeholder: "Optional",
+            colSpan: "col-span-12 md:col-span-6",
         },
 
         // Global Settings Section
@@ -105,7 +163,7 @@ const fields = (actions) => {
                 {
                     name: "date",
                     type: "date",
-                    label: "Date *",
+                    label: "Attendance Date *",
                     placeholder: "Select date",
                     colSpan: "col-span-12 md:col-span-3",
                     inputProps: { type: "date" },

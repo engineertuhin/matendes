@@ -37,6 +37,14 @@ export const employApi = createApi({
             }),
             providesTags: ["Employ"],
         }),
+        // ✅ NEW: fetch single employee by ID
+        employGetById: builder.query({
+            query: (id) => ({
+            url: `hrm/employees/${id}`,
+            method: "GET",
+            }),
+            providesTags: ["Employ"],
+        }),
     }),
 });
 
@@ -45,4 +53,6 @@ export const {
     useEmployUpdateMutation,
     useEmployDeleteMutation,
     useEmployFetchQuery,
+    useEmployGetByIdQuery,
+    useLazyEmployFetchQuery
 } = employApi;

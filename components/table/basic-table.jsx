@@ -12,6 +12,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
+import { DataTableFacetedFilter } from "@/components/table/data-table-faceted-filter";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -47,6 +48,7 @@ export function BasicDataTable({
     pagination = true,
     refetch,
     loading = false,
+    filterCustom = [],
 }) {
     const [sorting, setSorting] = React.useState([]);
     const [columnFilters, setColumnFilters] = React.useState([]);
@@ -142,6 +144,26 @@ export function BasicDataTable({
                                         ))}
                                 </DropdownMenuContent>
                             </DropdownMenu>
+                            {Object.entries(filterCustom).map(
+                                ([key, values]) => (
+                                    <DataTableFacetedFilter
+                                        key={key}
+                                        index={key}
+                                        title={key
+                                            .replace(/_/g, " ") // replace underscores with spaces
+                                            .replace(/\b\w/g, (c) =>
+                                                c.toUpperCase()
+                                            )} // capitalize first letter of each word
+                                        options={values.map((data) => {
+                                               let {key,value}= data;
+                                          
+                                            return { label: value, value: key };
+                                        })}
+                                        addServerFilter={setFilterParams}
+                                        refetch={refetch}
+                                    />
+                                )
+                            )}
 
                             <Input
                                 placeholder="Search..."
@@ -199,21 +221,28 @@ export function BasicDataTable({
             <div>
                 <div className="rounded-lg h-full w-full">
                     <Table>
-                        <TableHeader className="sticky top-0 z-10 bg-background"> 
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
-                                <TableHead
-                                    key={header.id}
-                                    className={header?.column?.columnDef?.thClass} // <-- this is your thClass
-                                >
-                                    {header.isPlaceholder
-                                    ? null
-                                    : flexRender(header.column.columnDef.header, header.getContext())}
-                                </TableHead>
-                                ))}
-                            </TableRow>
-                        ))}
+                        <TableHeader className="sticky top-0 z-10 bg-background">
+                            {table.getHeaderGroups().map((headerGroup) => (
+                                <TableRow key={headerGroup.id}>
+                                    {headerGroup.headers.map((header) => (
+                                        <TableHead
+                                            key={header.id}
+                                            className={
+                                                header?.column?.columnDef
+                                                    ?.thClass
+                                            } // <-- this is your thClass
+                                        >
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext()
+                                                  )}
+                                        </TableHead>
+                                    ))}
+                                </TableRow>
+                            ))}
                         </TableHeader>
                         <TableBody>
                             {loading ? (
@@ -240,11 +269,17 @@ export function BasicDataTable({
                                     >
                                         {row.getVisibleCells().map((cell) => (
                                             <TableCell
-                                            key={cell.id}
-                                            className={cell.column.columnDef?.tdClass || ""} // <-- Use tdClass if defined
-                                          >
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                          </TableCell>
+                                                key={cell.id}
+                                                className={
+                                                    cell.column.columnDef
+                                                        ?.tdClass || ""
+                                                } // <-- Use tdClass if defined
+                                            >
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext()
+                                                )}
+                                            </TableCell>
                                         ))}
                                     </TableRow>
                                 ))

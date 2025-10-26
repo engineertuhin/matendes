@@ -1,11 +1,11 @@
 import { TableActions } from "@/components/table/TableActions";
 import { useRouter } from "next/navigation";
 import { setEmployData } from "@/domains/employ/model/employSlice";
-import { useAppDispatch } from "@/hooks/use-redux";
-import { useProfile } from "@/domains/profile/hook/useProfile";
+import { useAppDispatch } from "@/hooks/use-redux"; 
+import { useEmploy } from "@/domains/employ/hook/useEmploy";
 
 const columns = (actions) => {
-    const { actions: profileActions } = useProfile();
+    const { actions: employeeActions } = useEmploy();
     const router = useRouter();
     const dispatch = useAppDispatch();
 
@@ -87,12 +87,13 @@ const columns = (actions) => {
                         data={data}
                         label="Actions" 
                         items={[
-                            { 
-                                label: "View", 
-                                onClick: (rowData) => { // Define the custom handler here
-                                    profileActions.getProfile(rowData?.id);
-                                    router.push(`/user-profile`);
-                                } 
+                            {
+                                label: "View",
+                                onClick: (rowData) => {
+                                    // Define the custom handler here
+                                    employeeActions.getEmploy(rowData?.id);
+                                    router.push(`/employee-details`);
+                                },
                             },
                             { 
                                 label: "Edit", 

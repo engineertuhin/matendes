@@ -86,7 +86,7 @@ const fields = () => {
         {
             name: "employee_id",
             type: "multi-async-select",
-            label: "Employee *",
+            label: "Responsible Employee *",
 
             loadOptions: [
                 "hrm/employees",

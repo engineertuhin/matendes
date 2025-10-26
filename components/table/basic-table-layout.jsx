@@ -7,6 +7,7 @@ export default function BasicTableLayout({
     filter,
     pagination = true,
     state,
+    filterCustom,
 }) {
     return (
         <BasicDataTable
@@ -19,6 +20,7 @@ export default function BasicTableLayout({
             pagination={pagination ? state.pagination : false}
             refetch={state.refetch}
             loading={state.isFetching}
+            filterCustom={filterCustom}
         />
     );
 }

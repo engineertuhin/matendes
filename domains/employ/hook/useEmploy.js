@@ -4,6 +4,7 @@ import {
     useEmployUpdateMutation,
     useEmployDeleteMutation,
     useEmployFetchQuery,
+    useLazyEmployFetchQuery 
 } from "../services/employApi";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -18,18 +19,22 @@ import {
     companySearchTemplate,
     departmentSearchTemplate,
     jobPositionsTemplate,
-    roleTemplate
+    roleTemplate, 
 } from "@/utility/templateHelper";
 import { getFilterParams } from "@/utility/helpers";
 import { useMemo } from "react";
+import { useAppDispatch } from "@/hooks/use-redux";
+import { setEmployData } from "../model/employSlice";
 
 export const useEmploy = () => {
+    const dispatch = useAppDispatch(); 
     const [EmployCreate] = useEmployCreateMutation();
     const [EmployUpdate] = useEmployUpdateMutation();
     const [EmployDelete] = useEmployDeleteMutation();
     const { data: employ, refetch, isFetching } = useEmployFetchQuery();
-    const abcd = [];
-
+    //Lazy query
+    const [triggerGetEmploy] = useLazyEmployFetchQuery();
+    
     const form = useForm({
         mode: "onBlur",
         reValidateMode: "onSubmit",
@@ -42,9 +47,21 @@ export const useEmploy = () => {
         refetch,
         pagination: employ?.data?.pagination || {},
         isFetching,
-    };
+      };
 
     const actions = {
+        // ✅ New: fetch single employee by ID
+        getEmploy: async (id = null) => {
+            // ✅ trigger API
+            const result = await triggerGetEmploy({ id }); 
+            console.log(result); 
+            // ✅ if data exists, push to redux + form
+            if (result?.data) {
+                
+                dispatch(setEmployData(result.data));
+                
+            } 
+          },
         onCreate: async (data) => {
             try {
                 let { openModel, ...other } = data;

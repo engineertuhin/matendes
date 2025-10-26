@@ -10,22 +10,27 @@ import {
     useProjectFetchQuery,
     useProjectSearchQuery,
     useProjectGetByIdQuery,
+    useLazyProjectFetchQuery,
     useProjectUpdateAssignedEmployeesMutation,
 } from "../services/projectApi";
-import { jobPositionsTemplate, employTemplate } from "@/utility/templateHelper";
+import { setProjectData } from "../model/projectSlice";
+import { jobPositionsTemplate, employTemplate, clientTemplate } from "@/utility/templateHelper";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
 import { useRef } from "react";
+import { useAppDispatch } from "@/hooks/use-redux";
 
 export const useProject = () => {
+    const dispatch = useAppDispatch(); 
     const [projectCreate] = useProjectCreateMutation();
     const [projectUpdate] = useProjectUpdateMutation();
     const [projectDelete] = useProjectDeleteMutation();
     const [projectUpdateAssignedEmployees] =
         useProjectUpdateAssignedEmployeesMutation();
     const { data: project, refetch, isFetching } = useProjectFetchQuery();
-
+    //Lazy query
+    const [triggerGetProject] = useLazyProjectFetchQuery();
     // Ref to prevent multiple simultaneous calls to setAssignEmployModel
     const isLoadingAssignEmployees = useRef(false);
 
@@ -89,13 +94,10 @@ export const useProject = () => {
                         employee_id: employeeList,
                         assigned_employees: assignedEmployees,
                     },
-                    ["job_position_id"]
+                    ["job_position_id", "client_id"]
                 );
 
-                console.log(
-                    "Sending project data with assigned employees:",
-                    preparedData
-                );
+            
 
                 const response = await projectCreate(preparedData).unwrap();
 
@@ -120,6 +122,8 @@ export const useProject = () => {
             const jobPositionData = data.job_position
                 ? jobPositionsTemplate([data.job_position])?.at(0) ?? null
                 : null;
+            const client= data.client ?
+            clientTemplate([data.client])?.at(0) ?? null : null;
 
             const resetData = {
                 id: data.id || "",
@@ -131,6 +135,7 @@ export const useProject = () => {
                 status: data.status || "planned",
                 job_position_id: jobPositionData,
                 employee_id: employeeData,
+                client_id: client,
                 expiry_warning_days: data.expiry_warning_days || 0,
                 observation: data.observation || "",
             };
@@ -138,6 +143,19 @@ export const useProject = () => {
             form.reset(resetData);
             form.setValue("openModel", true);
         },
+
+          getProject: async (id = null) => {
+              
+                    // ✅ trigger API
+                    const result = await triggerGetProject({ id }); 
+                    console.log(result); 
+                    // ✅ if data exists, push to redux + form
+                    if (result?.data) {
+                        
+                        dispatch(setProjectData(result.data));
+                        
+                    }
+                },
 
         onUpdate: async (data) => {
             try {
@@ -179,7 +197,7 @@ export const useProject = () => {
                         employee_id: employeeList,
                         assigned_employees: assignedEmployees,
                     },
-                    ["job_position_id"]
+                    ["job_position_id", "client_id"]
                 );
 
                 console.log(

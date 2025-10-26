@@ -6,6 +6,16 @@ export const projectApi = createApi({
   baseQuery: baseQuery, // make sure baseQuery's baseUrl is http://localhost:8000/api/v1/
   tagTypes: ["Project"],
   endpoints: (builder) => ({
+     getProject: builder.query({
+      query: ({id=false}) => ({
+        url: "projects",
+        method: "GET",
+        params: { id: id },
+      }),
+      // ✅ transform response to return only the employee object
+      transformResponse: (response) => response.project,
+      providesTags: ["Project"],
+    }),
     projectCreate: builder.mutation({
       query: (credentials) => ({
         url: "projects",
@@ -70,4 +80,5 @@ export const {
   useProjectFetchQuery,
   useProjectGetByIdQuery,
   useProjectUpdateAssignedEmployeesMutation,
+  useLazyProjectFetchQuery
 } = projectApi;

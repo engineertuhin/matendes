@@ -7,12 +7,12 @@ export const categoryApi = createApi({
   tagTypes: ["ToolCategory"],
   endpoints: (builder) => ({
     fetchCategories: builder.query({
-      query: () => "tool-categories",
+      query: () => "inventory/tool-categories",
       providesTags: ["ToolCategory"],
     }),
     createCategory: builder.mutation({
       query: (data) => ({
-        url: "tool-categories",
+        url: "inventory/tool-categories",
         method: "POST",
         body: data,
       }),
@@ -20,7 +20,7 @@ export const categoryApi = createApi({
     }),
     updateCategory: builder.mutation({
       query: ({ id, ...data }) => ({
-        url: `tool-categories/${id}`,
+        url: `inventory/tool-categories/${id}`,
         method: "PUT",
         body: data,
       }),
@@ -28,7 +28,7 @@ export const categoryApi = createApi({
     }),
     deleteCategory: builder.mutation({
       query: (id) => ({
-        url: `tool-categories/${id}`,
+        url: `inventory/tool-categories/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["ToolCategory"],

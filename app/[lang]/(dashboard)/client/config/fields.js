@@ -59,7 +59,7 @@ const clientFields = () => {
             placeholder: "Select status",
             colSpan: "col-span-12 md:col-span-6",
             options: [
-                { label: "Prospect", value: "prospect" },
+              
                 { label: "Active", value: "active" },
                 { label: "Inactive", value: "inactive" },
             ],

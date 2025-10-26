@@ -43,7 +43,7 @@ export const useDynamicSelect = (
       try {
         // Get the latest value of parent here
         const currentDependencyValue = dependencyKey ? form.getValues(dependencyKey) : null;
-        console.log(currentDependencyValue,dependencyKey)
+   
 
         const response = await triggerSearch({
           data: {
