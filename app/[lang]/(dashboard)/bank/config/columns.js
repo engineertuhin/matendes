@@ -7,9 +7,12 @@ const columns = (actions) => [
     cell: ({ row }) => row.original.bank_name || "—",
   },
   {
-    accessorKey: "branches",
+    
     header: "No of Branches",
-    cell: ({ row }) => (row.original.branches?.length ?? 0),
+      cell: ({ row }) => {
+    const branches = row.original.branches || [];
+    return branches.length;
+  },
     thClass: "!text-center",
     tdClass: "!text-center",
   },

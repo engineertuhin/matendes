@@ -47,7 +47,14 @@ export const useFinancialRecords = () => {
             transaction_status: "pending",
             reference_remarks: "",
             total_amount: "",
-            transaction_details: [],
+            transaction_details: [
+                {
+                    employee_id: null,
+                    rec_payment_type_id: null,
+                    amount: 0,
+                    description: "",
+                },
+            ],
             openModel: false,
         },
     });
@@ -56,6 +63,16 @@ export const useFinancialRecords = () => {
         control: form.control,
         name: "transaction_details",
     });
+
+    // Ensure at least one transaction detail exists
+    if (fields.fields.length === 0) {
+        fields.append({
+            employee_id: null,
+            rec_payment_type_id: null,
+            amount: 0,
+            description: "",
+        });
+    }
 
     const financialState = {
         data: recordsResponse?.data?.financial_records || [],

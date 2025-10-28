@@ -145,10 +145,12 @@ export const useProject = () => {
         },
 
           getProject: async (id = null) => {
+          
               
                     // ✅ trigger API
-                    const result = await triggerGetProject({ id }); 
-                    console.log(result); 
+              const result = await triggerGetProject({ id:id }).unwrap();
+
+                  
                     // ✅ if data exists, push to redux + form
                     if (result?.data) {
                         

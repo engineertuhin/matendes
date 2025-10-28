@@ -36,6 +36,10 @@ export const bankApi = createApi({
       }),
       invalidatesTags: ["Bank"],
     }),
+     fetchBankBranches: builder.query({
+      query: (bankId) => `bank/banks/${bankId}/branches`,
+      providesTags: ["BankBranches"],
+    }),
   }),
 });
 
@@ -44,4 +48,5 @@ export const {
   useCreateBankMutation,
   useUpdateBankMutation,
   useDeleteBankMutation,
+  useFetchBankBranchesQuery,
 } = bankApi;

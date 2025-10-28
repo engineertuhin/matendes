@@ -11,10 +11,13 @@ export const employSlice = createSlice({
         setEmployData: (state, action) => {
             state.employData = action.payload;
         },
+        setCurrentEmployee: (state, action) => {
+            state.currentEmployee = action.payload;
+        },
     },
 });
 
 // Action creators are generated for each case reducer function
-export const { setEmployData } = employSlice.actions;
+export const { setEmployData, setCurrentEmployee  } = employSlice.actions;
 
 export default employSlice.reducer;

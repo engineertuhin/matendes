@@ -3,11 +3,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BasicTableLayout from "@/components/table/basic-table-layout";
 import columns from "../config/columns"; 
-import { useEmploy } from "@/domains/employ/hook/useEmploy";
+import { useEmploy } from "@/domains/employ/hook/useEmploy"; // similar to useProject
+import { useAppSelector } from "@/hooks/use-redux";
 
-const ProjectActivity = () => { 
-  const { actions, employState } = useEmploy(); // projectState.data will have projects
-  const projectEmployees = employState.data[0]?.projectEmployees || [];
+const ProjectActivity = () => {
+  const { actions } = useEmploy();   // same pattern like useProject()
+  const employData = useAppSelector((state) => state.employ.employData);
+  const employee = employData.employee;
 
   return (
     <Card className="w-full">
@@ -20,7 +22,7 @@ const ProjectActivity = () => {
       <CardContent className="px-6 pb-6">
         <BasicTableLayout
           columns={columns(actions)}
-          state={{ data: projectEmployees }}
+          state={{ data: employee?.projectEmployees || [] }}
         />
       </CardContent>
     </Card>

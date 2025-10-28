@@ -13,14 +13,20 @@ import {
   Location,
   Note,
 } from "@/components/svg";
-import { useEmploy } from "@/domains/employ/hook/useEmploy";
+import { useAppSelector } from "@/hooks/use-redux";
 
 const EmployeeInfo = () => {
-  const { employState } = useEmploy();
-  console.log(employState);
-  
-  const employee = employState.data?.[0]; // assumes you loaded one employee
-  if (!employee) return null;
+  //  Get employee
+  const employData = useAppSelector((state) => state.employ.employData);
+  let employee = employData.employee;
+
+  if (!employee) {
+    return (
+      <Card>
+        <CardContent className="p-4">No employee info found</CardContent>
+      </Card>
+    );
+  }
 
   const {
     personal_info,

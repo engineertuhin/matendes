@@ -3,11 +3,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BasicTableLayout from "@/components/table/basic-table-layout";
 import columns from "../config/columns"; 
-import { useEmploy } from "@/domains/employ/hook/useEmploy";
+import { useAppSelector } from "@/hooks/use-redux";
 
 const FinancialInformation = () => { 
-  const { actions, employState } = useEmploy(); // projectState.data will have projects
-  const FinancialInfo = employState.data[0]?.financeRecordDetail || [];
+  // Assuming you store the currently viewed employee in Redux
+  const employeeData = useAppSelector((state) => state.employ.currentEmployee);
+
+  // Financial records for this specific employee
+  const financialInfo = employeeData?.financeRecordDetail || [];
 
   return (
     <Card className="w-full">
@@ -18,7 +21,7 @@ const FinancialInformation = () => {
       </CardHeader>
 
       <CardContent className="px-6 pb-6">
-        <BasicTableLayout columns={columns(actions)} state={{ data: FinancialInfo }} />
+        <BasicTableLayout columns={columns()} state={{ data: financialInfo }} />
       </CardContent>
     </Card>
   );

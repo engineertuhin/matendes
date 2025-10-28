@@ -44,10 +44,9 @@ export const useBank = () => {
         onCreate: async (data) => {
             try {
                 let { openModel, ...payload } = data;
-
                 payload = normalizeSelectValues(payload, ["bank_name"]);
 
-                const branches = (payload.branches || []).map((b) => ({
+                payload.branches = (payload.branches || []).map((b) => ({
                     branch_name: b.branch_name || "",
                     branch_address: b.branch_address || "",
                     account_no: b.account_no || "",
@@ -55,12 +54,10 @@ export const useBank = () => {
                     status: Number(b.status ?? 1),
                 }));
 
-                payload.branches = branches;
-
                 const response = await createBank(payload).unwrap();
                 if (response) {
                     toast.success("Bank created successfully");
-                    refetch();
+                    await refetch();
                     formReset(form);
                     form.setValue("openModel", false);
                 }
@@ -73,10 +70,9 @@ export const useBank = () => {
         onUpdate: async (data) => {
             try {
                 let { openModel, id, ...payload } = data;
-
                 payload = normalizeSelectValues(payload, ["bank_name"]);
 
-                const branches = (payload.branches || []).map((b) => ({
+                payload.branches = (payload.branches || []).map((b) => ({
                     id: b.id ?? null,
                     branch_name: b.branch_name || "",
                     branch_address: b.branch_address || "",
@@ -85,12 +81,10 @@ export const useBank = () => {
                     status: Number(b.status ?? 1),
                 }));
 
-                payload.branches = branches;
-
                 const response = await updateBank({ id, ...payload }).unwrap();
                 if (response) {
                     toast.success("Bank updated successfully");
-                    refetch();
+                    await refetch();
                     formReset(form);
                     form.setValue("openModel", false);
                 }
@@ -102,7 +96,8 @@ export const useBank = () => {
 
         onDelete: async (id) => {
             try {
-                if (!confirm("Are you sure you want to delete this bank?")) return;
+                if (!confirm("Are you sure you want to delete this bank?"))
+                    return;
                 const response = await deleteBank(id).unwrap();
                 if (response) {
                     toast.success("Bank deleted successfully");
@@ -114,20 +109,27 @@ export const useBank = () => {
         },
 
         onEdit: (item) => {
+            // Map branches and preserve IDs
+            const branches = (item.branches || []).map((b) => ({
+                branch_name: b.branch_name || "",
+                branch_address: b.branch_address || "",
+                account_no: b.account_no || "",
+                account_holder_name: b.account_holder_name || "",
+                status: Number(b.status ?? 1),
+            }));
+
+            // Reset the form completely
             form.reset({
                 id: item.id,
                 bank_name: item.bank_name,
-                branches: (item.branches || []).map((b) => ({
-                    id: b.id,
-                    branch_name: b.branch_name || "",
-                    branch_address: b.branch_address || "",
-                    account_no: b.account_no || "",
-                    account_holder_name: b.account_holder_name || "",
-                    status: Number(b.status ?? 1),
-                })),
+                branches,
+                openModel: true,
             });
 
-            form.setValue("openModel", true);
+            // Register the branch IDs manually
+            (item.branches || []).forEach((b, index) => {
+                form.setValue(`branches.${index}.id`, b.id);
+            });
         },
 
         onSubmit: async (data) => {

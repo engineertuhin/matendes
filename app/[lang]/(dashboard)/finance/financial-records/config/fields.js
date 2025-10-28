@@ -126,7 +126,7 @@ export default function fields(defaultForm) {
                 {
                     name: "rec_payment_type_id",
                     type: "async-select",
-                    label: "Expense/Income Head *",
+                    label: "Expense/Income *",
                     type: "async-select",
                     colSpan: "col-span-12 md:col-span-3",
                     loadOptions: [
@@ -151,10 +151,11 @@ export default function fields(defaultForm) {
                 },
                 {
                     name: "description",
-                    type: "text",
-                    label: "Description ",
-                    placeholder: "Enter description ",
-                    colSpan: "col-span-12 md:col-span-2",
+                    type: "textarea", 
+                    label: "Description",
+                    placeholder: "Enter description",
+                    colSpan: "col-span-12 md:col-span-4", 
+                    rows: 2, 
                 },
             ],
             placeholder: "Optional",

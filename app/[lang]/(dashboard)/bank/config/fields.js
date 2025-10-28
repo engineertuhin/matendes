@@ -18,7 +18,8 @@ const fields = (form) => [
         label: "Bank Branches",
         colSpan: "col-span-12",
         addButtonLabel: "Add Branch",
-        fields: [
+         fields: [
+            // { name: "id", type: "hidden" }, 
             {
                 name: "branch_name",
                 type: "text",

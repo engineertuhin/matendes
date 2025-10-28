@@ -3,10 +3,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Building2, ClipBoard, Calendar, CalenderCheck, ChartBar, Flag } from "@/components/svg"; 
 import { useProject } from "@/domains/project/hook/useProject";
+import { useAppSelector } from "@/hooks/use-redux";
 
 const ProjectInfo = () => {
-  const { projectState, actions } = useProject();
-  const project = projectState.data?.[0]; // Assuming you want the first project
+  const projectData = useAppSelector((state) => state.project.projectData);
+  let project = projectData.project;
 
   // Optionally, load projects on mount
   // React.useEffect(() => {
@@ -21,17 +22,40 @@ const ProjectInfo = () => {
     );
   }
 
- const projectInfo = [
-  { icon: ClipBoard, label: "Project Name", value: project?.name || "N/A" },
-  { icon: Flag, label: "Status", value: project?.status || "N/A" },
-  { icon: ChartBar, label: "Total Earning", value: project?.total_earning || "€0,00" }, // optional
-  { icon: ChartBar, label: "Total Expense", value: project?.total_expense || "€0,00" }, // optional
-  { icon: Calendar, label: "Start Date", value: project?.start_date || "N/A" },
-  { icon: CalenderCheck, label: "End Date", value: project?.end_date || "N/A" },
-  { icon: Building2, label: "Client", value: project?.client?.name || "N/A" },
-  { icon: User, label: "Responsible", value: project?.employees?.[0]?.first_name || "N/A" }, 
-  { icon: ChartBar, label: "Balance", value: project?.balance || "€0,00" },
-];
+  const projectInfo = [
+    { icon: ClipBoard, label: "Project Name", value: project?.name || "N/A" },
+    { icon: Flag, label: "Status", value: project?.status || "N/A" },
+    {
+      icon: ChartBar,
+      label: "Assigned",
+      value:
+        (project?.assigned_employees && project.assigned_employees.length) ||
+        (project?.employees && project.employees.length) ||
+        0,
+    },
+    { icon: ChartBar, label: "Budget", value: project?.budget || "€0.00" },
+    { icon: Calendar, label: "Start Date", value: project?.start_date || "N/A" },
+    { icon: CalenderCheck, label: "End Date", value: project?.end_date || "N/A" },
+    { icon: Building2, label: "Client", value: project?.client?.name || "N/A" },
+ {
+  icon: User,
+  label: "Responsible",
+  value:
+    project?.assigned_employees?.length
+      ? project.assigned_employees.map((e) => e.name).join(", ")
+      : project?.employees?.length
+      ? project.employees
+          .map(
+            (e) =>
+              `${e.first_name || ""} ${e.last_name || ""}`.trim()
+          )
+          .filter(Boolean)
+          .join(", ")
+      : "N/A",
+},
+
+    { icon: ChartBar, label: "Balance", value: project?.balance || "€0.00" },
+  ];
 
 
   return (

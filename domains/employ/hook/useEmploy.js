@@ -53,7 +53,7 @@ export const useEmploy = () => {
         // ✅ New: fetch single employee by ID
         getEmploy: async (id = null) => {
             // ✅ trigger API
-            const result = await triggerGetEmploy({ id }); 
+            const result = await triggerGetEmploy({ id:id }).unwrap();
             console.log(result); 
             // ✅ if data exists, push to redux + form
             if (result?.data) {

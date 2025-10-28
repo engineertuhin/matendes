@@ -9,25 +9,23 @@ import { useAppSelector } from "@/hooks/use-redux";
 const IncomeExpense = () => {
   const { actions, financialState } = useFinancialRecords();
   
-  // Get the current project from Redux (selected project)
-  const project = useAppSelector(state => state.projectData.projectData);
+   const projectData = useAppSelector((state) => state.project.projectData);
+   let project = projectData.project;
+   console.log("Project Financial Records:", project);
 
   // Flatten and filter project-specific records
-   const projectFinancialRecords = (financialState.data || []).map(record => {
-  const detail = record.details?.[0] || {};
-  return {
-    id: record.id,
-    payment_code: `FR-${record.id}`,
-    project_name: record.project_id?.name || "—",
-    payment_type: detail.rec_payment_type_id?.name || "—",
-    transaction_type: record.financial_type === "income" ? "Income" : "Expense",
-    date: record.receive_payment_date?.split(" ")[0] || "—",
-    employee: detail.employee_id || "—",
-    description: record.reference_remarks || "—",
-    amount: record.total_amount || 0,
-    belong_to: record.project_id?.name || "—",
-  };
-});
+   const projectFinancialRecords = (project.financial_records || []).map(
+       (record) => {
+           return {
+               id: record.id,
+               transaction_type:
+                   record.financial_type === "income" ? "Income" : "Expense",
+               date: record.receive_payment_date?.split(" ")[0] || "—",
+               description: record.reference_remarks || "—",
+               amount: record.total_amount || 0,
+           };
+       }
+   );
 
   const filteredState = {
     ...financialState,
@@ -45,7 +43,7 @@ const IncomeExpense = () => {
       <CardContent className="px-6 pb-6">
         <BasicTableLayout
          columns={columns(actions)}
-          state={{ ...financialState, data: projectFinancialRecords }}
+          state={{data: projectFinancialRecords }}
         />
       </CardContent>
     </Card>

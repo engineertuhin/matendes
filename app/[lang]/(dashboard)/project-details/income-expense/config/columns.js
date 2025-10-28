@@ -1,18 +1,5 @@
 const columnsTransactions = () => [
-  {
-    accessorKey: "payment_code",
-    header: "Payment Code",
-    cell: ({ row }) => (
-      <span className="font-medium text-default-800">
-        {row.original.payment_code}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "payment_type",
-    header: "Payment Type",
-    cell: ({ row }) => row.original.payment_type || "—",
-  },
+
   {
     accessorKey: "transaction_type",
     header: "Transaction Type",
@@ -39,16 +26,7 @@ const columnsTransactions = () => [
     tdClass: "!text-center",
     cell: ({ row }) => row.original.date || "—",
   },
-  {
-    accessorKey: "project_name",
-    header: "Project",
-    cell: ({ row }) => row.original.project_name || "—",
-  },
-  {
-    accessorKey: "employee",
-    header: "Employee",
-    cell: ({ row }) => row.original.employee || "—",
-  },
+
   {
     accessorKey: "description",
     header: "Description",
@@ -75,11 +53,7 @@ const columnsTransactions = () => [
       </span>
     ),
   },
-  {
-    accessorKey: "belong_to",
-    header: "Belong To",
-    cell: ({ row }) => row.original.belong_to || "—",
-  },
+
 ];
 
 export default columnsTransactions;
