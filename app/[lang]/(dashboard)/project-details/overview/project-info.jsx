@@ -37,22 +37,22 @@ const ProjectInfo = () => {
     { icon: Calendar, label: "Start Date", value: project?.start_date || "N/A" },
     { icon: CalenderCheck, label: "End Date", value: project?.end_date || "N/A" },
     { icon: Building2, label: "Client", value: project?.client?.name || "N/A" },
- {
-  icon: User,
-  label: "Responsible",
-  value:
-    project?.assigned_employees?.length
-      ? project.assigned_employees.map((e) => e.name).join(", ")
-      : project?.employees?.length
-      ? project.employees
-          .map(
-            (e) =>
-              `${e.first_name || ""} ${e.last_name || ""}`.trim()
-          )
-          .filter(Boolean)
-          .join(", ")
-      : "N/A",
-},
+//  {
+//   icon: User,
+//   label: "Responsible",
+//   value:
+//     project?.assigned_employees?.length
+//       ? project.assigned_employees.map((e) => e.name).join(", ")
+//       : project?.employees?.length
+//       ? project.employees
+//           .map(
+//             (e) =>
+//               `${e.first_name || ""} ${e.last_name || ""}`.trim()
+//           )
+//           .filter(Boolean)
+//           .join(", ")
+//       : "N/A",
+// },
 
     { icon: ChartBar, label: "Balance", value: project?.balance || "€0.00" },
   ];

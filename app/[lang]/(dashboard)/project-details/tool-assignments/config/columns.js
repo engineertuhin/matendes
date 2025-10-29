@@ -21,7 +21,7 @@ const columnsToolAssignments = () => [
     header: "Assign Date",
     thClass: "!text-center",
     tdClass: "!text-center",
-    cell: ({ row }) => row.original.start_date || "—",
+    cell: ({ row }) => row.original.assign_date || "—", // ✅ fixed
   },
   {
     accessorKey: "return_date",

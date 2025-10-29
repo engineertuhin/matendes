@@ -62,9 +62,10 @@ const FieldRenderer = ({ fieldConfig, form }) => {
         visibility = true,
         addButtonLabel = "Add More",
         index = false,
-        getValue,
-    } = fieldConfig;
-
+        getValue, 
+        defaultValue
+    } = fieldConfig; 
+    
     const styles = {
         option: (provided, state) => ({
             ...provided,
@@ -133,7 +134,8 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                     )}
                                     styles={styles}
                                     name="clear"
-                                    menuPlacement={menuPlacement}
+                                    menuPlacement={menuPlacement} 
+                                    defaultValue={defaultValue ? defaultValue : []}
                                     options={options || []}
                                     isDisabled={!!disabled}
                                     getOptionLabel={getOptLabel}

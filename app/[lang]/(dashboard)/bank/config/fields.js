@@ -61,7 +61,7 @@ const fields = (form) => [
                     { label: "Active", value: 1 },
                     { label: "Inactive", value: 0 },
                 ],
-                defaultValue: 1,
+                defaultValue: { label: "Active", value: 1 }, // <-- default selected option
             },
         ],
     },

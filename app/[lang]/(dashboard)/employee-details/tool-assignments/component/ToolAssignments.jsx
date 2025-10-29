@@ -3,12 +3,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BasicTableLayout from "@/components/table/basic-table-layout";
 import columns from "../config/columns"; 
-import { useEmploy } from "@/domains/employ/hook/useEmploy";
+import { useEmploy } from "@/domains/employ/hook/useEmploy"; // similar to useProject
+import { useAppSelector } from "@/hooks/use-redux";
 
 const ToolAssignments = () => { 
-  const { actions, employState } = useEmploy(); // projectState.data will have projects
-  const tool_distributions = employState.data[0]?.tool_distributions || [];
-
+  const { actions } = useEmploy();   // same pattern like useProject()
+  const employData = useAppSelector((state) => state.employ.employData);
+  const employee = employData.employee; 
   return ( 
     <Card className="w-full">
       <CardHeader className="border-none mb-0">
@@ -18,10 +19,7 @@ const ToolAssignments = () => {
       </CardHeader>
 
       <CardContent className="px-6 pb-6">
-        <BasicTableLayout 
-                columns={columns(actions)}
-                state={{data: tool_distributions}}
-            /> 
+      <BasicTableLayout columns={columns(actions)} state={{ data: employee?.tool_distributions || [] }} />
       </CardContent>
     </Card>  
   );

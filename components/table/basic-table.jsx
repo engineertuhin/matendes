@@ -193,7 +193,7 @@ export function BasicDataTable({
                                 </Link>
                             ) : (
                                 <Button
-                                    onClick={() => {
+                                    onClick={() => { 
                                         form.reset({
                                             ...Object.fromEntries(
                                                 Object.entries(

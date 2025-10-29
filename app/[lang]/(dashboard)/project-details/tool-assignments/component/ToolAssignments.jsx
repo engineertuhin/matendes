@@ -11,22 +11,30 @@ const ToolAssignments = () => {
 const { actions, toolDistributionState } = useToolDistribution();
   const projectData = useAppSelector((state) => state.project.projectData);
   let project = projectData.project;
+ 
+    
 
-
-
-const projectToolAssignments = project?.tool_distribution_items?.map((item) => ({
-    id: item.id,
-    employee: item.tool_distribution?.employee?.name || "—",
-    tool: item.tool_name || "—",
-    quantity: item.quantity || "—",
-    assign_date: item.tool_distribution?.distribution_date || "—",
-    return_date:
-        item.tool_distribution?.return_date ||
-        item.tool_distribution?.expected_return_date ||
-        "—",
-    status: item.status || "—",
-    project_name: item.tool_distribution?.project?.name || "—",
-}));
+    const projectToolAssignments = project?.tool_distribution_items?.map((item, index) => {
+        console.log(item.tool_distribution?.distribution_date); // 👈 logs each item from original array
+    
+        return {
+            id: item.id,
+            employee:
+                (item.tool_distribution?.employee?.first_name +
+                    " " +
+                    item.tool_distribution?.employee?.last_name) || "—",
+            tool: item.tool_name || "—",
+            quantity: item.quantity || "—",
+            assign_date: item.tool_distribution?.distribution_date || "—",
+            return_date:
+                item.tool_distribution?.return_date ||
+                item.tool_distribution?.expected_return_date ||
+                "—",
+            status: item.status || "—",
+            project_name: item.tool_distribution?.project?.name || "—",
+        };
+    });
+    
 
 
 

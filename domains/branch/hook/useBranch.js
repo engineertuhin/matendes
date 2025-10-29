@@ -65,6 +65,8 @@ export const useBranch = () => {
             }
         },
         onEdit: (data) => {
+            console.log(data);
+            
             form.reset({
                 // IDs
                 id: data.id || "",
@@ -86,7 +88,7 @@ export const useBranch = () => {
                 manager_phone: data.manager_phone || "",
 
                 // Hierarchy
-                level: data?.hierarchy_info?.hierarchy_level ?? "",
+                hierarchy_level: data?.hierarchy_info?.hierarchy_level ?? "",
                 hierarchy_path: data.hierarchy_path || "",
                 is_headquarters: Boolean(data.is_headquarters),
                 sort_order: data.sort_order ?? 0,
