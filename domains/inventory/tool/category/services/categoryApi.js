@@ -1,15 +1,20 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
-
+import { getFilterParams } from "@/utility/helpers";
+console.log(getFilterParams);
 export const categoryApi = createApi({
   reducerPath: "ToolCategory",
   baseQuery,
   tagTypes: ["ToolCategory"],
   endpoints: (builder) => ({
     fetchCategories: builder.query({
-      query: () => "inventory/tool-categories",
+      query: () => ({
+        url: "inventory/tool-categories",
+        params: { ...getFilterParams() },
+      }),
       providesTags: ["ToolCategory"],
     }),
+    
     createCategory: builder.mutation({
       query: (data) => ({
         url: "inventory/tool-categories",

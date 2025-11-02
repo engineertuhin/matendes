@@ -31,11 +31,8 @@ export default function fields(defaultForm) {
         {
             name: "project_id",
             type: "async-select",
-            label: "Project *",
-            loadOptions: ["/projects", "projects", "projectTemplate"],
-            rules: {
-                required: "Project is required",
-            },
+            label: "Project",
+            loadOptions: ["/projects", "projects", "projectTemplate"], 
             placeholder: "Select project",
             colSpan: "col-span-12 md:col-span-4",
         },
@@ -116,9 +113,10 @@ export default function fields(defaultForm) {
                         "employees",
                         "employTemplate",
                     ],
+                    placeholder: "Employees",
                     visibility:
                         defaultForm.watch("financial_type") === "expense",
-                    colSpan: "col-span-12 md:col-span-3",
+                    colSpan: "col-span-12 sm:col-span-6 md:col-span-3",
                     rules: {
                         required: "Employ  is required",
                     },
@@ -128,13 +126,14 @@ export default function fields(defaultForm) {
                     type: "async-select",
                     label: "Expense/Income *",
                     type: "async-select",
-                    colSpan: "col-span-12 md:col-span-3",
+                    colSpan: `col-span-6 ${defaultForm.watch("financial_type") === "expense"? 'md:col-span-2': 'md:col-span-4'} `,
                     loadOptions: [
                         "finance/rec-payment-types",
                         "items",
                         "receivePaymentTemplate",
                         "financial_type",
                     ],
+                    placeholder: "Options",
                     rules: {
                         required: "Rec_pay_type  is required",
                     },
@@ -144,7 +143,7 @@ export default function fields(defaultForm) {
                     type: "number",
                     label: "Add amount *",
                     placeholder: "Enter amount",
-                    colSpan: "col-span-12 md:col-span-2",
+                    colSpan: `col-span-6 ${defaultForm.watch("financial_type") === "expense"? 'md:col-span-2': 'md:col-span-3'} `,
                     rules: {
                         required: "Amount is required",
                     },
@@ -154,8 +153,8 @@ export default function fields(defaultForm) {
                     type: "textarea", 
                     label: "Description",
                     placeholder: "Enter description",
-                    colSpan: "col-span-12 md:col-span-4", 
-                    rows: 2, 
+                    colSpan: "col-span-10 sm:col-span-6 md:col-span-4",
+                    rows: 1, 
                 },
             ],
             placeholder: "Optional",

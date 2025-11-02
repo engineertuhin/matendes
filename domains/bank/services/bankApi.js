@@ -1,13 +1,16 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
-
+import { getFilterParams } from "@/utility/helpers";
 export const bankApi = createApi({
   reducerPath: "Bank",
   baseQuery,
   tagTypes: ["Bank"],
-  endpoints: (builder) => ({
+  endpoints: (builder) => ({ 
     fetchBanks: builder.query({
-      query: () => "bank/banks",
+      query: () => ({
+        url: "bank/banks",
+        params: { ...getFilterParams() },
+      }),
       providesTags: ["Bank"],
     }),
 

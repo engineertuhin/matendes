@@ -6,12 +6,14 @@ export default function DynamicAsyncSelect({
     form,
     handleChange = false,
     isMulti = false,
+    placeholder,
     isDisabled = false, // ✅ add this
 }) {
     const {
         actions: { onSearch, onLoadData },
         isLoading,
         transformed,
+        
     } = useDynamicSelect("commonSearchTemplate", 500, loadOptions, form);
 
     const child = loadOptions[4] ? loadOptions[4] : null;
@@ -28,8 +30,7 @@ export default function DynamicAsyncSelect({
                 onLoadData();
             }}
             defaultOptions={transformed}
-            placeholder={
-                isMulti ? "Select multiple options..." : "Select option..."
+            placeholder={placeholder? placeholder : (isMulti ? "Select multiple options..." : "Select option...")
             }
             onChange={(val) => {
                 if (Array.isArray(child)) {

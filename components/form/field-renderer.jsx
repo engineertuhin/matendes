@@ -63,7 +63,8 @@ const FieldRenderer = ({ fieldConfig, form }) => {
         addButtonLabel = "Add More",
         index = false,
         getValue, 
-        defaultValue
+        defaultValue,
+        rows
     } = fieldConfig; 
     
     const styles = {
@@ -116,6 +117,7 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                 <Textarea
                                     placeholder={placeholder}
                                     disabled={disabled}
+                                    rows={rows}
                                     {...field}
                                     {...(inputProps || {})}
                                     className={cn(
@@ -299,6 +301,7 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                 </RadioGroup>
                             ) : type == "async-select" ? (
                                 <DynamicAsyncSelect
+                                    placeholder={placeholder}
                                     loadOptions={loadOptions}
                                     field={field}
                                     form={form}
@@ -307,6 +310,7 @@ const FieldRenderer = ({ fieldConfig, form }) => {
                                 />
                             ) : type === "multi-async-select" ? (
                                 <DynamicAsyncSelect
+                                    placeholder={placeholder}
                                     loadOptions={loadOptions}
                                     field={field}
                                     form={form}
@@ -452,7 +456,7 @@ const GroupFormField = ({ fieldConfig, form, addButtonLabel }) => {
                         );
                     })}
                     {isDelete && (
-                        <div className="col-span-12 md:col-span-2">
+                        <div className="col-span-2 md:col-span-1 flex justify-end">
                             <Button
                                 type="button"
                                 size="sm"

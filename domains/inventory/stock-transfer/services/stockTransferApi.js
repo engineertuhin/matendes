@@ -1,13 +1,17 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
+import { getFilterParams } from "@/utility/helpers";
 
 export const stockTransferApi = createApi({
   reducerPath: "StockTransfer",
   baseQuery,
   tagTypes: ["StockTransfer"],
-  endpoints: (builder) => ({
+  endpoints: (builder) => ({ 
     fetchStockTransfers: builder.query({
-      query: () => "inventory/stock-transfers",
+      query: () => ({
+        url: "inventory/stock-transfers",
+        params: { ...getFilterParams() },
+      }),
       providesTags: ["StockTransfer"],
     }),
 

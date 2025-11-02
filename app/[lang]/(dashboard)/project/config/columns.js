@@ -1,11 +1,13 @@
 import { TableActions } from "@/components/table/TableActions";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useProfile } from "@/domains/profile/hook/useProfile";
 import { useProject } from "@/domains/project/hook/useProject";
 const safe = (v, fallback = "—") => (v ?? v === 0 ? v : fallback);
 
 let columns = (actions) => {
     const { actions: projectActions } = useProject();
+    const params = useParams();
+    const lang = params?.lang || 'en';
     const router = useRouter();
     return [
         // Core fields
@@ -78,8 +80,8 @@ let columns = (actions) => {
                             label: "View",
                             onClick: (rowData) => {
                                 // Define the custom handler here
-                                projectActions.getProject(rowData?.id);
-                                router.push(`/project-details`);
+                                // projectActions.getProject(rowData?.id);
+                                router.push(`/${lang}/project-details/${rowData?.id}`);
                             },
                         },
                         {

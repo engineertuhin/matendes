@@ -10,10 +10,13 @@ export const projectApi = createApi({
             query: ({ id = false }) => ({
                 url: "projects",
                 method: "GET",
-                params: { id: id },
+                params: id ? { id } : getFilterParams(),
             }),
             providesTags: ["Project"],
         }),
+
+
+
         projectCreate: builder.mutation({
             query: (credentials) => ({
                 url: "projects",

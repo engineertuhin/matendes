@@ -25,13 +25,29 @@ import { getFilterParams } from "@/utility/helpers";
 import { useMemo } from "react";
 import { useAppDispatch } from "@/hooks/use-redux";
 import { setEmployData } from "../model/employSlice";
+import { useParams } from "next/navigation";
 
 export const useEmploy = () => {
     const dispatch = useAppDispatch(); 
+      const { id } = useParams();
     const [EmployCreate] = useEmployCreateMutation();
     const [EmployUpdate] = useEmployUpdateMutation();
     const [EmployDelete] = useEmployDeleteMutation();
-    const { data: employ, refetch, isFetching } = useEmployFetchQuery();
+    const {
+        data: employ,
+        refetch,
+        isFetching,
+    } = useEmployFetchQuery(id ? { id } : "", {
+        selectFromResult: (result) => {
+          if (result?.data) {
+                dispatch(setEmployData(result?.data?.data)); 
+            } 
+            return result; 
+        },
+    });
+
+
+
     //Lazy query
     const [triggerGetEmploy] = useLazyEmployFetchQuery();
     
@@ -48,16 +64,15 @@ export const useEmploy = () => {
         pagination: employ?.data?.pagination || {},
         isFetching,
       };
+  
 
     const actions = {
         // ✅ New: fetch single employee by ID
         getEmploy: async (id = null) => {
             // ✅ trigger API
             const result = await triggerGetEmploy({ id:id }).unwrap();
-            console.log(result); 
             // ✅ if data exists, push to redux + form
             if (result?.data) {
-                
                 dispatch(setEmployData(result.data));
                 
             } 

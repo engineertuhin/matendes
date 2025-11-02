@@ -21,10 +21,11 @@ import { Separator } from "@/components/ui/separator";
 
 export function DataTableFacetedFilter({
     index,
+    searchKey,
     title,
     options,
     facets,
-    multiple = false,
+    multiple = true,
     addServerFilter,
     refetch,
 }) {
@@ -32,24 +33,46 @@ export function DataTableFacetedFilter({
 
     const handleSelect = (value) => {
         setSelectedValues((prev) => {
-            const newValues = new Set(prev);
+            let newValues = new Set(prev);
 
             if (multiple) {
+                if (value === "") {
+                    // "All" clicked
+                    if (newValues.size === options.length) {
+                        // Already all selected, deselect all
+                        newValues.clear();
+                        addServerFilter(searchKey, "");
+                    } else {
+                        // Select all options
+                        options.forEach((o) => newValues.add(o.value));
+                        addServerFilter(
+                            searchKey,
+                            Array.from(newValues).join(",")
+                        );
+                    }
+                    refetch();
+                    return newValues;
+                }
+
+                // Toggle single option
                 if (newValues.has(value)) {
                     newValues.delete(value);
                 } else {
                     newValues.add(value);
                 }
+
+                newValues.delete(""); // remove "All" placeholder if present
+                addServerFilter(searchKey, Array.from(newValues).join(","));
+                refetch();
                 return newValues;
             } else {
+                // Single-select logic
                 if (newValues.has(value)) {
-                    addServerFilter(index, "");
-                    // Deselect current if already selected
+                    addServerFilter(searchKey, "");
                     refetch();
                     return new Set();
                 } else {
-                    addServerFilter(index, value);
-                    // Only select this one
+                    addServerFilter(searchKey, value);
                     refetch();
                     return new Set([value]);
                 }
@@ -68,10 +91,7 @@ export function DataTableFacetedFilter({
 
                     {selectedValues.size > 0 && (
                         <>
-                            <Separator
-                                orientation="vertical"
-                                className="mx-2 h-4"
-                            />
+                            <Separator orientation="vertical" className="mx-2 h-4" />
                             <Badge className="rounded-sm px-1 font-normal lg:hidden">
                                 {selectedValues.size}
                             </Badge>
@@ -83,14 +103,9 @@ export function DataTableFacetedFilter({
                                     </Badge>
                                 ) : (
                                     options
-                                        .filter((o) =>
-                                            selectedValues.has(o.value)
-                                        )
+                                        .filter((o) => selectedValues.has(o.value))
                                         .map((o) => (
-                                            <Badge
-                                                key={o.value}
-                                                className="rounded-sm px-1 font-normal"
-                                            >
+                                            <Badge key={o.value} className="rounded-sm px-1 font-normal">
                                                 {o.label}
                                             </Badge>
                                         ))
@@ -107,19 +122,35 @@ export function DataTableFacetedFilter({
                     <CommandList>
                         <CommandEmpty>No results found.</CommandEmpty>
                         <CommandGroup>
+                            {/* Only show "All" if multiple is true */}
+                            {multiple && (
+                                <CommandItem
+                                    onSelect={() => handleSelect("")}
+                                    className="flex items-center gap-2"
+                                >
+                                    <div
+                                        className={cn(
+                                            "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                                            selectedValues.size === 0 ||
+                                            selectedValues.size === options.length
+                                                ? "bg-primary text-primary-foreground"
+                                                : "opacity-50 [&_svg]:invisible"
+                                        )}
+                                    >
+                                        <Check className="h-4 w-4" />
+                                    </div>
+                                    <span>All</span>
+                                </CommandItem>
+                            )}
+
                             {options.map((option) => {
-                                const isSelected = selectedValues.has(
-                                    option.value
-                                );
-                                const facetCount =
-                                    facets?.get(option.value) ?? 0;
+                                const isSelected = selectedValues.has(option.value);
+                                const facetCount = facets?.get(option.value) ?? 0;
 
                                 return (
                                     <CommandItem
                                         key={option.value}
-                                        onSelect={() =>
-                                            handleSelect(option.value)
-                                        }
+                                        onSelect={() => handleSelect(option.value)}
                                         className="flex items-center gap-2"
                                     >
                                         <div
@@ -132,13 +163,10 @@ export function DataTableFacetedFilter({
                                         >
                                             <Check className="h-4 w-4" />
                                         </div>
-
                                         {option.icon && (
                                             <option.icon className="h-4 w-4 text-muted-foreground" />
                                         )}
-
                                         <span>{option.label}</span>
-
                                         {facetCount > 0 && (
                                             <span className="ml-auto flex h-4 w-6 items-center justify-center text-xs text-muted-foreground">
                                                 {facetCount}
@@ -153,10 +181,7 @@ export function DataTableFacetedFilter({
                             <>
                                 <CommandSeparator />
                                 <CommandGroup>
-                                    <CommandItem
-                                        onSelect={clearFilters}
-                                        className="justify-center text-center"
-                                    >
+                                    <CommandItem onSelect={clearFilters} className="justify-center text-center">
                                         Clear filters
                                     </CommandItem>
                                 </CommandGroup>
@@ -168,3 +193,4 @@ export function DataTableFacetedFilter({
         </Popover>
     );
 }
+

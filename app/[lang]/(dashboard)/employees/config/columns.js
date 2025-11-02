@@ -1,5 +1,5 @@
 import { TableActions } from "@/components/table/TableActions";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { setEmployData } from "@/domains/employ/model/employSlice";
 import { useAppDispatch } from "@/hooks/use-redux"; 
 import { useEmploy } from "@/domains/employ/hook/useEmploy";
@@ -7,6 +7,8 @@ import { useEmploy } from "@/domains/employ/hook/useEmploy";
 const columns = (actions) => {
     const { actions: employeeActions } = useEmploy();
     const router = useRouter();
+    const params = useParams();
+    const lang = params?.lang || 'en';
     const dispatch = useAppDispatch();
 
     return [
@@ -91,14 +93,16 @@ const columns = (actions) => {
                                 label: "View",
                                 onClick: (rowData) => {
                                     // Define the custom handler here
-                                    employeeActions.getEmploy(rowData?.id);
-                                    router.push(`/employee-details`);
+                                    // employeeActions.getEmploy(rowData?.id);
+                                     router.push(
+                                         `/${lang}/employee-details/${rowData?.id}`
+                                     );
                                 },
                             },
                             { 
                                 label: "Edit", 
                                 onClick: (rowData) => { // Define the custom handler here
-                                    router.push(`/employees/edit/${rowData?.id}`);
+                                    router.push(`/${lang}/employees/edit/${rowData?.id}`);
                                     dispatch(setEmployData(rowData));
                                 } 
                             },

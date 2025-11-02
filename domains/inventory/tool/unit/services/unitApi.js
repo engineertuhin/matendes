@@ -1,13 +1,16 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
-
+import { getFilterParams } from "@/utility/helpers";
 export const unitApi = createApi({
   reducerPath: "ToolUnit",
   baseQuery,
   tagTypes: ["ToolUnit"],
   endpoints: (builder) => ({
     fetchUnits: builder.query({
-      query: () => "inventory/tool-units",
+      query: () => ({
+        url: "inventory/tool-units",
+        params: { ...getFilterParams() },
+      }),
       providesTags: ["ToolUnit"],
     }),
     createUnit: builder.mutation({

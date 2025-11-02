@@ -1,13 +1,17 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
+import { getFilterParams } from "@/utility/helpers";
 
 export const purchaseApi = createApi({
   reducerPath: "Purchase",
   baseQuery,
   tagTypes: ["Purchase"],
-  endpoints: (builder) => ({
+  endpoints: (builder) => ({ 
     fetchPurchases: builder.query({
-      query: () => "inventory/purchases",
+      query: () => ({
+        url: "inventory/purchases",
+        params: { ...getFilterParams() },
+      }),
       providesTags: ["Purchase"],
     }),
 

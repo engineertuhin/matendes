@@ -20,15 +20,30 @@ import { useForm } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
 import { useRef } from "react";
 import { useAppDispatch } from "@/hooks/use-redux";
+import { useParams } from "next/navigation";
 
 export const useProject = () => {
     const dispatch = useAppDispatch(); 
+    const { id } = useParams();
     const [projectCreate] = useProjectCreateMutation();
     const [projectUpdate] = useProjectUpdateMutation();
     const [projectDelete] = useProjectDeleteMutation();
     const [projectUpdateAssignedEmployees] =
         useProjectUpdateAssignedEmployeesMutation();
-    const { data: project, refetch, isFetching } = useProjectFetchQuery();
+
+    const {
+        data: project,
+        refetch,
+        isFetching,
+    } = useProjectFetchQuery(id ? { id } : "", {
+        selectFromResult: (result) => {
+            if (result?.data) {
+                dispatch(setProjectData(result?.data?.data)); 
+            } 
+            return result; 
+        },
+    }); 
+
     //Lazy query
     const [triggerGetProject] = useLazyProjectFetchQuery();
     // Ref to prevent multiple simultaneous calls to setAssignEmployModel

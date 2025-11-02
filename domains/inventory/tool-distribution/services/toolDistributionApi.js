@@ -1,13 +1,16 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/utility/baseQuery";
-
+import { getFilterParams } from "@/utility/helpers";
 export const toolDistributionApi = createApi({
   reducerPath: "ToolDistribution",
   baseQuery,
   tagTypes: ["ToolDistribution"],
-  endpoints: (builder) => ({
+  endpoints: (builder) => ({ 
     fetchToolDistributions: builder.query({
-      query: () => "inventory/tool-distributions",
+      query: () => ({
+        url: "inventory/tool-distributions",
+        params: { ...getFilterParams() },
+      }),
       providesTags: ["ToolDistribution"],
     }),
 

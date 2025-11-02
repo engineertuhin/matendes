@@ -8,6 +8,8 @@ export default function BasicTableLayout({
     pagination = true,
     state,
     filterCustom,
+    searchKey=false,
+    search=true,
 }) {
     return (
         <BasicDataTable
@@ -21,6 +23,8 @@ export default function BasicTableLayout({
             refetch={state.refetch}
             loading={state.isFetching}
             filterCustom={filterCustom}
+            searchKey={searchKey}
+            search={search}
         />
     );
 }

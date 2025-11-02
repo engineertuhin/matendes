@@ -186,6 +186,13 @@ const fields = [
         colSpan: "col-span-12 md:col-span-6",
     },
     {
+        name: "balance",
+        type: "number",
+        label: "Balance",
+        placeholder: "0.00",
+        colSpan: "col-span-12 md:col-span-6",
+    },
+    {
         name: "fiscal_year_start",
         type: "input",
         label: "Fiscal Year Start",

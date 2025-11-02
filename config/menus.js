@@ -206,8 +206,8 @@ export const menusConfig = {
             icon: BadgeDollarSignIcon,
             child: [
                 {
-                    title: "Receive Payment Type",
-                    href: "/finance/rec-payment-type",
+                    title: "Payment Type",
+                    href: "/finance/payment-type",
                     icon: Type,
                     permission: "view-client",
                 },
@@ -447,8 +447,8 @@ export const menusConfig = {
                 icon: BadgeDollarSignIcon,
                 child: [
                     {
-                        title: "Receive Payment Type",
-                        href: "/finance/rec-payment-type",
+                        title: "Payment Type",
+                        href: "/finance/payment-type",
                         icon: Type,
                         permission: "view-client",
                     },
@@ -686,8 +686,8 @@ export const menusConfig = {
                 icon: BadgeDollarSignIcon,
                 child: [
                     {
-                        title: "Receive Payment Type",
-                        href: "/finance/rec-payment-type",
+                        title: "Payment Type",
+                        href: "/finance/payment-type",
                         icon: Type,
                         permission: "view-client",
                     },

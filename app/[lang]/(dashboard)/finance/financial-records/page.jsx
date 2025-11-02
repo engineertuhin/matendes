@@ -17,11 +17,14 @@ const FinancialRecordsPage = () => {
                 columns={columns(actions)}
                 state={financialState}
                 filterCustom={{
-                    transaction_type: [
-                        { key: "regular", value: "Regular" },
-                        { key: "future_payment", value: "Future payment" },
-                        { key: "repeat", value: "Repeat" },
-                    ],
+                    transaction_type: {
+                        multiple: true,
+                        values: [
+                            { key: "regular", value: "Regular" },
+                            { key: "future_payment", value: "Future Payment" },
+                            { key: "repeat", value: "Repeat" },
+                        ],
+                    }
                 }}
             />
 

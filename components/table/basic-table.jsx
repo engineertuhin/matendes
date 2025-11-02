@@ -49,6 +49,8 @@ export function BasicDataTable({
     refetch,
     loading = false,
     filterCustom = [],
+    searchKey = false,
+    search=true,
 }) {
     const [sorting, setSorting] = React.useState([]);
     const [columnFilters, setColumnFilters] = React.useState([]);
@@ -61,7 +63,10 @@ export function BasicDataTable({
     // Create debounced search function
     const debouncedSearch = React.useCallback(
         debounce((searchTerm) => {
-            setFilterParams("search", searchTerm);
+            setFilterParams(
+                `${searchKey ? searchKey + "_" : ""}search`,
+                searchTerm
+            );
             setFilterParams("page", 1); // Reset to first page when searching
             if (refetch) refetch();
         }, 500), // 500ms delay
@@ -145,27 +150,44 @@ export function BasicDataTable({
                                 </DropdownMenuContent>
                             </DropdownMenu>
                             {Object.entries(filterCustom).map(
-                                ([key, values]) => (
-                                    <DataTableFacetedFilter
-                                        key={key}
-                                        index={key}
-                                        title={key
-                                            .replace(/_/g, " ") // replace underscores with spaces
-                                            .replace(/\b\w/g, (c) =>
-                                                c.toUpperCase()
-                                            )} // capitalize first letter of each word
-                                        options={values.map((data) => {
-                                               let {key,value}= data;
-                                          
-                                            return { label: value, value: key };
-                                        })}
-                                        addServerFilter={setFilterParams}
-                                        refetch={refetch}
-                                    />
-                                )
-                            )}
+                                ([key, config]) => {
+                                    const values = Array.isArray(config)
+                                        ? config
+                                        : config.values;
+                                    const multiple = Array.isArray(config)
+                                        ? true
+                                        : config.multiple ?? true;
 
-                            <Input
+                                    const options = values.map(
+                                        ({ key, value }) => ({
+                                            label: value,
+                                            value: key,
+                                        })
+                                    );
+
+                                    return (
+                                        <DataTableFacetedFilter
+                                            key={key}
+                                            index={key}
+                                            searchKey={
+                                                searchKey
+                                                    ? ` ${searchKey}_`+ key
+                                                    : "" + key
+                                            }
+                                            title={key
+                                                .replace(/_/g, " ")
+                                                .replace(/\b\w/g, (c) =>
+                                                    c.toUpperCase()
+                                                )}
+                                            options={options} // ✅ no "All" here
+                                            multiple={multiple}
+                                            addServerFilter={setFilterParams}
+                                            refetch={refetch}
+                                        />
+                                    );
+                                }
+                            )}
+                            {search && <Input
                                 placeholder="Search..."
                                 value={searchValue}
                                 onChange={(e) => {
@@ -175,8 +197,8 @@ export function BasicDataTable({
                                     // Use debounced search for server requests
                                     debouncedSearch(value);
                                 }}
-                                className="w-full sm:w-[250px] h-10"
-                            />
+                                className="w-full sm:w-[350px] h-10 border-default-300 text-sm"
+                            />} 
                         </div>
                     )}
 
@@ -193,7 +215,7 @@ export function BasicDataTable({
                                 </Link>
                             ) : (
                                 <Button
-                                    onClick={() => { 
+                                    onClick={() => {
                                         form.reset({
                                             ...Object.fromEntries(
                                                 Object.entries(

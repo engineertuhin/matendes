@@ -27,6 +27,7 @@ export const useCategory = () => {
     data: categoryData?.data?.categories || [],
     form,
     refetch,
+    pagination: categoryData?.data?.pagination || {},
     isFetching,
   };
 

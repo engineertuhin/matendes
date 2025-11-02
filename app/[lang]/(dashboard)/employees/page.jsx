@@ -15,6 +15,7 @@ const EmployeePage = () => {
                 columns={columns(actions)}
                 to="employees/create"
                 state={employState}
+                searchKey="employee"
             />
         </PageLayout>
     );
