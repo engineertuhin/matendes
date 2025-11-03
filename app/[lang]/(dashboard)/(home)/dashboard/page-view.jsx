@@ -19,7 +19,7 @@ const DashboardPageView = ({ trans }) => {
         <div className="text-2xl font-medium text-default-800 ">
           Analytics {trans?.dashboard}
         </div>
-        <DatePickerWithRange />
+        {/* <DatePickerWithRange /> */}
       </div>
       {/* Coming soon placeholder */}
       {/* <div className="flex flex-col items-center justify-center py-20 border border-dashed border-default-300 rounded-2xl bg-default-50">

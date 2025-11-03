@@ -68,9 +68,9 @@ const ReportsSnapshot = () => {
               Demographic properties of your workforce
             </span>
           </div>
-          <div className="flex-none">
+          {/* <div className="flex-none">
             <DashboardSelect />
-          </div>
+          </div> */}
         </div>
       </CardHeader>
 
