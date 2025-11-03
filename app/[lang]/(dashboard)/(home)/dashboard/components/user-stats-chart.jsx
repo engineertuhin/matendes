@@ -5,35 +5,31 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 import { useThemeStore } from "@/store";
 import { useTheme } from "next-themes";
 import { themes } from "@/config/themes";
+import { useSelector } from "react-redux";
 
 const UserStats = ({ height = 250 }) => {
-  const { theme: config, setTheme: setConfig, isRtl } = useThemeStore();
+  const { theme: config, isRtl } = useThemeStore();
   const { theme: mode } = useTheme();
   const theme = themes.find((theme) => theme.name === config);
-  const series = [500, 800, 400, 600];
 
-  const options = {
-    chart: {
-      toolbar: {
-        show: false,
-      },
-    },
-    labels: ["HR", "Finance", "IT", "Operations"],
-    dataLabels: {
-      enabled: false,
-    },
-    colors: [
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
-      `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
-      "hsl(30, 70%, 85%)",         // soft orange/pastel
-      "hsl(150, 60%, 80%)"         // soft green/pastel
-    ],
-    tooltip: {
-      theme: mode === "dark" ? "dark" : "light",
-    },
-    stroke: {
-      width: 0,
-    },
+  // ✅ Get both dashboard data and users by department
+  const { dashboardData } = useSelector((state) => state.dashboard);
+  // const usersData = useSelector((state) => state.dashboard.usersData || []);
+
+  const getColors = () => [
+    `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].primary})`,
+    `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].info})`,
+    "hsl(30, 70%, 85%)",
+    "hsl(150, 60%, 80%)",
+  ];
+
+  const baseOptions = (labels) => ({
+    chart: { toolbar: { show: false } },
+    labels,
+    dataLabels: { enabled: false },
+    colors: getColors(),
+    tooltip: { theme: mode === "dark" ? "dark" : "light" },
+    stroke: { width: 0 },
     plotOptions: {
       pie: {
         donut: {
@@ -51,7 +47,6 @@ const UserStats = ({ height = 250 }) => {
             },
             value: {
               show: true,
-              label: "Total",
               fontSize: "14px",
               fontWeight: 600,
               color: `hsl(${
@@ -84,10 +79,7 @@ const UserStats = ({ height = 250 }) => {
           ].chartLabel
         })`,
       },
-      itemMargin: {
-        horizontal: 10,
-        vertical: 8,
-      },
+      itemMargin: { horizontal: 10, vertical: 8 },
       markers: {
         width: 10,
         height: 10,
@@ -95,21 +87,37 @@ const UserStats = ({ height = 250 }) => {
         offsetX: isRtl ? 5 : -5,
       },
     },
-    padding: {
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-    },
-  };
+  });
+
+  // ✅ Prepare chart data
+  // const dashboardLabels = dashboardData.map((item) => item.text);
+  // const dashboardSeries = dashboardData.map((item) => item.total);
+
+  const usersLabels = dashboardData.department_by_employee?.map((item) => item.department);
+  const usersSeries = dashboardData.department_by_employee?.map((item) => item.employee_count); 
+
+  if (!usersSeries?.length) {
+    return <p className="text-center text-sm text-default-500">No data available</p>;
+  }
+
   return (
-    <Chart
-      options={options}
-      series={series}
-      type="donut"
-      height={height}
-      width={"100%"}
-    />
+    <div className="flex flex-col gap-6">
+      {/* Employee by Department */}
+      {usersSeries?.length > 0 && (
+        <div>
+          <h3 className="text-sm font-medium text-center mb-2 text-default-700">
+            Employees by Department
+          </h3>
+          <Chart
+            options={baseOptions(usersLabels)}
+            series={usersSeries}
+            type="donut"
+            height={height}
+            width="100%"
+          />
+        </div>
+      )}
+    </div>
   );
 };
 

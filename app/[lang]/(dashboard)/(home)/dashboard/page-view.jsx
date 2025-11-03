@@ -10,8 +10,9 @@ import DashboardSelect from "@/components/dasboard-select";
 import TopTen from "./components/top-ten";
 import TopPage from "./components/top-page";
 import DatePickerWithRange from "@/components/date-picker-with-range";
-
+import { useDashboard } from "@/domains/dashboard/hook/useDashboard";
 const DashboardPageView = ({ trans }) => {
+  const { data } = useDashboard();
   return (
     <div className="space-y-6">
       <div className="flex items-center flex-wrap justify-between gap-4">
