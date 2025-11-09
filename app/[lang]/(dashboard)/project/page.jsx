@@ -26,6 +26,7 @@ const ProjectPage = () => {
     return (
         <PageLayout>
             <BasicTableLayout
+                addPermission={"create-project"}
                 addButtonLabel="Add Project"
                 columns={columns(actions)}
                 state={projectState}

@@ -13,6 +13,7 @@ const departmentPage = () => {
         <>
             <PageLayout>
                 <BasicTableLayout
+                    addPermission={"create-department"}
                     addButtonLabel="Add Department"
                     columns={columns(actions)}
                     state={departmentState}

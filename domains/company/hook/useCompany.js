@@ -118,17 +118,23 @@ export const useCompany = () => {
         },
 
         onUpdate: async (data) => {
-            let { openModel, id, ...other } = data;
-            const response = await userUpdate({
-                id,
-                credentials: other,
-            }).unwrap();
-            if (response) {
-                toast.success("Company Update Successfully");
-                refetch();
-                formReset(form);
-
-                form.setValue("openModel", false);
+            try {
+                let { openModel, id, ...other } = data;
+        
+                const response = await userUpdate({
+                    id,
+                    credentials: other,
+                }).unwrap();
+        
+                if (response) {
+                    toast.success("Company Updated Successfully");
+                    refetch();
+                    formReset(form);
+                    form.setValue("openModel", false);
+                }
+            } catch (apiErrors) {
+                // Handle server-side validation errors just like onCreate
+                handleServerValidationErrors(apiErrors, form.setError);
             }
         },
         onDelete: (id) => {

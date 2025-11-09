@@ -15,6 +15,7 @@ const ToolDistributionPage = () => {
   return (
       <PageLayout>
           <BasicTableLayout
+              addPermission={"create-tool-distribution"}
               addButtonLabel="Add Tool Distribution"
               columns={columns(actions)}
               state={toolDistributionState}

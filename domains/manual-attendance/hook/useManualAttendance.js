@@ -91,7 +91,11 @@ export const useManualAttendance = () => {
         formatDateForForm: (dateString) => {
             if (!dateString) return "";
             try {
-                return new Date(dateString).toISOString().split("T")[0];
+                const date = new Date(dateString);        // create date from your string
+date.setDate(date.getDate() + 1);         // add 1 day
+return date.toISOString().split("T")[0]; // format as YYYY-MM-DD
+
+
             } catch (error) {
                 console.error("Date formatting error:", error);
                 return "";

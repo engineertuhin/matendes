@@ -11,6 +11,7 @@ const EmployeePage = () => {
     return (
         <PageLayout>
             <BasicTableLayout
+                addPermission={"create-employee"}
                 addButtonLabel="Add Employee"
                 columns={columns(actions)}
                 to="employees/create"

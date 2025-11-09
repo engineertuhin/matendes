@@ -14,11 +14,13 @@ const RolePage = () => {
     const form = rolesState.form;
     const isEdit = !!form?.watch("id");
     const isPermissionMode = !!form?.watch("openPermissionMode");
-
+    console.log(rolesState.permissions);
+    
     return (
         <PageLayout>
             {/* Role Table */}
             <BasicTableLayout
+                addPermission={"edit-branch"}
                 addButtonLabel="Add Role"
                 columns={columns(actions)}
                 state={rolesState}
@@ -46,7 +48,7 @@ const RolePage = () => {
                     state={{
                         form: rolesState.form,
                         data: rolesState.permissions,
-                        pagination: false,
+                        pagination: true,
                         isFetching: false,
                     }}
                     filter={false}

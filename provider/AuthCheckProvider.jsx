@@ -9,9 +9,11 @@ export default function AuthCheckProvider({ children }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await getMe();
-    
-
+        const res = await getMe(); 
+        
+        window["allPermission"] = res.data.data.permissions.map(perm => perm.name); 
+        // console.log(window["allPermission"]);
+        
         // maybe handle user data here?
        
       } catch (err) {

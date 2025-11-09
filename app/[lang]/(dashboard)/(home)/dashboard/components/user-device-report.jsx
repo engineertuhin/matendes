@@ -125,7 +125,7 @@ const UserDeviceReport = ({ height = 250 }) => {
     if (!series?.length)
         return (
             <p className="text-center text-sm text-default-500">
-                No job position data available
+                No data available
             </p>
         );
 
@@ -134,7 +134,7 @@ const UserDeviceReport = ({ height = 250 }) => {
             <CardHeader className="border-none pb-0 mb-5">
                 <div className="flex items-center gap-1">
                     <h3 className="text-sm font-medium text-center mb-2 text-default-700">
-                        Employees by Job Position
+                    {dashboardData?.pieChartTwoTitle}
                     </h3>
                 </div>
             </CardHeader>

@@ -13,6 +13,7 @@ const DamagePage = () => {
   return (
       <PageLayout>
           <BasicTableLayout
+              addPermission={"create-tool-damage"}
               addButtonLabel="Add Tool Damage"
               columns={columns(actions)}
               state={damageState}

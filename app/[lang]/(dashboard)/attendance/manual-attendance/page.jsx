@@ -13,6 +13,7 @@ const ManualAttendancePage = () => {
         <>
             <PageLayout>
                 <BasicTableLayout
+                    addPermission={"manual-attendance"}
                     addButtonLabel="Add Attendance"
                     columns={columns(actions)}
                     state={manualAttendanceState}

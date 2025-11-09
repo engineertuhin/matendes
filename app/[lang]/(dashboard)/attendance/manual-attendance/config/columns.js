@@ -167,8 +167,8 @@ const columns = (actions) => [
                 label="Actions"
                 // alignmentClass is omitted here, so it defaults to "flex justify-center"
                 items={[
-                    { label: "Edit", onClick: actions?.onEdit },
-                    { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+                    { label: "Edit", onClick: actions?.onEdit ,  permission: "manual-attendance" }, 
+                    { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true, permission: "manual-attendance" }, // needs only ID
                 ]}
             />
         ),

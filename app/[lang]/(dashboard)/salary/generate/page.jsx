@@ -13,6 +13,7 @@ const SalaryGeneratePage = () => {
     return (
         <PageLayout>
             <BasicTableLayout
+                addPermission={"generate_salary"}
                 addButtonLabel="Generate Salary"
                 columns={columns(actions)}
                 state={salaryState }

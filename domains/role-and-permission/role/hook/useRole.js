@@ -25,7 +25,8 @@ export const useRole = () => {
         refetch,
         isFetching,
     } = useRoleFetchQuery();
-
+    
+    
     const form = useForm({
         mode: "onBlur",
         reValidateMode: "onSubmit",
@@ -39,8 +40,7 @@ export const useRole = () => {
         refetch,
         pagination: roleAndPermission?.data?.pagination || {},
         isFetching,
-    };
-
+    }; 
     const actions = {
         onCreate: async (data) => {
             try {
@@ -79,25 +79,63 @@ export const useRole = () => {
         },
 
         onUpdate: async (data) => {
-            let { openModel, id, ...other } = data;
-            const response = await userUpdate({
-                id,
-                credentials: other,
-            }).unwrap();
-            if (response) {
-                toast.success("Role Update Successfully");
-                refetch();
-                formReset(form);
-
-                form.setValue("openModel", false);
+            try {
+                let { openModel, id, ...other } = data;
+        
+                // If you have any data normalization like employee, do it here
+                // let preparedData = normalizeSelectValues(other, ["some_field"]);
+        
+                const response = await userUpdate({
+                    id,
+                    credentials: other, // or preparedData if normalized
+                }).unwrap();
+        
+                if (response?.message === "Role updated successfully") {
+                    toast.success("Role Update Successfully");
+                    refetch();
+                    formReset(form);
+                    form.setValue("openModel", false);
+                }
+        
+                return response;
+            } catch (apiErrors) {
+                // set server-side validation errors
+                handleServerValidationErrors(apiErrors, form.setError);
+        
+                // optional: show general error toast
+                toast.error("Failed to update role. Please check the inputs and try again.");
             }
         },
-        onDelete: (id) => {
-            if (confirm("are you sure to delete it")) {
-                toast.success("Role Delete Successfully");
-                userDelete({ id });
+        onDelete: async (id) => {
+            try {
+                if (confirm("Are you sure you want to delete this role?")) {
+                    const response = await userDelete({ id }); 
+                    
+                    // If your API returns success in response.data.success
+                    if (response?.data?.success) {
+                        toast.success("Role deleted successfully");
+                        refetch(); // refresh the list if needed
+                    } 
+                    // If API returns error in a structured format
+                    else if (response?.error?.data?.message) {
+                        toast.error(response?.error?.data?.message);
+                    } 
+                    // Fallback error
+                    else {
+                        toast.error("Failed to delete role. Please try again.");
+                    }
+                }
+            } catch (error) {
+                console.error("Delete role error:", error);
+        
+                if (error?.response?.data?.message) {
+                    toast.error(error.response.data.message);
+                } else {
+                    toast.error("Something went wrong while deleting the role.");
+                }
             }
         },
+        
 
         onManagePermissions: (data) => {
             const ids = data.permissions.map((data) => data.id);

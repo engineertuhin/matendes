@@ -170,23 +170,23 @@ export const useDepartment = () => {
                     const response = await departmentDelete({ id });
 
                     if (response?.data?.success) {
-                        toast.success("Branch deleted successfully");
+                        toast.success("Department deleted successfully");
                         refetch();
                     } else if (response?.error?.data?.errors?.message) {
                         toast.error(response?.error?.data?.errors?.message);
                     } else {
                         toast.error(
-                            "Failed to delete branch. Please try again."
+                            "Failed to delete department. Please try again."
                         );
                     }
                 }
             } catch (error) {
-                console.error("Delete branch error:", error);
+                console.error("Delete department error:", error);
 
                 if (error?.response?.data?.message) {
                     toast.error(error.response.data.message);
                 } else {
-                    toast.error("Something went wrong while deleting branch.");
+                    toast.error("Something went wrong while deleting department.");
                 }
             }
         },

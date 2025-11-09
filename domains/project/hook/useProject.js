@@ -14,7 +14,7 @@ import {
     useProjectUpdateAssignedEmployeesMutation,
 } from "../services/projectApi";
 import { setProjectData } from "../model/projectSlice";
-import { jobPositionsTemplate, employTemplate, clientTemplate } from "@/utility/templateHelper";
+import { jobPositionsTemplate, employTemplate, clientTemplate, branchSearchTemplate } from "@/utility/templateHelper";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
@@ -109,7 +109,7 @@ export const useProject = () => {
                         employee_id: employeeList,
                         assigned_employees: assignedEmployees,
                     },
-                    ["job_position_id", "client_id"]
+                    ["job_position_id", "client_id","branch_id"]
                 );
 
             
@@ -128,10 +128,12 @@ export const useProject = () => {
         },
 
         onEdit: (data) => {
+            console.log(data);
+            
             // Prepare employee data for editing using template
             const employeeData = data.employees?.length
                 ? employTemplate(data.employees)
-                : [];
+                : []; 
 
             // Prepare job position data using template
             const jobPositionData = data.job_position
@@ -149,7 +151,11 @@ export const useProject = () => {
                 end_date: data.end_date || "",
                 status: data.status || "planned",
                 job_position_id: jobPositionData,
-                employee_id: employeeData,
+                employee_id: employeeData, 
+                branch_id:
+                    branchSearchTemplate(data?.branch ? [data.branch] : [])?.at(
+                        0
+                    ) ?? null,
                 client_id: client,
                 expiry_warning_days: data.expiry_warning_days || 0,
                 observation: data.observation || "",
@@ -214,7 +220,7 @@ export const useProject = () => {
                         employee_id: employeeList,
                         assigned_employees: assignedEmployees,
                     },
-                    ["job_position_id", "client_id"]
+                    ["job_position_id", "client_id","branch_id"]
                 );
 
                 console.log(

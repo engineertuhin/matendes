@@ -13,6 +13,7 @@ const ToolPage = () => {
   return (
     <PageLayout>
       <BasicTableLayout
+        addPermission={"create-tool"}
         addButtonLabel="Add Tool"
         columns={columns(actions)}
         state={toolState}

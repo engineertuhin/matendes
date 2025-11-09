@@ -1,14 +1,14 @@
 import { TableActions } from "@/components/table/TableActions";
 import { useRouter, useParams } from "next/navigation";
 import { setEmployData } from "@/domains/employ/model/employSlice";
-import { useAppDispatch } from "@/hooks/use-redux"; 
+import { useAppDispatch } from "@/hooks/use-redux";
 import { useEmploy } from "@/domains/employ/hook/useEmploy";
 
 const columns = (actions) => {
     const { actions: employeeActions } = useEmploy();
     const router = useRouter();
     const params = useParams();
-    const lang = params?.lang || 'en';
+    const lang = params?.lang || "en";
     const dispatch = useAppDispatch();
 
     return [
@@ -80,33 +80,42 @@ const columns = (actions) => {
             id: "actions",
             enableHiding: false,
             header: "",
-            thClass: "!text-center w-[70px] whitespace-nowrap", 
+            thClass: "!text-center w-[70px] whitespace-nowrap",
             tdClass: "!text-center w-[70px] whitespace-nowrap",
             cell: ({ row }) => {
                 const data = row.original;
                 return (
                     <TableActions
                         data={data}
-                        label="Actions" 
+                        label="Actions"
                         items={[
                             {
                                 label: "View",
                                 onClick: (rowData) => {
                                     // Define the custom handler here
                                     // employeeActions.getEmploy(rowData?.id);
-                                     router.push(
-                                         `/${lang}/employee-details/${rowData?.id}`
-                                     );
+                                    router.push(
+                                        `/${lang}/employee-details/${rowData?.id}`
+                                    );
                                 },
                             },
-                            { 
-                                label: "Edit", 
-                                onClick: (rowData) => { // Define the custom handler here
-                                    router.push(`/${lang}/employees/edit/${rowData?.id}`);
-                                    dispatch(setEmployData(rowData));
-                                } 
+                            {
+                                label: "Edit",
+                                onClick: (rowData) => {
+                                    // Define the custom handler here
+                                    router.push(
+                                        `/${lang}/employees/edit/${rowData?.id}`
+                                    );
+                                },
+                                permission: "edit-employee",
                             },
-                            { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+                            {
+                                label: "Delete",
+                                onClick: actions?.onDelete,
+                                danger: true,
+                                passId: true,
+                                permission: "delete-employee",
+                            }, // needs only ID
                         ]}
                     />
                 );

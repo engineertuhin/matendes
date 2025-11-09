@@ -14,6 +14,7 @@ const BankPage = () => {
     <PageLayout>
       {/* ===== Table Section ===== */}
       <BasicTableLayout
+        addPermission={"create-bank"}
         addButtonLabel="Add Bank"
         columns={columns(actions)}
         state={bankState}

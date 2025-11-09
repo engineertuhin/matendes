@@ -25,7 +25,7 @@ const fields = [
     {
         name: "legal_name",
         type: "input",
-        label: "Legal Name",
+        label: "Legal Name *",
         placeholder: "Acme Incorporated",
         colSpan: "col-span-12 md:col-span-6",
     },
@@ -190,7 +190,7 @@ const fields = [
         type: "number",
         label: "Balance",
         placeholder: "0.00",
-        colSpan: "col-span-12 md:col-span-6",
+        colSpan: "col-span-12 md:col-span-6", 
     },
     {
         name: "fiscal_year_start",
@@ -211,7 +211,7 @@ const fields = [
     {
         name: "locale",
         type: "input",
-        label: "Locale *",
+        label: "Locale",
         placeholder: "en",
         colSpan: "col-span-12 md:col-span-6",
         rules: { required: "Locale is required" },
@@ -219,7 +219,7 @@ const fields = [
     {
         name: "currency",
         type: "input",
-        label: "Currency *",
+        label: "Currency",
         placeholder: "USD",
         colSpan: "col-span-12 md:col-span-6",
     },
@@ -228,7 +228,7 @@ const fields = [
     {
         name: "status",
         type: "select",
-        label: "Status *",
+        label: "Status",
         placeholder: "Select status",
         colSpan: "col-span-12 md:col-span-6",
         options: [
@@ -255,7 +255,7 @@ const fields = [
     {
         name: "subscription_plan",
         type: "select",
-        label: "Subscription Plan *",
+        label: "Subscription Plan",
         placeholder: "Select plan",
         colSpan: "col-span-12 md:col-span-6",
         options: [
@@ -269,7 +269,7 @@ const fields = [
     {
         name: "subscription_status",
         type: "select",
-        label: "Subscription Status *",
+        label: "Subscription Status",
         placeholder: "Select status",
         colSpan: "col-span-12 md:col-span-6",
         options: [

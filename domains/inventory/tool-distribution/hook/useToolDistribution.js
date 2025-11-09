@@ -13,7 +13,7 @@ import {
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
-import { projectTemplate, employTemplate, warehouseSearchTemplate } from "@/utility/templateHelper";
+import { projectTemplate, employTemplate, warehouseSearchTemplate,branchSearchTemplate } from "@/utility/templateHelper";
 
 export const useToolDistribution = () => {
     const [createToolDistribution] = useCreateToolDistributionMutation();
@@ -68,7 +68,7 @@ export const useToolDistribution = () => {
                 // Normalize warehouse_id like project_id
                 const currentPayload = normalizeSelectValues(
                     { ...payload, warehouse_id },
-                    ["project_id", "employee_id", "warehouse_id"]
+                    ["project_id", "employee_id", "warehouse_id","branch_id"]
                 );
         
                 // Normalize each tool in the assignTools list
@@ -133,7 +133,7 @@ export const useToolDistribution = () => {
                 // Normalize dropdown values for API (including warehouse_id)
                 const currentPayload = normalizeSelectValues(
                     { ...payload, warehouse_id },
-                    ["project_id", "employee_id", "warehouse_id"]
+                    ["project_id", "employee_id", "warehouse_id","branch_id"]
                 );
         
                 // Combine payload with assignTools
@@ -197,8 +197,7 @@ export const useToolDistribution = () => {
         },
         
 
-        onEdit: (item) => {
-            console.log(item);
+        onEdit: (item) => { 
             
             // Prepare assignTools for the form using assign_tools from API response
             const assignTools = (item.assign_tools || []).map((tool) => ({
@@ -220,6 +219,10 @@ export const useToolDistribution = () => {
                     employTemplate(item?.employee ? [item.employee] : [])?.at(
                         0
                     ) ?? null,
+                branch_id:
+                branchSearchTemplate(item?.branch ? [item.branch] : [])?.at(
+                    0
+                ) ?? null,
                 warehouse_id:
                 warehouseSearchTemplate(item?.warehouse ? [item.warehouse] : [])?.at(
                         0

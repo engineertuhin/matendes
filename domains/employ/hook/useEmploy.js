@@ -37,14 +37,15 @@ export const useEmploy = () => {
         data: employ,
         refetch,
         isFetching,
-    } = useEmployFetchQuery(id ? { id } : "", {
+      } = useEmployFetchQuery(id ? { id } : "", {
+        refetchOnMountOrArgChange: true,
         selectFromResult: (result) => {
           if (result?.data) {
-                dispatch(setEmployData(result?.data?.data)); 
-            } 
-            return result; 
+            dispatch(setEmployData(result?.data?.data));
+          }
+          return result;
         },
-    });
+      });
 
 
 
@@ -101,7 +102,11 @@ export const useEmploy = () => {
                 handleServerValidationErrors(apiErrors, form.setError);
             }
         },
-        onEdit: (data) => {
+        onEdit: (mainData) => {
+            const data = mainData.employee;
+
+            if(!data) return; 
+            
             form.reset({
                 // =============== Identity & Org ===============
                 id: data.id || "",
@@ -240,7 +245,7 @@ export const useEmploy = () => {
                 // is_enabled: Boolean(data?.system_info?.is_enabled),
                 is_system_user: Boolean(data?.system_info?.is_system_user),
             });
-
+            
             // updateUser({ id, ...data });
             // form.reset();
         },
@@ -257,10 +262,11 @@ export const useEmploy = () => {
                     "manager_id",
                     "role_id",
                 ]);
+             
                 //set to api
                 const response = await EmployUpdate({
                     id,
-                    credentials: buildFormData(preparedData, "PUT"),
+                    credentials: preparedData,
                 }).unwrap();
 
                 if (response.message == "Employee updated successfully") {

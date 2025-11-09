@@ -47,12 +47,13 @@ const columns = (actions) => [
                 data={row.original}
                 label="Actions"
                 items={[
-                    { label: "Edit", onClick: actions?.onEdit },
+                    { label: "Edit", onClick: actions?.onEdit, permission: "edit-payment-type" },
                     {
                         label: "Delete",
                         onClick: actions?.onDelete,
                         danger: true,
                         passId: true,
+                        permission: "delete-payment-type"
                     },
                 ]}
             />

@@ -10,7 +10,9 @@ export default function BasicTableLayout({
     filterCustom,
     searchKey=false,
     search=true,
-}) {
+    addPermission,
+}) { 
+    
     return (
         <BasicDataTable
             columns={columns}
@@ -25,6 +27,7 @@ export default function BasicTableLayout({
             filterCustom={filterCustom}
             searchKey={searchKey}
             search={search}
+            addPermission={addPermission}
         />
     );
 }

@@ -6,8 +6,7 @@ import UsersDataTable from "./users-data-table";
 import { useSelector } from "react-redux";
 
 const UsersStat = () => {
-    const { dashboardData } = useSelector((state) => state.dashboard);
-    console.log(dashboardData.toolSnapshotTable);
+    const { dashboardData } = useSelector((state) => state.dashboard); 
 
     const users = [
         {

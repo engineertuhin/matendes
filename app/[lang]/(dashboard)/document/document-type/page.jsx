@@ -12,6 +12,7 @@ const DocumentTypePage = () => {
         <>
             <PageLayout>
                 <BasicTableLayout
+                    addPermission={"create-document"}
                     addButtonLabel="Add Document Type"
                     columns={columns(actions)}
                     state={documentTypesState}

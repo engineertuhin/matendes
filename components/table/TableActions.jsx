@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-
+import { useAppSelector } from "@/hooks/use-redux";
 /**
  * Reusable dropdown actions component for table rows.
  *
@@ -25,10 +25,13 @@ export const TableActions = ({
   items = [],
   label = "Actions",
   alignmentClass = "flex justify-center",
-  onLoginAsCompany,
+  onLoginAsCompany, 
 }) => {
   const showSrOnlySpan = alignmentClass !== "flex justify-center";
+  const { user } = useAppSelector((state) => state.auth);
 
+  const permissionNames = user?.permissions?.map(p => p.name) || [];  
+  // console.log(exists);
   return (
     <div className={alignmentClass}>
       <DropdownMenu>
@@ -55,6 +58,7 @@ export const TableActions = ({
 
           {/* Dynamic action items */}
           {items.map((item, i) => (
+            permissionNames.includes(item.permission) &&
             <DropdownMenuItem
               key={i}
               onClick={() =>

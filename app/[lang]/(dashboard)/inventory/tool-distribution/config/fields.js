@@ -33,6 +33,18 @@ const fields = (form) =>
         rules: { required: "Project is required" },
     },
     {
+        name: "branch_id",
+        type: "async-select",
+        label: "Branch *",
+        loadOptions: [
+            "organization/branches",
+            "branches",
+            "branchSearchTemplate",
+        ],
+        placeholder: "Optional",
+        colSpan: "col-span-12 md:col-span-6",
+    }, 
+    {
         name: "employee_id",
         type: "async-select",
         label: "Employee *",

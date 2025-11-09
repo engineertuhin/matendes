@@ -116,10 +116,12 @@ export default function columns(actions) {
                         label: "Edit",
                         onClick: actions?.onEdit,
                         passId: false,
+                        permission: "edit-financial-records"
+
                     });
              
                
-                    makeActions.push( { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true });
+                    makeActions.push( { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true , permission: "delete-financial-records"});
                 
 
                return    (

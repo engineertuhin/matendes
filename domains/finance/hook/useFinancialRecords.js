@@ -142,6 +142,7 @@ export const useFinancialRecords = () => {
                         record?.project_id ? [record.project_id] : []
                     )?.at(0) ?? null,
                 transaction_type: record.transaction_type || "regular",
+                transaction_type_ref: record.transaction_type || "regular",
                 transaction_date: record.transaction_date || "",
                 expected_rec_pay_date: record.expected_rec_pay_date || "",
                 receive_payment_date: record.receive_payment_date || "",

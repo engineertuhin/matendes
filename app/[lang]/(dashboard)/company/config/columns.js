@@ -186,8 +186,8 @@ let columns = (actions) => [
                 label="Actions"
                 onLoginAsCompany={actions?.onLoginAsCompany} // ✅ just add this line
                 items={[
-                    { label: "Edit", onClick: actions?.onEdit },
-                    { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+                    { label: "Edit", onClick: actions?.onEdit, permission: "edit-company"},
+                    { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true, permission: "delete-company"}, // needs only ID
                 ]}
             />
         ),

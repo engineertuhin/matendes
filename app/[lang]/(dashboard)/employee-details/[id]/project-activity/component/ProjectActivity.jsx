@@ -5,13 +5,16 @@ import BasicTableLayout from "@/components/table/basic-table-layout";
 import columns from "../config/columns";
 import { useEmploy } from "@/domains/employ/hook/useEmploy"; // similar to useProject
 import { useAppSelector } from "@/hooks/use-redux";
+import { useEffect } from "react";
 
 const ProjectActivity = () => {
     const { actions, employState } = useEmploy(); // same pattern like useProject()
     const employData = useAppSelector((state) => state.employ.employData);
     const employee = employData.employee;
     const { data, ...other } = employState;
-    
+    // useEffect(()=>{
+    //     other.refetch();
+    // },[])
 
     return (
         <Card className="w-full">

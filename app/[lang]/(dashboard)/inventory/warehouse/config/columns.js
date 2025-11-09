@@ -38,8 +38,8 @@ const columns = (actions) => [
         data={row.original}
         label="Actions"
         items={[
-          { label: "Edit", onClick: actions?.onEdit },
-          { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true },
+          { label: "Edit", onClick: actions?.onEdit,  permission: "edit-warehouse"},
+          { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true ,  permission: "delete-warehouse" },
         ]}
       />
     ),

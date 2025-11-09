@@ -14,6 +14,7 @@ const PurchasePage = () => {
     <PageLayout>
       {/* Table */}
       <BasicTableLayout
+        addPermission={"create-purchase"}
         addButtonLabel="Add Purchase"
         columns={columns(actions)}
         state={purchaseState}

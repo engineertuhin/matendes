@@ -14,6 +14,7 @@ const StockTransferPage = () => {
     <PageLayout>
       {/* ===== Table Section ===== */}
       <BasicTableLayout
+        addPermission={"create-stock-transfer"}
         addButtonLabel="Add Stock Transfer"
         columns={columns(actions)}
         state={stockTransferState}

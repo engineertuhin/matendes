@@ -13,10 +13,10 @@ const departmentPage = () => {
         <>
             <PageLayout>
                 <BasicTableLayout
+                    addPermission={"create-job-position"}
                     addButtonLabel="Add Job Position"
                     columns={columns(actions)}
-                     state={jobPositionState}
-
+                    state={jobPositionState}
                 />
                 <BasicModel
                     title={

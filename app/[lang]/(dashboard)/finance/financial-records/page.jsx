@@ -13,6 +13,7 @@ const FinancialRecordsPage = () => {
     return (
         <PageLayout>
             <BasicTableLayout
+                addPermission={"create-financial-records"}
                 addButtonLabel="Add Financial Record"
                 columns={columns(actions)}
                 state={financialState}

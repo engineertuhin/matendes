@@ -348,7 +348,7 @@ const fields = () => {
                 {
                     name: "basic_salary",
                     type: "number",
-                    label: "Basic Salary",
+                    label: "Basic Salary *",
                     placeholder: "90000.00",
                     colSpan: "col-span-12 md:col-span-4",
                     inputProps: { min: 0, step: "0.01" },

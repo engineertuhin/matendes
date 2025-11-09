@@ -13,6 +13,7 @@ const employCreate = () => {
         <PageLayout>
             <DynamicTabForm
                 isServerValidated={true}
+                addPermission={"create-employee"}
                 fields={fields}
                 form={employState.form}
                 actions={actions}

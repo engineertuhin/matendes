@@ -66,7 +66,13 @@ const columns = (actions) => [
             // ✅ If tool is already returned, hide both Edit and Delete
             const prepare = returnData
                 ? [] // hide Edit when returned
-                : [{ label: "Edit", onClick: actions?.onEdit }];
+                : [
+                      {
+                          label: "Edit",
+                          onClick: actions?.onEdit,
+                          permission: "edit-tool-distribution",
+                      },
+                  ];
 
             // ✅ Build actions list dynamically
             const actionItems = [
@@ -74,6 +80,7 @@ const columns = (actions) => [
                 {
                     label: "Return Tool",
                     onClick: actions?.onReturn,
+                    permission: "return-tool",
                 },
             ];
 
@@ -84,6 +91,7 @@ const columns = (actions) => [
                     onClick: actions?.onDelete,
                     danger: true,
                     passId: true,
+                    permission: "delete-tool-distribution",
                 });
             }
 

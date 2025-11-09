@@ -23,7 +23,9 @@ const columns = (actions) => [
         header: "Total Value",
         cell: ({ row }) => {
             const totalValue = row.original.total_value;
-            return totalValue ? `${parseFloat(totalValue).toFixed(2)}` : "$0.00";
+            return totalValue
+                ? `${parseFloat(totalValue).toFixed(2)}`
+                : "$0.00";
         },
     },
     {
@@ -39,7 +41,11 @@ const columns = (actions) => [
         header: "Note",
         cell: ({ row }) => {
             const note = row.original.note;
-            return note ? (note.length > 50 ? note.substring(0, 50) + "..." : note) : "—";
+            return note
+                ? note.length > 50
+                    ? note.substring(0, 50) + "..."
+                    : note
+                : "—";
         },
     },
 
@@ -58,12 +64,14 @@ const columns = (actions) => [
                         {
                             label: "Edit",
                             onClick: actions?.onEdit,
+                            permission: "edit-tool-damage",
                         },
                         {
                             label: "Delete",
                             onClick: actions?.onDelete,
                             danger: true,
                             passId: true,
+                            permission: "delete-tool-damage",
                         },
                     ]}
                 />

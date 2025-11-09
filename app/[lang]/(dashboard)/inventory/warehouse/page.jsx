@@ -8,27 +8,34 @@ import fields from "./config/fields";
 import { useWarehouse } from "@/domains/inventory/warehouse/hook/useWarehouse";
 
 const WarehousePage = () => {
-  const { actions, warehouseState } = useWarehouse();
+    const { actions, warehouseState } = useWarehouse();
 
-  return (
-    <PageLayout>
-      <BasicTableLayout
-        addButtonLabel="Add Warehouse"
-        columns={columns(actions)}
-        state={warehouseState}
-      />
+    return (
+        <PageLayout>
+            <BasicTableLayout
+                addPermission={"create-warehouse"}
+                addButtonLabel="Add Warehouse"
+                columns={columns(actions)}
+                state={warehouseState}
+            />
 
-      <BasicModel
-        title={warehouseState?.form?.watch("id") ? "Edit Warehouse" : "Create Warehouse"}
-        submitLabel={warehouseState?.form?.watch("id") ? "Update" : "Create"}
-        cancelLabel="Cancel"
-        size="2xl"
-        form={warehouseState.form}
-        fields={fields}
-        actions={actions} // pass the full actions object
-      />
-    </PageLayout>
-  );
+            <BasicModel
+                title={
+                    warehouseState?.form?.watch("id")
+                        ? "Edit Warehouse"
+                        : "Create Warehouse"
+                }
+                submitLabel={
+                    warehouseState?.form?.watch("id") ? "Update" : "Create"
+                }
+                cancelLabel="Cancel"
+                size="2xl"
+                form={warehouseState.form}
+                fields={fields}
+                actions={actions} // pass the full actions object
+            />
+        </PageLayout>
+    );
 };
 
 export default WarehousePage;

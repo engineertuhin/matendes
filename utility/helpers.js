@@ -1,5 +1,14 @@
 import toast from "react-hot-toast";
+import { useAppSelector } from "@/hooks/use-redux";
+// Single Field Validation
+export const permissionChecker = (permissionName) => {
+    const { user } = useAppSelector((state) => state.auth);
 
+    const permissionNames = user?.permissions?.map(p => p.name) || []; 
+    const addButtonVisible = permissionNames.includes(permissionName);
+    
+    return addButtonVisible;
+};
 // Single Field Validation
 export const singleValidateError = (name, errors) => {
     return errors[name] && errors[name].message;

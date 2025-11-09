@@ -13,7 +13,8 @@ const BranchPage = () => {
         <>
             <PageLayout>
                 <BasicTableLayout
-                    addButtonLabel="Add Branch"
+                    addPermission={"create-branch"}
+                    addButtonLabel={"Add Branch"}
                     columns={columns(actions)}
                     state={branchesState} 
                    

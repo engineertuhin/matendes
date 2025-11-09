@@ -106,7 +106,7 @@ const UserStats = ({ height = 250 }) => {
       {usersSeries?.length > 0 && (
         <div>
           <h3 className="text-sm font-medium text-center mb-2 text-default-700">
-            Employees by Department
+            {dashboardData.pieChartOneTitle}
           </h3>
           <Chart
             options={baseOptions(usersLabels)}

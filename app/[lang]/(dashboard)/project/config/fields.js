@@ -1,4 +1,8 @@
+import { useAppSelector } from "@/hooks/use-redux"; 
 const fields = () => {
+    const { user, branch } = useAppSelector((state) => state.auth);
+    console.log(branch);
+    
     return [
         // =============== Core ===============
         {
@@ -13,6 +17,18 @@ const fields = () => {
             },
             inputProps: { maxLength: 200 },
         },
+        {
+            name: "branch_id",
+            type: "async-select",
+            label: "Branch *",
+            loadOptions: [
+                "organization/branches",
+                "branches",
+                "branchSearchTemplate",
+            ],
+            placeholder: "Optional",
+            colSpan: "col-span-12 md:col-span-6",
+        }, 
         {
             name: "status",
             type: "select",

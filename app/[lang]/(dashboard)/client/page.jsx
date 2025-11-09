@@ -13,6 +13,7 @@ const ClientPage = () => {
   return (
     <PageLayout>
       <BasicTableLayout
+       addPermission={"create-client"}
         addButtonLabel="Add Client"
         columns={clientColumns(actions)}
         state={clientState}

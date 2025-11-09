@@ -13,6 +13,7 @@ const CompanyPage = () => {
         <>
             <PageLayout>
                 <BasicTableLayout
+                    addPermission={"create-company"}
                     addButtonLabel="Add Company"
                     columns={columns(actions)}
                     state={companiesState}

@@ -43,11 +43,10 @@ const fields = () => [
     {
         name: "current_quantity",
         type: "input",
-        label: "Opening Quantity *",
+        label: "Opening Quantity",
         placeholder: "Enter opening quantity",
         colSpan: "col-span-12 md:col-span-6",
-        rules: {
-            required: "Opening quantity is required",
+        rules: { 
             min: { value: 0, message: "Cannot be negative" },
         },
         inputProps: { type: "number", min: 0 },

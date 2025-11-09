@@ -86,14 +86,15 @@ let columns = (actions) => {
                         },
                         {
                             label: "Assign Employees",
-                            onClick: actions?.setAssignEmployModel,
+                            onClick: actions?.setAssignEmployModel, permission: "delete-project"
                         },
-                        { label: "Edit", onClick: actions?.onEdit },
+                        { label: "Edit", onClick: actions?.onEdit, permission: "edit-project"},
                         {
                             label: "Delete",
                             onClick: actions?.onDelete,
                             danger: true,
                             passId: true,
+                            permission: "delete-project"
                         }, // needs only ID
                     ]}
                 />

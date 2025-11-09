@@ -11,7 +11,16 @@ import TopTen from "./components/top-ten";
 import TopPage from "./components/top-page";
 import DatePickerWithRange from "@/components/date-picker-with-range";
 import { useDashboard } from "@/domains/dashboard/hook/useDashboard";
+import { permissionChecker } from "@/utility/helpers";
+import { useSelector } from "react-redux";
+
 const DashboardPageView = ({ trans }) => {
+
+  
+  console.log(permissionChecker('workforce-overview'));
+   
+  const { dashboardData } = useSelector((state) => state.dashboard);
+
   const { data } = useDashboard();
   return (
     <div className="space-y-6">
@@ -37,31 +46,37 @@ const DashboardPageView = ({ trans }) => {
 
       {/* reports area */}
       <div className="grid grid-cols-12  gap-6 ">
-        <div className="col-span-12 lg:col-span-8">
-          <ReportsSnapshot />
-        </div>
+        {permissionChecker('workforce-overview') && 
+          <div className="col-span-12 lg:col-span-8">
+            <ReportsSnapshot />
+          </div>}
+        {permissionChecker('tool-distribution') &&
         <div className="col-span-12 lg:col-span-4">
           <UsersStat />
         </div>
+        }
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {permissionChecker('dashboard-stats') &&
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <ReportsArea />
-        </div>
+        </div>}
+        {permissionChecker('pie-chart-1') &&
         <Card>
           <CardHeader className="border-none p-6 pt-5 mb-0">
             <CardTitle className="text-lg font-semibold text-default-900 p-0">
-              Employees by Department
+              {dashboardData?.pieChartOneTitle}
             </CardTitle>
           </CardHeader>
           <CardContent>
               <UserStats />
           </CardContent>
-        </Card>
+        </Card>}
+        {permissionChecker('pie-chart-2') &&
         <Card>
           <CardHeader className="border-none p-6 pt-5 mb-0">
             <CardTitle className="text-lg font-semibold text-default-900 p-0">
-              Employee by Job Position
+            {dashboardData?.pieChartTwoTitle}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -69,7 +84,7 @@ const DashboardPageView = ({ trans }) => {
               <UserDeviceReport />
             </div>
           </CardContent>
-        </Card>
+        </Card>}
       </div>
       {/* <div className="col-span-2">
         <Card>

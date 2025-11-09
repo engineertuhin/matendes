@@ -37,6 +37,7 @@ import { cn } from "@/lib/utils";
 
 import Link from "next/link";
 import { getFilterParams, setFilterParams, debounce } from "@/utility/helpers";
+import { useAppSelector } from "@/hooks/use-redux";
 
 export function BasicDataTable({
     columns = [],
@@ -51,6 +52,7 @@ export function BasicDataTable({
     filterCustom = [],
     searchKey = false,
     search=true,
+    addPermission,
 }) {
     const [sorting, setSorting] = React.useState([]);
     const [columnFilters, setColumnFilters] = React.useState([]);
@@ -59,7 +61,13 @@ export function BasicDataTable({
     const [searchValue, setSearchValue] = React.useState(
         getFilterParams("search") || ""
     );
+    const { user } = useAppSelector((state) => state.auth);
 
+    const permissionNames = user?.permissions?.map(p => p.name) || []; 
+    const addButtonVisible = permissionNames.includes(addPermission);
+    
+    console.log(permissionNames);
+    
     // Create debounced search function
     const debouncedSearch = React.useCallback(
         debounce((searchTerm) => {
@@ -203,7 +211,7 @@ export function BasicDataTable({
                     )}
 
                     {/* Right side actions — optional */}
-                    {addButtonLabel && (
+                    {addButtonLabel && addButtonVisible && (
                         <div className="flex items-center gap-2">
                             {/* You can put actions here like export, add new, etc. */}
                             {to ? (

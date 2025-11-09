@@ -1,4 +1,10 @@
-export default function fields(defaultForm) {
+export default function fields(defaultForm) { 
+    const transactionType = defaultForm.watch("transaction_type_ref");
+    const recordId = defaultForm.watch("id"); // or get from props / context
+
+    // Logic to disable transaction_type select based on both conditions
+    const disableTransactionType = transactionType === "repeat" && !!recordId;
+    console.log("Disable Transaction Type:", disableTransactionType);
     return [
         // Master record fields (match finance_records migration)
         {
@@ -46,11 +52,11 @@ export default function fields(defaultForm) {
                 { label: "Repeat", value: "repeat" },
                 { label: "Future Payment", value: "future_payment" },
             ],
-
+            disabled: disableTransactionType,
             rules: {
                 required: "Transaction type is required",
             },
-        },
+        }, 
         {
             name: "transaction_date",
             label: "Transaction Date *",

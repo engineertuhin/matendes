@@ -1,4 +1,5 @@
 import { TableActions } from "@/components/table/TableActions";
+import { permission } from "process";
 
 const Pill = ({ children, className = "" }) => (
   <span
@@ -70,9 +71,9 @@ let columns = (actions) => [
       <TableActions
         data={row.original}
         items={[
-          { label: "Manage Permissions", onClick: actions?.onManagePermissions },
-          { label: "Edit", onClick: actions?.onEdit },
-          { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true }, // needs only ID
+          { label: "Manage Permissions", onClick: actions?.onManagePermissions, permission: "edit-branch" },
+          { label: "Edit", onClick: actions?.onEdit, permission: "edit-branch" },
+          { label: "Delete", onClick: actions?.onDelete, danger: true, passId: true, permission: "edit-branch" }, // needs only ID
         ]}
       />
     ),

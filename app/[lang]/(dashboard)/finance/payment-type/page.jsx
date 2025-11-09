@@ -13,6 +13,7 @@ const RecPaymentTypePage = () => {
     return (
         <PageLayout>
             <BasicTableLayout
+                addPermission={"create-payment-type"}
                 addButtonLabel="Add Type"
                 columns={columns(actions)}
                 state={recPaymentTypeState}
