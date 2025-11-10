@@ -11,9 +11,7 @@ export const profileApi = createApi({
         url: "/profile/profile",
         method: "GET",
         params: { id: id },
-      }),
-      // ✅ transform response to return only the employee object
-      transformResponse: (response) => response.employee,
+      }), 
       providesTags: ["Profile"],
     }),
     updateProfile: builder.mutation({

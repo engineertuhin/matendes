@@ -98,6 +98,7 @@ const columns = (actions) => {
                                         `/${lang}/employee-details/${rowData?.id}`
                                     );
                                 },
+                                permission: "details-employee",
                             },
                             {
                                 label: "Edit",

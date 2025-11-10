@@ -17,7 +17,7 @@ const Overview = () => {
     <div className="pt-6 grid grid-cols-12 gap-6">
       <div className="col-span-12 lg:col-span-4 space-y-6">
         <UserInfo />
-        <Skills />
+        {/* <Skills /> */}
       </div>
       <div className="col-span-12 lg:col-span-8 space-y-6">
         <About />

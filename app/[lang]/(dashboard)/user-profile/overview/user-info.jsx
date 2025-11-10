@@ -1,4 +1,5 @@
 "use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   User,
@@ -7,14 +8,13 @@ import {
   Calender,
   CalenderCheck,
   Mail,
-} from "@/components/svg"; 
+} from "@/components/svg";
 import { useAppSelector } from "@/hooks/use-redux";
 
 const UserInfo = () => {
-  const {profile}=useAppSelector((state)=> state.profileData); 
-  console.log(profile);
-  
-  if (!profile) {
+  const { profile } = useAppSelector((state) => state.profileData);
+
+  if (!profile?.user) {
     return (
       <Card>
         <CardContent className="p-4">No user info found</CardContent>
@@ -22,36 +22,43 @@ const UserInfo = () => {
     );
   }
 
+  const { user } = profile;
+  const { employee, company } = user;
+
   const userInfo = [
     {
       icon: User,
       label: "Full Name",
-      value: profile?.personal_info?.display_name || "N/A",
+      value: employee
+        ? `${employee.first_name || ""} ${employee.last_name || ""}`.trim() || "N/A"
+        : company
+        ? company.name || "N/A"
+        : "N/A",
     },
     {
       icon: Phone,
       label: "Mobile",
-      value: profile?.contact_info?.primary_phone || "N/A",
+      value: employee?.primary_phone || company?.phone || "N/A",
     },
     {
       icon: Mail,
       label: "Work Email",
-      value: profile?.contact_info?.work_email || "N/A",
+      value: employee?.work_email || company?.email || "N/A",
     },
     {
       icon: Location,
       label: "Branch",
-      value: profile?.branch?.name || "N/A",
+      value: employee?.branch_id ? employee.branch_id : "N/A", // if you want, map branch name later
     },
     {
       icon: CalenderCheck,
       label: "Joining Date",
-      value: profile?.employment_info?.hire_date || "N/A",
+      value: employee?.hire_date || "N/A",
     },
     {
       icon: Calender,
       label: "Probation End Date",
-      value: profile?.employment_info?.probation_end_date || "N/A",
+      value: employee?.probation_end_date || "N/A",
     },
   ];
 
@@ -63,12 +70,6 @@ const UserInfo = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="px-4">
-        {/* <p className="text-sm text-default-600">
-          {profile?.system_info?.bio ||
-            "No bio available. Please update your profile."}
-        </p> */}
-
-        {/* Info List */}
         <ul className="space-y-4">
           {userInfo.map((item, index) => (
             <li key={`user-info-${index}`} className="flex items-center">
@@ -80,9 +81,7 @@ const UserInfo = () => {
                   {item.label}:
                 </span>
               </div>
-              <div className="flex-1 text-sm text-default-700">
-                {item.value}
-              </div>
+              <div className="flex-1 text-sm text-default-700">{item.value}</div>
             </li>
           ))}
         </ul>

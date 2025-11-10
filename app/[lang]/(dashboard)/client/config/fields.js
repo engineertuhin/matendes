@@ -36,7 +36,7 @@ const clientFields = () => {
         {
             name: "client_type",
             type: "select",
-            label: "Client Type",
+            label: "Client Type *",
             placeholder: "Select client type",
             colSpan: "col-span-12 md:col-span-6",
             options: [
@@ -55,7 +55,7 @@ const clientFields = () => {
         {
             name: "status",
             type: "select",
-            label: "Status",
+            label: "Status *",
             placeholder: "Select status",
             colSpan: "col-span-12 md:col-span-6",
             options: [

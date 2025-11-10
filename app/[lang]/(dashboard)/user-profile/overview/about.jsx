@@ -10,25 +10,36 @@ const About = () => {
   // Get profile from Redux
   const profile = useAppSelector((state) => state.profileData.profile);
 
+  if (!profile?.user) {
+    return (
+      <Card>
+        <CardContent className="p-4">No profile data found</CardContent>
+      </Card>
+    );
+  }
+
+  const { user } = profile;
+  const { employee, company } = user;
+
   // Bio & Preferences
-  const bio = profile?.system_info?.bio || "No bio available.";
-  const preferences = profile?.system_info?.preferences || "No preferences set.";
+  const bio = employee?.bio || company?.description || "No bio available.";
+  const preferences = employee?.preferences || company?.preferences || "No preferences set.";
 
   // About items
   const aboutItems = [
     {
       title: "Designation",
-      position: profile?.job_position?.title || "N/A",
+      position: employee?.job_position?.title || company?.name || "N/A",
       icon: UserSign,
     },
     {
       title: "Phone",
-      position: profile?.contact_info?.primary_phone || "N/A",
+      position: employee?.primary_phone || company?.phone || "N/A",
       icon: Phone,
     },
     {
       title: "Email",
-      position: profile?.contact_info?.work_email || "N/A",
+      position: employee?.work_email || company?.email || "N/A",
       icon: Mail2,
     },
   ];

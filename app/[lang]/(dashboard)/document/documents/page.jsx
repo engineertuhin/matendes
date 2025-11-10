@@ -16,6 +16,7 @@ const DocumentsPage = () => {
                     addButtonLabel="Add Document"
                     columns={columns(actions)}
                     state={documentsState}
+                    search={false}
                 />
                 <BasicModel
                     title={

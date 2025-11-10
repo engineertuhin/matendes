@@ -37,8 +37,8 @@ export const useProfile = () => {
         },
         getProfile: async (id = null) => {
             // ✅ trigger API
-            const result = await triggerGetProfile({ id }); 
-            console.log(result); 
+            const result = await triggerGetProfile({ id });   
+            
             // ✅ if data exists, push to redux + form
             if (result?.data) {
                 

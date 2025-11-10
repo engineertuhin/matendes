@@ -82,7 +82,7 @@ let columns = (actions) => {
                                 // Define the custom handler here
                                 // projectActions.getProject(rowData?.id);
                                 router.push(`/${lang}/project-details/${rowData?.id}`);
-                            },
+                            }, permission: "details-project"
                         },
                         {
                             label: "Assign Employees",

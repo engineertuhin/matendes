@@ -60,22 +60,22 @@ const ReportsArea = () => {
                             <div className="flex items-center font-semibold gap-1">
                                 {item.isUp ? (
                                     <>
-                                        <span className="text-success">
+                                        <span className="text-gray-400">
                                             {item.rate}%
                                         </span>
                                         <Icon
                                             icon="heroicons:arrow-trending-up-16-solid"
-                                            className="text-success text-xl"
+                                            className="text-gray-400 text-xl"
                                         />
                                     </>
                                 ) : (
                                     <>
-                                        <span className="text-destructive">
+                                        <span className="text-gray-500">
                                             {item.rate}
                                         </span>
                                         <Icon
                                             icon="heroicons:arrow-trending-down-16-solid"
-                                            className="text-destructive text-xl"
+                                            className="text-gray-500 text-xl"
                                         />
                                     </>
                                 )}
