@@ -1,7 +1,7 @@
 "use client";
 import { Icon } from "@iconify/react";
 import { cn, translate } from "@/lib/utils";
-
+import { useParams } from "next/navigation"; 
 const SubMenuHandler = ({
   item,
   toggleSubmenu,
@@ -12,7 +12,8 @@ const SubMenuHandler = ({
   trans,
 }) => {
   const { title } = item;
-
+  const params = useParams();
+  const lang = params?.lang || "en";
   return (
     <>
       {!collapsed || hovered ? (

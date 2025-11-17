@@ -3,7 +3,7 @@ import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
 let defaultLocale = "en";
-let locales = ["bn", "en", "ar"];
+let locales = ["bn", "en", "ar","pt"];
 
 // Protected routes that require authentication
 const protectedRoutes = [

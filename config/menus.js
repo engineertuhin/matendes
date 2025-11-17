@@ -274,6 +274,18 @@ export const menusConfig = {
                     icon: Users,
                     permission: "manage-settings",
                 },
+                {
+                    title: "Language",
+                    href: "/language",
+                    icon: Users,
+                    permission: "manage-settings",
+                },
+                {
+                    title: "Activity log",
+                    href: "/activity",
+                    icon: Users,
+                    permission: "manage-settings",
+                },
             ],
         },
     ],
@@ -498,6 +510,12 @@ export const menusConfig = {
                     {
                         title: "Role & Permissions",
                         href: "/role",
+                        icon: Users,
+                        permission: "manage-settings",
+                    },
+                    {
+                        title: "Activity log",
+                        href: "/activity",
                         icon: Users,
                         permission: "manage-settings",
                     },
@@ -741,6 +759,18 @@ export const menusConfig = {
                     {
                         title: "Role & Permissions",
                         href: "/role",
+                        icon: Users,
+                        permission: "manage-settings",
+                    },
+                    {
+                        title: "Language",
+                        href: "/language",
+                        icon: Users,
+                        permission: "manage-settings",
+                    },
+                    {
+                        title: "Activity log",
+                        href: "/activity",
                         icon: Users,
                         permission: "manage-settings",
                     },

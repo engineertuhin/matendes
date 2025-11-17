@@ -43,6 +43,8 @@ const useAuth = () => {
     const getMe = async () => {
         try {
             const response = await triggerMe().unwrap();
+            console.log(response);
+            
             dispatch(
                 setCredentials({
                     user: response.data,
@@ -50,6 +52,8 @@ const useAuth = () => {
                     setPermissions: response.data.permission,
                     notificationData: response.data.notificationData,
                     branch: response?.data?.employee?.branch,
+                    translation: response?.data?.translation,
+                    language_code: response?.data?.language_code,
                 })
             );
 

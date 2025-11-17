@@ -4,7 +4,7 @@ import { getDictionary } from "@/app/dictionaries";
 
 const Dashboard = async ({ params: { lang } }) => {
 
-    const trans = await getDictionary(lang);
+    const trans = [];
     return <DashboardPageView trans={trans} />;
 };
 

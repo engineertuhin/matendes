@@ -76,8 +76,7 @@ export const useRole = () => {
             form.setValue("selectedPermission", []);
 
             form.setValue("openModel", true);
-        },
-
+        }, 
         onUpdate: async (data) => {
             try {
                 let { openModel, id, ...other } = data;
@@ -134,9 +133,7 @@ export const useRole = () => {
                     toast.error("Something went wrong while deleting the role.");
                 }
             }
-        },
-        
-
+        }, 
         onManagePermissions: (data) => {
             const ids = data.permissions.map((data) => data.id);
 

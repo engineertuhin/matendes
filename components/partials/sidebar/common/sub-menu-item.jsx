@@ -3,9 +3,11 @@ import { cn, isLocationMatch, translate, getDynamicPath } from "@/lib/utils";
 import React from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
 function LockLink({ href, children, subItem, trans }) {
+  const params = useParams();
+  const lang = params?.lang || "en";
   if (subItem.badge) {
     return (
       <span className="text-sm flex space-x-3 items-center transition-all duration-150 opacity-50  cursor-not-allowed">
@@ -23,7 +25,7 @@ function LockLink({ href, children, subItem, trans }) {
       </span>
     );
   } else {
-    return <Link href={href}>{children}</Link>;
+    return <Link href={'/'+lang+'/'+href}>{children}</Link>;
   }
 }
 

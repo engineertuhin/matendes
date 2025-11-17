@@ -16,8 +16,7 @@ import { useSelector } from "react-redux";
 
 const DashboardPageView = ({ trans }) => {
 
-  
-  console.log(permissionChecker('workforce-overview'));
+   
    
   const { dashboardData } = useSelector((state) => state.dashboard);
 

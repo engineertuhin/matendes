@@ -17,6 +17,8 @@ const initialState = {
   permissions: [],
   notificationData: [],
   branch: null,
+  translation: null,
+  language_code: null,
 };
 
 const authSlice = createSlice({
@@ -24,12 +26,14 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { user, token, notificationData,branch } = action.payload;
+      const { user, token, notificationData,branch,translation,language_code } = action.payload;
       state.user = user;
       state.token = token;
       state.isAuthenticated = true;
       state.notificationData = notificationData;
       state.branch = branch;
+      state.translation = translation;
+      state.language_code = language_code;
       
     },
     logout: (state) => {
