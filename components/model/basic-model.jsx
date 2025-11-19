@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { DynamicForm } from "@/components/form/dynamic-form";
 import { useWatch } from "react-hook-form";
 import { formReset } from "@/utility/helpers";
+import { translate } from "@/lib/utils";
+import { useSelector } from "react-redux";
 
 export default function BasicModel({
     form,
@@ -21,6 +23,11 @@ export default function BasicModel({
     size,
     children,
 }) {
+    const translation_state = useSelector((state) => state.auth.translation);
+    title = translate(title,translation_state);
+    submitLabel = translate(submitLabel,translation_state);
+    cancelLabel = translate(cancelLabel,translation_state);
+
     const openModel = useWatch({
         control: form.control,
         name: "openModel",

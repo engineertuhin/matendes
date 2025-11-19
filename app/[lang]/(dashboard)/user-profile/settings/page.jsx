@@ -17,19 +17,19 @@ const Settings = () => {
       label: "Change Password",
       value: "password",
     },
-    {
-      label: "Others",
-      value: "others",
-    },
+    // {
+    //   label: "Others",
+    //   value: "others",
+    // },
   ];
   return (
     <div className="grid grid-cols-12 gap-6 mt-6">
-      <div className="col-span-12 lg:col-span-4 space-y-6">
+      {/* <div className="col-span-12 lg:col-span-4 space-y-6">
         <UserMeta />
         <Socials />
         <Skills />
-      </div>
-      <div className="col-span-12 lg:col-span-8">
+      </div> */}
+      <div className="col-span-12 lg:col-span-12">
         <Tabs defaultValue="personal" className="p-0 px-1">
           <TabsList className="bg-card  flex-1 overflow-x-auto md:overflow-hidden  w-full px-5 pt-6 pb-2.5 h-fit border-b border-border  rounded-none justify-start gap-12 rounded-t-md">
             {tabs.map((tab, index) => (
@@ -50,9 +50,9 @@ const Settings = () => {
           <TabsContent value="password" className="mt-0">
             <ChangePassword />
           </TabsContent>
-          <TabsContent value="others" className="mt-0">
+          {/* <TabsContent value="others" className="mt-0">
             <CommingSoon />
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </div>
     </div>

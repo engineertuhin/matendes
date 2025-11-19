@@ -13,19 +13,21 @@ import DatePickerWithRange from "@/components/date-picker-with-range";
 import { useDashboard } from "@/domains/dashboard/hook/useDashboard";
 import { permissionChecker } from "@/utility/helpers";
 import { useSelector } from "react-redux";
+import { translate } from "@/lib/utils";
 
 const DashboardPageView = ({ trans }) => {
 
    
    
   const { dashboardData } = useSelector((state) => state.dashboard);
+  const translation_state = useSelector((state) => state.auth.translation);
 
   const { data } = useDashboard();
   return (
     <div className="space-y-6">
       <div className="flex items-center flex-wrap justify-between gap-4">
         <div className="text-2xl font-medium text-default-800 ">
-          Analytics {trans?.dashboard}
+          {translate("Analytics",translation_state)} {trans?.dashboard}
         </div>
         {/* <DatePickerWithRange /> */}
       </div>

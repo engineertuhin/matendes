@@ -3,6 +3,8 @@ import { Breadcrumbs, BreadcrumbItem } from "@/components/ui/breadcrumbs";
 import { usePathname } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
+import { translate } from "@/lib/utils";
+import { useSelector } from "react-redux";
 
 // Small helper to prettify slug into readable text
 function formatLabel(str) {
@@ -18,6 +20,7 @@ export default function PageLayout({ children }) {
     const params = useParams();
     const id = params.id;
     const segments = pathname?.split("/").filter(Boolean) || [];
+    const translation_state = useSelector((state) => state.auth.translation);
 
     // Build cumulative hrefs
     const crumbs = segments.map((seg, i) => {
@@ -38,24 +41,24 @@ export default function PageLayout({ children }) {
             <div className="flex flex-wrap mb-7">
                 {/* Dynamic title */}
                 <div className="text-xl font-medium text-default-900 flex-1">
-                    {pageTitle}
+                    {translate(pageTitle,translation_state)}
                 </div>
 
                 {/* Breadcrumbs */}
                 <div className="flex-none">
                     <Breadcrumbs>
                         <BreadcrumbItem>
-                            <Link href="/">Dashboard</Link>
+                            <Link href="/">{translate('Dashboard',translation_state)}</Link>
                         </BreadcrumbItem>
 
                         {crumbs.map(({ href, label, isLast }, i) => (
                             <BreadcrumbItem key={i}>
                                 {isLast ? (
                                     <span className="text-muted-foreground">
-                                        {label}
+                                        {translate(label,translation_state)}
                                     </span>
                                 ) : (
-                                    <Link href={href}>{label}</Link>
+                                    <Link href={href}>{translate(label,translation_state)}</Link>
                                 )}
                             </BreadcrumbItem>
                         ))}

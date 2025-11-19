@@ -6,22 +6,28 @@ import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import FieldRenderer from "./field-renderer";
 import { Form } from "@/components/ui/form";
+import { translate } from "@/lib/utils";
+import { useSelector } from "react-redux";
+
 const DynamicTabForm = ({
     fields,
     form,
     actions,
     isServerValidated = false,
-}) => {
+}) => { 
+    const translation_state = useSelector((state) => state.auth.translation);
     const [activeStep, setActiveStep] = React.useState(0);
-
+    
+    
     const fieldDefs =
         typeof fields === "function"
             ? fields()
             : Array.isArray(fields)
             ? fields
             : [];
+    console.log(fieldDefs);
     const steps = fieldDefs.map((field) => field.tab);
-
+    console.log(steps);
     const isStepOptional = (step) => {
         return step === 1;
     };
@@ -80,7 +86,7 @@ const DynamicTabForm = ({
                     // }
                     return (
                         <Step key={label} {...stepProps}>
-                            <StepLabel {...labelProps}>{label}</StepLabel>
+                            <StepLabel {...labelProps}>{translate(label,translation_state)}</StepLabel>
                         </Step>
                     );
                 })}

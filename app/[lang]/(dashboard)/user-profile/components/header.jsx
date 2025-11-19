@@ -6,7 +6,6 @@ import { Home } from "lucide-react";
 import coverImage from "@/public/images/all-img/user-cover.png";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Icon } from "@iconify/react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
@@ -15,32 +14,39 @@ import { useAppSelector } from "@/hooks/use-redux";
 
 const Header = () => {
   const location = usePathname();
-
-  // ✅ Access Redux state
   const { profile } = useAppSelector((state) => state.profileData);
 
-  // ✅ Extract user info safely
   const user = profile?.user;
   const company = user?.company;
   const employee = user?.employee;
+  const roles = user?.roles || [];
 
-  // ✅ Display values based on user type
+  // Role name
+  const roleName = roles[0]?.display_name || roles[0]?.name || "User";
+
+  // Display Name
   const displayName = employee
-    ? `${employee.first_name || ""} ${employee.last_name || ""}`.trim() || "Unknown Employee"
+    ? `${employee.first_name || ""} ${employee.last_name || ""}`.trim() ||
+      "Unknown Employee"
     : company
     ? company.name || "Unknown Company"
     : user?.email || "Unknown User";
 
-  const displayTitle = employee
-    ? employee.employment_type || "Employee"
-    : company
-    ? "Company"
-    : "User";
+  // Title (role only)
+  const displayTitle = roleName;
 
+  // Profile Image
   const profileImage =
     employee?.profile_photo_url ||
     company?.logo_url ||
     "/images/avatar/placeholder.jpg";
+
+  // Navigation Links
+  const navLinks = [
+    { title: "Overview", link: "/user-profile" },
+    // Only show Settings if user is an employee
+    ...(employee ? [{ title: "Settings", link: "/user-profile/settings" }] : []),
+  ];
 
   return (
     <Fragment>
@@ -53,7 +59,7 @@ const Header = () => {
         <BreadcrumbItem>Profile</BreadcrumbItem>
       </Breadcrumbs>
 
-      {/* Profile Cover Card */}
+      {/* Profile Cover */}
       <Card className="mt-6 rounded-t-2xl">
         <CardContent className="p-0">
           <div
@@ -75,35 +81,18 @@ const Header = () => {
                 <div className="text-xl lg:text-2xl font-semibold text-primary-foreground mb-1">
                   {displayName}
                 </div>
+
+                {/* Always show role name */}
                 <div className="text-xs lg:text-sm font-medium text-default-100 dark:text-default-900 pb-1.5">
                   {displayTitle}
                 </div>
               </div>
             </div>
-
-            {/* Edit Button */}
-            {/* <Button
-              asChild
-              className="absolute bottom-5 ltr:right-6 rtl:left-6 rounded px-5 hidden lg:flex"
-              size="sm"
-            >
-              <Link href="/user-profile/settings">
-                <Icon
-                  className="w-4 h-4 ltr:mr-1 rtl:ml-1"
-                  icon="heroicons:pencil-square"
-                />
-                Edit
-              </Link>
-            </Button> */}
           </div>
 
           {/* Navigation Tabs */}
           <div className="flex flex-wrap justify-end gap-4 lg:gap-8 pt-7 lg:pt-5 pb-4 px-6">
-            {[
-              { title: "Overview", link: "/user-profile" },
-              // { title: "Documents", link: "/user-profile/documents" },
-              // { title: "Settings", link: "/user-profile/settings" },
-            ].map((item, index) => (
+            {navLinks.map((item, index) => (
               <Link
                 key={`user-profile-link-${index}`}
                 href={item.link}

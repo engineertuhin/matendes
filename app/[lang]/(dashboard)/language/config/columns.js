@@ -77,14 +77,14 @@ let columns = (actions) => {
                         {
                             label: "Edit",
                             onClick: actions?.onEdit,
-                            permission: "edit-job-position",
+                            permission: "edit-language",
                         },
                         {
                             label: "Delete",
                             onClick: actions?.onDelete,
                             danger: true,
                             passId: true,
-                            permission: "edit-job-position",
+                            permission: "delete-language",
                         },
                         {
                             label: "Set Attributes",
@@ -94,7 +94,7 @@ let columns = (actions) => {
                                     `/${lang}/language/translate/${rowData?.id}`
                                 );
                             },
-                            permission: "edit-job-position",
+                            permission: "set-language-attributes",
                         },
                     ]}
                 />

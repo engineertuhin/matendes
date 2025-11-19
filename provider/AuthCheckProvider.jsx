@@ -12,6 +12,7 @@ export default function AuthCheckProvider({ children }) {
         const res = await getMe(); 
         
         window["allPermission"] = res.data.data.permissions.map(perm => perm.name); 
+        window["allLanguage"] = res.data.data.translation; 
         // console.log(window["allPermission"]);
         
         // maybe handle user data here?

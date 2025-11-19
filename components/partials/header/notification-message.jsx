@@ -46,9 +46,9 @@ const NotificationMessage = () => {
           <span className="text-base font-semibold text-white flex-1">
             Notification
           </span>
-          <span className="text-xs font-medium text-white cursor-pointer hover:underline hover:decoration-default-100 dark:decoration-default-900">
+          {/* <span className="text-xs font-medium text-white cursor-pointer hover:underline hover:decoration-default-100 dark:decoration-default-900">
             Mark all as read{" "}
-          </span>
+          </span> */}
         </DropdownMenuLabel>
         <div className="h-[300px] xl:h-[350px]">
   <ScrollArea className="h-full">

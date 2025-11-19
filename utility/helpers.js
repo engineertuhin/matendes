@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import { useAppSelector } from "@/hooks/use-redux";
+import { translate } from "@/lib/utils";
 // Single Field Validation
 export const permissionChecker = (permissionName) => {
     const { user } = useAppSelector((state) => state.auth);
@@ -20,13 +21,16 @@ export const multipleValidateError = (name, errors, index) => {
 
 //Server site Validation
 export const handleServerValidationErrors = (error, setError) => {
+
     handleServerValidationErrorsToast(error, toast);
     if (error?.data?.errors) {
         const errors = error.data.errors;
+
         Object.keys(errors).forEach((field) => {
+            
             setError(field, {
                 type: "manual",
-                message: errors[field][0],
+                message: translate(errors[field][0],window["allLanguage"]),
             });
         });
     }

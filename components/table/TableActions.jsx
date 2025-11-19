@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/use-redux";
+import { translate } from "@/lib/utils";
+import { useSelector } from "react-redux";
 /**
  * Reusable dropdown actions component for table rows.
  *
@@ -27,6 +29,7 @@ export const TableActions = ({
   alignmentClass = "flex justify-center",
   onLoginAsCompany, 
 }) => {
+  const translation_state = useSelector((state) => state.auth.translation);
   const showSrOnlySpan = alignmentClass !== "flex justify-center";
   const { user } = useAppSelector((state) => state.auth);
 
@@ -37,20 +40,20 @@ export const TableActions = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
-            {showSrOnlySpan && <span className="sr-only">Open menu</span>}
+            {showSrOnlySpan && <span className="sr-only">{translate("Open menu",translation_state)}</span>}
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end">
-          {label && <DropdownMenuLabel>{label}</DropdownMenuLabel>}
+          {label && <DropdownMenuLabel>{translate("Actions",translation_state)}</DropdownMenuLabel>}
           <DropdownMenuSeparator />
 
           {/* Optional fixed item */}
           {onLoginAsCompany && (
             <>
               <DropdownMenuItem onClick={() => onLoginAsCompany(data)}>
-                Login as Company
+                {translate("Login as Company",translation_state)}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
             </>
@@ -70,7 +73,7 @@ export const TableActions = ({
                   : ""
               }
             >
-              {item.label}
+              {translate(item?.label,translation_state)}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>

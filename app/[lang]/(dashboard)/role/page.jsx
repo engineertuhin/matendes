@@ -14,7 +14,7 @@ const RolePage = () => {
     const form = rolesState.form;
     const isEdit = !!form?.watch("id");
     const isPermissionMode = !!form?.watch("openPermissionMode");
-    console.log(rolesState.permissions);
+    // console.log(rolesState.permissions);
     
     return (
         <PageLayout>

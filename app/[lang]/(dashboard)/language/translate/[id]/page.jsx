@@ -5,8 +5,12 @@ import Card from "@/components/ui/card-snippet";
 import PageLayout from "@/components/page-layout";
 import { useLanguage } from "@/domains/language/hook/useLanguage";
 import axios from "axios";
+import { translate } from "@/lib/utils";
+import { useSelector } from "react-redux";
 
 const TranslatePage = ({ params }) => {
+  const translation_state = useSelector((state) => state.auth.translation); 
+  
   const { lang, id: languageId } = params;
   const { languageState, actions } = useLanguage();
   const translations = languageState.values || [];
@@ -34,16 +38,16 @@ const TranslatePage = ({ params }) => {
             onClick={() => actions.onUpdateAllTranslation(translationsState,false)}
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition cursor-pointer"
           >
-            Submit All
+            {translate('Submit All',translation_state)}
           </button>
         </div>
 
         <table className="w-full border">
           <thead>
             <tr className="bg-gray-100">
-              <th className="p-2 border">Key</th>
-              <th className="p-2 border">Value</th>
-              <th className="p-2 border">Action</th>
+              <th className="p-2 border">{translate('Key',translation_state)}</th>
+              <th className="p-2 border">{translate('Value',translation_state)}</th>
+              <th className="p-2 border">{translate('Action',translation_state)}</th>
             </tr>
           </thead>
           <tbody>
@@ -63,7 +67,7 @@ const TranslatePage = ({ params }) => {
                     onClick={() => actions.onUpdateSingleTranslation(item)}
                     className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition cursor-pointer"
                   >
-                    Update
+                    {translate('Update',translation_state)}
                   </button>
                 </td>
               </tr>

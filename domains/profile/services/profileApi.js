@@ -22,7 +22,15 @@ export const profileApi = createApi({
       }),
       invalidatesTags: ["Profile"],
     }),
+    updatePassword: builder.mutation({
+      query: (data) => ({
+        url: "profile/profile/password",
+        method: "POST",
+        body: data, // { current_password, new_password, confirm_password }
+      }),
+      invalidatesTags: ["Profile"],
+    }),
   }),
 });
 
-export const { useGetProfileQuery, useUpdateProfileMutation, useLazyGetProfileQuery } = profileApi;
+export const { useGetProfileQuery, useUpdateProfileMutation, useLazyGetProfileQuery, useUpdatePasswordMutation } = profileApi;

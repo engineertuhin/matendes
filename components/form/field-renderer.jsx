@@ -19,9 +19,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Plus, Trash2 } from "lucide-react";
 
 import DynamicAsyncSelect from "./dynamic-async-select";
-
+import { translate } from "@/lib/utils";
 import Select from "react-select";
-
+import { useSelector } from "react-redux";
 /**
  * FieldConfig (JS docs):
  * {
@@ -41,7 +41,7 @@ import Select from "react-select";
  */
 
 const FieldRenderer = ({ fieldConfig, form }) => {
-    const {
+    let {
         name,
         label,
         placeholder,
@@ -67,6 +67,13 @@ const FieldRenderer = ({ fieldConfig, form }) => {
         rows
     } = fieldConfig; 
     
+    const translation_state = useSelector((state) => state.auth.translation);
+    label = translate(label,translation_state);
+    placeholder = translate(placeholder,translation_state); 
+    
+
+
+
     const styles = {
         option: (provided, state) => ({
             ...provided,

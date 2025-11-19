@@ -11,12 +11,14 @@ import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDashboardFetchQuery } from "@/domains/dashboard/services/dashboardApi";
-import { setDashboardData } from "@/domains/dashboard/model/dashboardSlice";
+import { setDashboardData } from "@/domains/dashboard/model/dashboardSlice"; 
+import { translate } from "@/lib/utils";
 
 const ReportsSnapshot = () => {
   const dispatch = useDispatch();
   const { data, isLoading } = useDashboardFetchQuery();
   const { dashboardData } = useSelector((state) => state.dashboard); 
+  const translation_state = useSelector((state) => state.auth.translation);
 
 
   const chartData = dashboardData?.chartSeries || [];
@@ -51,7 +53,7 @@ const ReportsSnapshot = () => {
   if (isLoading) {
     return (
       <Card className="p-8 text-center text-muted-foreground">
-        Loading dashboard data...
+        {translate("Loading dashboard data",translation_state)}...
       </Card>
     );
   }
@@ -62,10 +64,10 @@ const ReportsSnapshot = () => {
         <div className="flex items-center gap-2 flex-wrap">
           <div className="flex-1">
             <div className="text-xl font-semibold text-default-900 whitespace-nowrap">
-              Workforce Overview
+              {translate("Workforce Overview",translation_state)}
             </div>
             <span className="text-xs text-default-600">
-              Demographic properties of your workforce
+              {translate("Demographic properties of your workforce",translation_state)}
             </span>
           </div>
           {/* <div className="flex-none">
@@ -96,7 +98,7 @@ const ReportsSnapshot = () => {
                   )}
                 >
                   <span className="text-sm text-default-800 dark:text-primary-foreground font-semibold capitalize relative z-10 text-wrap text-start">
-                    {item.text}
+                    {translate(item.text,translation_state)}
                   </span>
                   <span
                     className={`text-lg font-semibold text-${item.color}/80 dark:text-primary-foreground`}

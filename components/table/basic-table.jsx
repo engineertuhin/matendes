@@ -38,6 +38,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { getFilterParams, setFilterParams, debounce } from "@/utility/helpers";
 import { useAppSelector } from "@/hooks/use-redux";
+import { translate } from "@/lib/utils";
+import { useSelector } from "react-redux";
 
 export function BasicDataTable({
     columns = [],
@@ -54,6 +56,8 @@ export function BasicDataTable({
     search=true,
     addPermission,
 }) {
+    const translation_state = useSelector((state) => state.auth.translation);
+
     const [sorting, setSorting] = React.useState([]);
     const [columnFilters, setColumnFilters] = React.useState([]);
     const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -65,9 +69,8 @@ export function BasicDataTable({
 
     const permissionNames = user?.permissions?.map(p => p.name) || []; 
     const addButtonVisible = permissionNames.includes(addPermission);
-    
-    console.log(permissionNames);
-    
+     
+    addButtonLabel = translate(addButtonLabel,translation_state);
     // Create debounced search function
     const debouncedSearch = React.useCallback(
         debounce((searchTerm) => {
@@ -196,7 +199,7 @@ export function BasicDataTable({
                                 }
                             )}
                             {search && <Input
-                                placeholder="Search..."
+                                placeholder={`${translate('Search',translation_state)}...`}
                                 value={searchValue}
                                 onChange={(e) => {
                                     const value = e.target.value;
@@ -264,9 +267,9 @@ export function BasicDataTable({
                                         >
                                             {header.isPlaceholder
                                                 ? null
-                                                : flexRender(
-                                                      header.column.columnDef
-                                                          .header,
+                                                : flexRender(translate(header.column.columnDef
+                                                          .header,translation_state)
+                                                      ,
                                                       header.getContext()
                                                   )}
                                         </TableHead>
@@ -335,9 +338,9 @@ export function BasicDataTable({
                     {typeof pagination === "object" && pagination.total ? (
                         <>
                             <div className="flex-1 text-sm text-muted-foreground whitespace-nowrap">
-                                Showing {pagination.from || 0} to{" "}
+                                {translate("Showing",translation_state)}  {pagination.from || 0} to{" "}
                                 {pagination.to || 0} of {pagination.total || 0}{" "}
-                                entries
+                                {translate("entries",translation_state)}
                             </div>
 
                             <div className="flex gap-2 items-center">

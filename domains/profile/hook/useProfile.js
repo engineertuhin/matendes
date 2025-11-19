@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import {
     useLazyGetProfileQuery,
     useUpdateProfileMutation, 
+    useUpdatePasswordMutation,
 } from "../services/profileApi";
 import { setProfile } from "../model/profileSlice";
 import { useAppDispatch } from "@/hooks/use-redux";
@@ -14,6 +15,7 @@ export const useProfile = () => {
     // Lazy query
     const [triggerGetProfile, { isFetching }] = useLazyGetProfileQuery();
     const [updateProfileApi] = useUpdateProfileMutation();
+    const [updatePasswordApi] = useUpdatePasswordMutation();
 
     // Form setup
     const form = useForm({
@@ -26,24 +28,50 @@ export const useProfile = () => {
     const actions = {
         onEditProfile: (profile) => {
             form.reset({
-                id: profile?.id || "",
-                first_name: profile?.personal_info?.first_name || "",
-                last_name: profile?.personal_info?.last_name || "",
-                email: profile?.contact_info?.work_email || "",
-                phone: profile?.contact_info?.primary_phone || "",
-                employment_status:
-                    profile?.employment_info?.employment_status || "",
+                id: profile?.user?.id || "",
+                first_name: profile?.user?.employee?.first_name || "",
+                last_name: profile?.user?.employee?.last_name || "",
+                email: profile?.user?.employee?.work_email || "",
+                phone: profile?.user?.employee?.primary_phone || "",
+                bio: profile?.user?.employee?.bio || "",
+                employment_status: profile?.user?.employee?.employment_status || "",
             });
         },
         getProfile: async (id = null) => {
-            // ✅ trigger API
-            const result = await triggerGetProfile({ id });   
-            
-            // ✅ if data exists, push to redux + form
-            if (result?.data) {
-                
-                dispatch(setProfile(result.data));
-                actions.onEditProfile(result.data);
+            try {
+                const result = await triggerGetProfile({ id });
+
+                if (result?.data) {
+                    // Push to redux
+                    dispatch(setProfile(result.data));
+
+                    // Reset form with fetched data
+                    actions.onEditProfile(result.data);
+                }
+            } catch (err) {
+                console.error("Failed to fetch profile:", err);
+            }
+        }, 
+        updateProfile: async (data) => {
+            try {
+                const result = await updateProfileApi(data).unwrap();
+                // Optionally update redux state after successful update
+                dispatch(setProfile(result));
+                return result;
+            } catch (err) {
+                console.error("Failed to update profile:", err);
+                throw err;
+            }
+        },
+        resetPassword: async (data) => {
+            try {
+            const result = await updatePasswordApi(data).unwrap();
+            alert("Password changed successfully!");
+            return result;
+            } catch (err) {
+            console.error("Failed to reset password:", err);
+            alert(err?.data?.message || "Failed to reset password.");
+            throw err;
             }
         },
     };

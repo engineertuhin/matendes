@@ -102,6 +102,7 @@ export default function columns(actions) {
                         label: "Mark as Paid",
                         onClick: actions?.onMarkAsPaid,
                         passId: false,
+                         permission: "pay-now"
                     });
                 }
                 if (row.original.transaction_type == "repeat"){
@@ -110,6 +111,7 @@ export default function columns(actions) {
                         label: "Pay Now",
                         onClick: actions?.payNow,
                         passId: false,
+                         permission: "pay-now"
                     });
                 }
                     makeActions.push({
